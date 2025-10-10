@@ -1,15 +1,35 @@
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Dashboard from "./Component/Dashboard";
+import Login from "./Component/Login";
+import Register from "./Component/Register";
+import Sidnav from "./Component/Sidnav";
+import Jenistagihan from "./Pages/Jenistagihan";
+import Tagihan from "./Pages/Tagihan";
+
 function App() {
   return (
-    <div
-      className="h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-      style={{
-        backgroundImage:
-          "url('https://i.pinimg.com/1200x/55/c8/1d/55c81daaf67c75fdf9b9b77f18639661.jpg')",
-      }}
-    >
-      <h1 className="text-white text-7xl font-bold drop-shadow-lg">
-        
-      </h1>
+    <BrowserRouter>
+      <MainLayout />
+    </BrowserRouter>
+  );
+}
+
+function MainLayout() {
+  const location = useLocation();
+  const showSidnav = ["/D", "/T", "/J"].includes(location.pathname); // cuma muncul di halaman ini
+
+  return (
+    <div className="flex">
+      {showSidnav && <Sidnav />} {/* muncul hanya di halaman tertentu */}
+      <div className="flex-1">
+        <Routes>
+          <Route path="/" element={<Register />} />
+          <Route path="/L" element={<Login />} />
+          <Route path="/D" element={<Dashboard />} />
+          <Route path="/T" element={<Tagihan />} />
+          <Route path="/J" element={<Jenistagihan />} />
+        </Routes>
+      </div>
     </div>
   );
 }
