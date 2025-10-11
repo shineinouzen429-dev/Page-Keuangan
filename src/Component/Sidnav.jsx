@@ -1,28 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Sidnav ()  {
-  const [open, setOpen] = useState (false);
+function Sidnav() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className='flex'>
-      <button onClick={() => setOpen(!open)} className="m-4 bg-gray-700 text-white px-3 py-2 rounded">
-  {open ? "Tutup" : "Buka"}
-</button>
+    <>
+      {/* Tombol hanya muncul di layar kecil */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="md:hidden m-4 bg-gray-700 text-white px-3 py-2 rounded z-50 fixed top-4 left-4"
+      >
+        {open ? "Tutup" : "Buka"}
+      </button>
 
-      <div className={` fixed top-0 h-full w-60 bg-gray-800 text-white
-            ${open ? "translate-x-0" : "-translate-x-full"}
-            transition-transform duration-300 ease-in-out md:translate-x-0`}>
-              <div className='text-xl font-bold mb-8 text-center bg-gray-700 py-4 shadow-lg'>Binus</div>
+      {/* Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full w-60 bg-gray-800 text-white z-40
+          transform transition-transform duration-300 ease-in-out
+          ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        <div className="text-xl font-bold mb-8 text-center bg-gray-700 py-4 shadow-lg">
+          Binus
+        </div>
 
-              <nav>
-                <a href="/D" className='block py-3 px-4 rounded hover:bg-blue-600 text-2xl'>Dasboard</a>
-                <a href="/T" className='block py-3 px-4 rounded hover:bg-blue-600 text-2xl'>Tagihan</a>
-                <a href="/J" className='block py-3 px-4 rounded hover:bg-blue-600 text-2xl'>Jenis tagihan</a>
-              </nav>
-              
-              <div className=''></div>
+        <nav className="space-y-6 px-4">
+          <Link to="/D" className="block py-2 px-3 rounded hover:bg-blue-600 font-bold text-center">
+            Dashboard
+          </Link>
+          <Link to="/T" className="block py-2 px-3 rounded hover:bg-blue-600 font-bold text-center">
+            Tagihan
+          </Link>
+          <Link to="/J" className="block py-2 px-3 rounded hover:bg-blue-600 font-bold text-center">
+            Jenis Tagihan
+          </Link>
+        </nav>
       </div>
-    </div>
-  )
+    </>
+  );
 }
 
-export default Sidnav
+export default Sidnav;

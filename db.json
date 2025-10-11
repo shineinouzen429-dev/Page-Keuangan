@@ -1,0 +1,91 @@
+{
+  "tagihan": [
+    {
+      "id": "02c5",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 225.000",
+      "status": "Belum lunas"
+    },
+    {
+      "id": "5c6e",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "c4b4",
+      "name": "Moreno hadi prasetyo",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "7c0c",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "Seragam",
+      "jumlah": "Rp 525.000",
+      "status": "Belum lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "25c5",
+      "name": "Dimas Pradana",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    }
+  ],
+  "jenistagihan": [
+    {
+      "id": "9e52",
+      "type_bill": "spp",
+      "harga": "Rp 200.000"
+    },
+    {
+      "id": "5c96",
+      "type_bill": "Seragam",
+      "harga": "Rp 500.000"
+    },
+    {
+      "id": "2945",
+      "type_bill": "Uang Gedung",
+      "harga": "Rp 1.200.000"
+    }
+  ]
+}
