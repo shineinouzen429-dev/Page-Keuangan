@@ -14,14 +14,15 @@ function Register () {
     const handleChange =(e) => {
         setFormdata({ ...formdata, [e.target.name]: e.target.value});
     };
+   
     const handleSubmit = (e) => {
         e.preventDefault();
         Swal.fire({
-  title: "Login Berhasill!",
+  title: "Register Berhasill!",
   icon: "success",
   draggable: true
 }).then(()=>{
-   navigate("/D");
+   navigate("/Dashboard");
 })
     }
 
@@ -78,8 +79,8 @@ function Register () {
                 Daftar
               </button>
               <button>
-                <Link to="/L" className="inline-block align-baseline text-black hover:text-gray-600 font-bold text-sm">
-              Belum punya akun? Login
+                <Link to="/Login" className="inline-block align-baseline text-black hover:text-gray-600 font-bold text-sm">
+              Sudah punya akun? Login
               </Link>
               </button>
             </div>

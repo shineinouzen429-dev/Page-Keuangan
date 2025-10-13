@@ -38,7 +38,7 @@ function Tambahjenistagihan() {
         harga: "",
       });
 
-      navigate("/J");
+      navigate("/Tambahjenistagihan");
     } catch (error) {
       console.error("Error saat menambahkan data:", error);
       Swal.fire({
@@ -101,7 +101,7 @@ function Tambahjenistagihan() {
             </button>
 
             <Link
-              to="/J"
+              to="/Jenistagihan"
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Kembali

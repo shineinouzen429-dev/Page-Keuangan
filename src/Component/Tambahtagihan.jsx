@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-function Tambahtagihan() {
+function Tambahtagihan () {
   const [formData, setFormData] = useState({
     name:"",
     jenis_tagihan:"",
@@ -40,7 +40,7 @@ function Tambahtagihan() {
        status:"",
       });
 
-      navigate("/T"); 
+      navigate("/Tagihan"); 
     } catch (error) {
       console.error("Error saat menambahkan data:", error);
       Swal.fire({
@@ -132,7 +132,7 @@ function Tambahtagihan() {
             </button>
 
             <Link
-              to="/T"
+              to="/Tagihan"
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Kembali

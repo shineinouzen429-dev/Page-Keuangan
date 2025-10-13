@@ -1,91 +1,87 @@
 {
   "tagihan": [
     {
-      "id": "02c5",
-      "name": "Andre nugroho",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 225.000",
-      "status": "Belum lunas"
+      "id": "ad05",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "Rp 100.000",
+      "status": "Lunas"
     },
     {
-      "id": "5c6e",
+      "id": "119a",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "002b",
       "name": "Ayyas assadullah bilqis",
       "jenis_tagihan": "SPP",
       "jumlah": "Rp 225.000",
       "status": "Lunas"
     },
     {
-      "id": "c4b4",
-      "name": "Moreno hadi prasetyo",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": "Rp 1.225.000",
+      "id": "fe6e",
+      "name": "Moreno Hadi prasetyo",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "Rp 100.000",
       "status": "Lunas"
     },
     {
-      "id": "7c0c",
-      "name": "Dafahusaeny",
+      "id": "0e7e",
+      "name": "Fadhil nugraha",
       "jenis_tagihan": "Seragam",
       "jumlah": "Rp 525.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "c86a",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Uang Gedung",
+      "jumlah": "Rp 1.225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "8b6e",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "1.000.000",
       "status": "Belum lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "25c5",
-      "name": "Dimas Pradana",
-      "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
-      "status": "Lunas"
     }
   ],
   "jenistagihan": [
     {
-      "id": "9e52",
-      "type_bill": "spp",
-      "harga": "Rp 200.000"
+      "id": "acb8",
+      "type_bill": "Uang gedung",
+      "harga": "Rp 1.225.000"
     },
     {
-      "id": "5c96",
+      "id": "3ac6",
+      "type_bill": "SPP",
+      "harga": "Rp 225.000"
+    },
+    {
+      "id": "f828",
       "type_bill": "Seragam",
       "harga": "Rp 500.000"
     },
     {
-      "id": "2945",
-      "type_bill": "Uang Gedung",
-      "harga": "Rp 1.200.000"
+      "id": "b3f3",
+      "type_bill": "Kegiatan sekolah",
+      "harga": "Rp 100.00"
+    }
+  ],
+  "login": [
+    {
+      "id": "4153",
+      "email": "Ngebruk@gmail.com",
+      "password": "gfhgjhgjhjgd"
+    },
+    {
+      "id": "e841",
+      "email": "Dafagacor2025@gmail.com",
+      "password": "gfhgjhgjhjgd"
     }
   ]
 }

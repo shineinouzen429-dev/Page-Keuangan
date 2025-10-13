@@ -20,7 +20,7 @@ function Login() {
       icon: "success",
       draggable: true,
     }).then(() => {
-      navigate("/D");
+      navigate("/Dashboard");
     });
   };
 

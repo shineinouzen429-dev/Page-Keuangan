@@ -30,27 +30,29 @@ function Tagihan() {
   }, []);
 
   const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Yakin hapus?",
-      text: "Data akan hilang😜!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Batal",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`http://localhost:5000/tagihan/${id}`);
-          const newData = tagihan.filter((item) => item.id !== id);
-          setTagihan(newData);
-          Swal.fire("Deleted!", "Data berhasil dihapus.", "success");
-        } catch (err) {
-          console.error("Gagal menghapus data:", err);
-          Swal.fire("Error!", "Gagal menghapus data.", "error");
-        }
+  Swal.fire({
+    title: "Yakin hapus?",
+    text: "Data akan hilang😜!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, hapus!",
+    cancelButtonText: "Batal",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`http://localhost:5000/tagihan/${id}`);
+
+       
+        setTagihan((prev) => prev.filter((item) => item.id != id));
+
+        Swal.fire("Deleted!", "Data berhasil dihapus.", "success");
+      } catch (err) {
+        console.error("Gagal menghapus data:", err);
+        Swal.fire("Error!", "Gagal menghapus data.", "error");
       }
-    });
-  };
+    }
+  });
+};
 
   if (loading) {
     return <p className="text-center mt-10">Loading...</p>;
@@ -67,7 +69,7 @@ function Tagihan() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <button
-          onClick={() => navigate("/TT")}
+          onClick={() => navigate("/Tambahtagihan")}
           className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
         >
           + Tambah Data
@@ -78,12 +80,12 @@ function Tagihan() {
         <table className="table-auto w-full border-gray-300">
           <thead className="bg-gray-200">
             <tr className=" bg-sky-500">
-              <th className=" px-3 py-2">No</th>
-              <th className=" px-3 py-2">Nama</th>
-              <th className=" px-3 py-2">Jenis tagihan</th>
-              <th className=" px-3 py-2">Jumlah</th>
-              <th className=" px-3 py-2">Status pembayaran</th>
-              <th className=" px-3 py-2">Aksi</th>
+              <th className="text-center px-3 py-2">No</th>
+              <th className="text-left px-3 py-2">Nama</th>
+              <th className="text-left px-3 py-2">Jenis tagihan</th>
+              <th className="text-left px-3 py-2">Jumlah</th>
+              <th className="text-left px-3 py-2">Status pembayaran</th>
+              <th className="text-left px-3 py-2">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -91,16 +93,16 @@ function Tagihan() {
               filteredTagihan.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-gray-50 transition duration-200"
+                  className=" transition duration-200"
                 >
                   <td className=" text-center">{index + 1}</td>
-                  <td className="text-center px-3 py-2">{item.name}</td>
-                  <td className="text-center px-3 py-2">{item.jenis_tagihan}</td>
-                  <td className="text-center px-3 py-2">{item.jumlah}</td>
-                  <td className="text-center px-3 py-2">{item.status}</td>
-                  <td className=" px-3 py-2 text-center">
+                  <td className="text-left px-3 py-2">{item.name}</td>
+                  <td className="text-left px-3 py-2">{item.jenis_tagihan}</td>
+                  <td className="text-left px-3 py-2">{item.jumlah}</td>
+                  <td className="text-left px-3 py-2">{item.status}</td>
+                  <td className=" px-3 py-2 text-left">
                     <button
-                      onClick={() => navigate(`/TEedit/${item.id}`)}
+                      onClick={() => navigate(`/Edittagihanedit/${item.id}`)}
                       className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                     >
                       Edit

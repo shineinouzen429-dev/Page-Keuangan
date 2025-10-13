@@ -57,7 +57,7 @@ function Edittagihan () {
           await axios.put(`http://localhost:5000/tagihan/${id}`, formData);
 
           Swal.fire("Saved!", "", "success");
-          navigate("/T");
+          navigate("/Tagihan");
         } catch (err) {
           console.error("Gagal mengupdate data:", err);
           Swal.fire({
@@ -73,8 +73,8 @@ function Edittagihan () {
   if (loading) return <p className="text-center mt-10">Loading data</p>;
 
   return (
-    <div className="bg-gray-300 min-h-screen">
-      <div className="container mx-auto p-4 max-w-lg bg-white rounded-2xl">
+    <div className="min-h-screen">
+      <div className="container mx-auto p-4 max-w-lg bg-white rounded-2xl shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-center">Edit Data</h1>
         <form onSubmit={handleSubmit} className=" p-6">
           <div className="mb-4">
