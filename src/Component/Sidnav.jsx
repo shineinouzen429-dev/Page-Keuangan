@@ -52,7 +52,7 @@ function Sidnav() {
           >
             Jenis Tagihan
           </Link>
-          <a href="/Login" className="block py-2 px-3 rounded font-bold text-center bg-red-600">Log out</a>
+          <a href="/Login" className="block py-2 px-3 rounded font-bold text-center bg-red-600 mt-130">Log out</a>
         </nav>
       </div>
     </>

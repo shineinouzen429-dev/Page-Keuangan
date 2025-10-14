@@ -72,7 +72,6 @@ function Jenistagihan() {
             <tr className=" bg-sky-500">
               <th className=" px-3 py-2">No</th>
               <th className="text-left px-3 py-2">Jenis tagihan</th>
-              <th className="text-left px-3 py-2">Harga</th>
               <th className="text-left px-3 py-2">Aksi</th>
             </tr>
           </thead>
@@ -85,7 +84,7 @@ function Jenistagihan() {
                 >
                   <td className=" text-center">{index + 1}</td>
                   <td className="text-left px-3 py-2">{item.type_bill}</td>
-                  <td className="text-left px-3 py-2">{item.harga}</td>
+
                   <td className="text-left px-3 py-2">
                     <button
                       onClick={() => navigate(`/Editjenistagihanedit/${item.id}`)}

@@ -77,7 +77,7 @@ function Login() {
                 to="/"
                 className="inline-block align-baseline text-black hover:text-gray-600 font-bold text-sm"
               >
-                Belum punya akun? Daftar
+                Belum punya akun? Daftar👉😜
               </Link>
             </button>
           </div>

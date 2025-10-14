@@ -3,19 +3,35 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-function Tambahtagihan () {
+function Tambahtagihan() {
   const [formData, setFormData] = useState({
-    name:"",
-    jenis_tagihan:"",
-    jumlah:"",
-    status:"",
+    name: "",
+    jenis_tagihan: "",
+    jumlah: "",
+    status: "",
   });
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
+  const formatRupiah = (angka) => {
+    if (!angka) return "";
+    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "jumlah") {
+      
+      const numericValue = value.replace(/[^0-9]/g, "");
+      
+      setFormData({ ...formData, jumlah: numericValue });
+      e.target.value = formatRupiah(numericValue);
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -23,24 +39,27 @@ function Tambahtagihan () {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/tagihan", formData);
+    
+      const response = await axios.post("http://localhost:5000/tagihan", {
+        ...formData,
+        jumlah: parseInt(formData.jumlah),
+      });
 
       console.log("Respon server:", response.data);
       Swal.fire({
-        title: "Yatta, Berhasil",
+        title: "Yatta, Berhasil!",
         icon: "success",
         draggable: true,
       });
 
-     
       setFormData({
-       name:"",
-       jenis_tagihan:"",
-       jumlah:"",
-       status:"",
+        name: "",
+        jenis_tagihan: "",
+        jumlah: "",
+        status: "",
       });
 
-      navigate("/Tagihan"); 
+      navigate("/Tagihan");
     } catch (error) {
       console.error("Error saat menambahkan data:", error);
       Swal.fire({
@@ -54,8 +73,7 @@ function Tambahtagihan () {
   };
 
   return (
-     <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat"
-    >
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat">
       <div className="mr-12 bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm">
         <h1 className="text-2xl font-bold text-center mb-6">Tambah Data</h1>
         <form onSubmit={handleSubmit}>
@@ -74,8 +92,9 @@ function Tambahtagihan () {
               required
             />
           </div>
+
           <div className="mb-4">
-           <label className="block mb-2 font-semibold">Jenis Tagihan</label>
+            <label className="block mb-2 font-semibold">Jenis Tagihan</label>
             <select
               className="border rounded w-full py-2 px-3 mb-4"
               name="jenis_tagihan"
@@ -91,7 +110,6 @@ function Tambahtagihan () {
             </select>
           </div>
 
-          
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="jumlah">
               Jumlah
@@ -101,27 +119,27 @@ function Tambahtagihan () {
               id="jumlah"
               type="text"
               name="jumlah"
-              value={formData.jumlah}
               onChange={handleChange}
               placeholder="Masukkan jumlah"
               required
             />
-          </div>          
+          </div>
+
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
-              Status pembayaran
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="status"
-              type="text"
+            <label className="block mb-2 font-semibold">Status Pembayaran</label>
+            <select
+              className="border rounded w-full py-2 px-3 mb-4"
               name="status"
               value={formData.status}
               onChange={handleChange}
-              placeholder="Masukkan status"
               required
-            />
-          </div>          
+            >
+              <option value="">-- Status Pembayaran --</option>
+              <option value="Lunas">Lunas</option>
+              <option value="Belum lunas">Belum lunas</option>
+            </select>
+          </div>
+
           <div className="flex justify-between items-center">
             <button
               disabled={loading}
@@ -141,7 +159,7 @@ function Tambahtagihan () {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 export default Tambahtagihan;

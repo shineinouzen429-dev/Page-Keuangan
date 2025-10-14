@@ -11,7 +11,7 @@ function Editjenistagihan () {
 
   const [formData, setFormData] = useState({
     type_bill: "",
-    harga: "",
+  
   });
   const [loading, setLoading] = useState(true);
 
@@ -91,22 +91,7 @@ function Editjenistagihan () {
               onChange={handleChange}
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="harga"
-              className="block text-sm font-bold mb-2"
-            >
-              Harga{" "}
-            </label>
-            <input
-              className="border-0 border-b-2 border-black focus:border-black focus:outline-none w-full py-2 px-0 leading-tight"
-              id="harga"
-              name="harga"
-              type="text"
-              value={formData.harga}
-              onChange={handleChange}
-            />
-          </div>
+         
         
           <div className="flex items-center justify-between">
             <button

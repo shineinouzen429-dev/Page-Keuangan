@@ -60,20 +60,22 @@ function Tagihan() {
   return (
     <div className="p-6 ml-3">
       <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-20 bg-yellow-400">
-
-        <input
-          type="text"
-          placeholder="Cari data (nama siswa)..."
-          className="p-2 focus:outline-none text-black border-2 rounded-md"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <h1 className="text-2xl font-bold">Halaman Tagihan</h1>
         <button
           onClick={() => navigate("/Tambahtagihan")}
           className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
         >
           + Tambah Data
         </button>
+      </div>
+      <div className="mb-5">
+         <input
+          type="text"
+          placeholder="Cari data (nama siswa)..."
+          className="p-2 focus:outline-none text-black border-2 rounded-md"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
       <div className="overflow-x-auto bg-white shadow-md rounded-2xl">
@@ -83,7 +85,7 @@ function Tagihan() {
               <th className="text-center px-3 py-2">No</th>
               <th className="text-left px-3 py-2">Nama</th>
               <th className="text-left px-3 py-2">Jenis tagihan</th>
-              <th className="text-left px-3 py-2">Jumlah</th>
+              <th className="text-right px-3 py-2">Jumlah</th>
               <th className="text-left px-3 py-2">Status pembayaran</th>
               <th className="text-left px-3 py-2">Aksi</th>
             </tr>
@@ -98,7 +100,7 @@ function Tagihan() {
                   <td className=" text-center">{index + 1}</td>
                   <td className="text-left px-3 py-2">{item.name}</td>
                   <td className="text-left px-3 py-2">{item.jenis_tagihan}</td>
-                  <td className="text-left px-3 py-2">{item.jumlah}</td>
+                  <td className="text-right px-3 py-2">{item.jumlah}</td>
                   <td className="text-left px-3 py-2">{item.status}</td>
                   <td className=" px-3 py-2 text-left">
                     <button

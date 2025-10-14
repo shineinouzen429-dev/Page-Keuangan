@@ -123,18 +123,20 @@ function Edittagihan () {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="status" className="block text-sm font-bold mb-2">
-              Status pembayaran{" "}
-            </label>
-            <input
-              className="border-0 border-b-2 border-black focus:border-black focus:outline-none w-full py-2 px-0 leading-tight"
-              id="status"
+           <label className="block mb-2 font-semibold">Status pembayaran</label>
+            <select
+              className="border rounded w-full py-2 px-3 mb-4"
               name="status"
-              type="text"
               value={formData.status}
               onChange={handleChange}
-            />
-          </div>
+              required
+            >
+              <option value="">-- Status pembayaran --</option>
+              <option value="Lunas">Lunas</option>
+              <option value="Belum lunas">Belum lunas</option>
+           
+            </select>
+          </div>     
           <div className="flex items-center justify-between">
             <button
               type="submit"

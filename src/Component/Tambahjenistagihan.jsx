@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 function Tambahjenistagihan() {
   const [formData, setFormData] = useState({
     type_bill: "",
-    harga: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -35,7 +34,7 @@ function Tambahjenistagihan() {
 
       setFormData({
         ntype_bill: "",
-        harga: "",
+
       });
 
       navigate("/Tambahjenistagihan");
@@ -73,24 +72,7 @@ function Tambahjenistagihan() {
               onChange={handleChange}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="harga"
-            >
-              Harga
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="harga"
-              type="text"
-              name="harga"
-              value={formData.harga}
-              placeholder="Masukkan Harga"
-              onChange={handleChange}
-              required
-            />
-          </div>
+          
           <div className="flex justify-between items-center">
             <button
               disabled={loading}
