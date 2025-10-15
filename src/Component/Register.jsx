@@ -1,91 +1,100 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
 
-function Register () {
-    const [formdata, setFormdata] = useState({
-        name:"",
-        email:"",
-        password:"",
+function Register() {
+  const [formdata, setFormdata] = useState({
+    name: "",
+    email: "",
+    password: "",
+  })
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setFormdata({ ...formdata, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    // Simpan data ke localStorage (tanpa nama)
+    localStorage.setItem("user", JSON.stringify({
+      email: formdata.email,
+      password: formdata.password
+    }))
+
+    Swal.fire({
+      title: "Register Berhasil!",
+      text: "Silakan login dengan akunmu.",
+      icon: "success",
+      confirmButtonText: "OK"
+    }).then(() => {
+      navigate("/Login")
     })
-    const navigate = useNavigate ()
-
-    const handleChange =(e) => {
-        setFormdata({ ...formdata, [e.target.name]: e.target.value});
-    };
-   
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        Swal.fire({
-  title: "Register Berhasill!",
-  icon: "success",
-  draggable: true
-}).then(()=>{
-   navigate("/Dashboard");
-})
-    }
-
+  }
 
   return (
     <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-        <div className='p-8 rounded-lg shadow-md w-full max-w-sm bg-white'>
-            <h1 className='text-2xl text-center mb-6'>Register</h1>
-            <form onSubmit={handleSubmit}>
-                <div className='mb-4'>
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="name">
-                        Name
-                    </label>
-                    <input 
-                    className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
-                    id='name'
-                    type="text"
-                    name='name'
-                    value={formdata.name}
-                    onChange={handleChange}
-                    placeholder='Enter name'
-                    required />
-                </div>
-                <div className='mb-4'>
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="email">
-                        Email
-                    </label>
-                    <input 
-                    className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
-                    id='email'
-                    type="text"
-                    name='email'
-                    value={formdata.email}
-                    onChange={handleChange}
-                    placeholder='Enter email'
-                    required />
-                </div>
-                <div className='mb-4'>
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="password">
-                        Password
-                    </label>
-                    <input 
-                    className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
-                    id='password'
-                    type="password"
-                    name='password'
-                    value={formdata.password}
-                    onChange={handleChange}
-                    placeholder='Enter password'
-                    required />
-                </div>
-                <div className="flex flex-col items-center gap-2 justify-between">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                Daftar
-              </button>
-              <button>
-                <Link to="/Login" className="inline-block align-baseline text-black hover:text-gray-600 font-bold text-sm">
+      <div className='p-8 rounded-lg shadow-md w-full max-w-sm bg-white'>
+        <h1 className='text-2xl text-center mb-6'>Register</h1>
+        <form onSubmit={handleSubmit}>
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="name">
+              Name
+            </label>
+            <input
+              className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
+              id='name'
+              type="text"
+              name='name'
+              value={formdata.name}
+              onChange={handleChange}
+              placeholder='Enter name'
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="email">
+              Email
+            </label>
+            <input
+              className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
+              id='email'
+              type="email"
+              name='email'
+              value={formdata.email}
+              onChange={handleChange}
+              placeholder='Enter email'
+              required
+            />
+          </div>
+
+          <div className='mb-4'>
+            <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="password">
+              Password
+            </label>
+            <input
+              className='border-0 border-b-2 border-gray-300 focus:border-black focus:outline-none w-full py-2 px-0 text-gray-700 leading-tight'
+              id='password'
+              type="password"
+              name='password'
+              value={formdata.password}
+              onChange={handleChange}
+              placeholder='Enter password'
+              required
+            />
+          </div>
+
+          <div className="flex flex-col items-center gap-2 justify-between">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+              Daftar
+            </button>
+            <Link to="/Login" className="text-black hover:text-gray-600 font-bold text-sm">
               Sudah punya akun? Login
-              </Link>
-              </button>
-            </div>
-            </form>
-        </div>
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
