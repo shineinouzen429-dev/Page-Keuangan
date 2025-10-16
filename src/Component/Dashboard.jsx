@@ -48,14 +48,15 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-4xl">
-            <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
+          <div className="bg-white w-full p-10 shadow-md">
+            <h2 className="text-3xl font-semibold mb-4 text-center text-gray-700">
               Daftar Pembayaran
             </h2>
+          
             <table className="table-auto w-full border-collapse border border-gray-300">
               <thead className="bg-gray-700 text-white">
                 <tr>
-                  <th className="px-4 text-center py-2">No</th>
+                  <th className="py-3 px-4">No</th>
                   <th className="px-4 text-left py-2">Nama</th>
                   <th className="px-4 text-left py-2">Jumlah</th>
                 </tr>
@@ -67,9 +68,9 @@ const Dashboard = () => {
                       key={item.id}
                       className="text-center bg-gray-100  transition"
                     >
-                      <td className="px-4 text-center py-2">{index + 1}</td>
-                      <td className="px-4 text-left py-2">{item.name}</td>
-                      <td className="px-4 text-left py-2">{item.jumlah}</td>
+                      <td className="px-2 text-center py-2">{index + 1}</td>
+                      <td className="px-2 text-left py-2">{item.name}</td>
+                      <td className="px-2 text-left py-2">{item.jumlah}</td>
                     </tr>
                   ))
                 ) : (
@@ -84,6 +85,7 @@ const Dashboard = () => {
                 )}
               </tbody>
             </table>
+      
           </div>
         </div>
       </div>

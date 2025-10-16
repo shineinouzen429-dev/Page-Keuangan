@@ -8,6 +8,20 @@
       "status": "Lunas"
     },
     {
+      "id": "ad05",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "Rp 100.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "ad05",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "Rp 100.000",
+      "status": "Lunas"
+    },
+    {
       "id": "119a",
       "name": "Andre nugroho",
       "jenis_tagihan": "Uang Gedung",
@@ -26,6 +40,34 @@
       "name": "Ayyas assadullah bilqis",
       "jenis_tagihan": "SPP",
       "jumlah": "Rp 225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "7695",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "7695",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 225.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "9609",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 525.000",
+      "status": "Lunas"
+    },
+    {
+      "id": "9609",
+      "name": "Dafahusaeny",
+      "jenis_tagihan": "SPP",
+      "jumlah": "Rp 525.000",
       "status": "Lunas"
     },
     {

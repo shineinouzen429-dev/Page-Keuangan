@@ -24,13 +24,13 @@ function Sidnav() {
           ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         <div className="text-xl font-bold mb-8 text-center bg-gray-700 py-4 shadow-lg">
-          Anjay
+          Daftar <br /> keuangan
         </div>
 
-        <nav className="space-y-6 px-4">
+        <nav className="space-y-9 px-4 mt-10">
           <Link
             to="/Dashboard"
-            className={`block py-2 px-3 rounded font-bold text-center ${
+            className={`block py-4 px-3 rounded font-bold text-xl text-center ${
               isActive("/Dashboard") ? "bg-blue-600" : "hover:bg-blue-600"
             }`}
           >
@@ -38,7 +38,7 @@ function Sidnav() {
           </Link>
           <Link
             to="/Tagihan"
-            className={`block py-2 px-3 rounded font-bold text-center ${
+            className={`block py-4 px-3 rounded font-bold text-center text-xl ${
               isActive("/Tagihan") ? "bg-blue-600" : "hover:bg-blue-600"
             }`}
           >
@@ -46,7 +46,7 @@ function Sidnav() {
           </Link>
           <Link
             to="/Jenistagihan"
-            className={`block py-2 px-3 rounded font-bold text-center ${
+            className={`block py-4 px-3 rounded font-bold text-xl text-center ${
               isActive("/Jenistagihan") ? "bg-blue-600" : "hover:bg-blue-600"
             }`}
           >

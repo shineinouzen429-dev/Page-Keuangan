@@ -85,8 +85,8 @@ function Tagihan() {
               <th className="text-center px-3 py-2">No</th>
               <th className="text-left px-3 py-2">Nama</th>
               <th className="text-left px-3 py-2">Jenis tagihan</th>
-              <th className="text-right px-3 py-2">Jumlah</th>
-              <th className="text-left px-3 py-2">Status pembayaran</th>
+              <th className="text-right px-3 py-2 align-middle">Jumlah</th>
+              <th className="text-center px-3 py-2">Status pembayaran</th>
               <th className="text-left px-3 py-2">Aksi</th>
             </tr>
           </thead>
@@ -100,13 +100,14 @@ function Tagihan() {
                   <td className=" text-center">{index + 1}</td>
                   <td className="text-left px-3 py-2">{item.name}</td>
                   <td className="text-left px-3 py-2">{item.jenis_tagihan}</td>
-                  <td className="text-right px-3 py-2">{item.jumlah}</td>
-                  <td className="text-left px-3 py-2">{item.status}</td>
+                  <td className="text-right px-3 py-2 align-middle">{item.jumlah}</td>
+                  <td className="text-center px-3 py-2">{item.status}</td>
                   <td className=" px-3 py-2 text-left">
                     <button
                       onClick={() => navigate(`/Edittagihanedit/${item.id}`)}
                       className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                     >
+                      <i class="ri-edit-line"></i>
                       Edit
                     </button>
                     <button
