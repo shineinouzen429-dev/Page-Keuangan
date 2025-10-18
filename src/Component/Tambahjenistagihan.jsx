@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 function Tambahjenistagihan() {
   const [formData, setFormData] = useState({
     type_bill: "",
+    keterangan:"",
+    masih:"",
   });
 
   const [loading, setLoading] = useState(false);
@@ -34,10 +36,12 @@ function Tambahjenistagihan() {
 
       setFormData({
         ntype_bill: "",
+        keterangan:"",
+        masih:"",
 
       });
 
-      navigate("/Tambahjenistagihan");
+      navigate("/Jenistagihan");
     } catch (error) {
       console.error("Error saat menambahkan data:", error);
       Swal.fire({
@@ -71,6 +75,37 @@ function Tambahjenistagihan() {
               value={formData.type_bill}
               onChange={handleChange}
             />
+          </div>
+          <div className="mb-4">
+           <label
+              htmlFor="keterangan"
+              className="block text-sm font-bold mb-2"
+            >
+              Keterangan{" "}
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="keterangan"
+              name="keterangan"
+              type="text"
+              placeholder="Masukkan Jenis Tagihan"
+              value={formData.keterangan}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 font-semibold">Status</label>
+            <select
+              className="border rounded w-full py-2 px-3 mb-4"
+              name="masih"
+              value={formData.masih}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Status --</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Tidak aktif">Tidak aktif</option>
+            </select>
           </div>
           
           <div className="flex justify-between items-center">

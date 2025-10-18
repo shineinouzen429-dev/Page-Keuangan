@@ -107,6 +107,7 @@ function Tambahtagihan() {
               <option value="Uang Gedung">Uang Gedung</option>
               <option value="Kegiatan Sekolah">Kegiatan Sekolah</option>
               <option value="Seragam">Seragam</option>
+              <option value="Seragam">Buku paket</option>
             </select>
           </div>
 

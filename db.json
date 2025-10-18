@@ -1,115 +1,72 @@
 {
   "tagihan": [
     {
-      "id": "ad05",
-      "name": "Dafahusaeny",
-      "jenis_tagihan": "Kegiatan Sekolah",
-      "jumlah": "Rp 100.000",
+      "id": "2a39",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "SPP",
+      "jumlah": 225000,
       "status": "Lunas"
     },
     {
-      "id": "ad05",
+      "id": "7522",
       "name": "Dafahusaeny",
-      "jenis_tagihan": "Kegiatan Sekolah",
-      "jumlah": "Rp 100.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "ad05",
-      "name": "Dafahusaeny",
-      "jenis_tagihan": "Kegiatan Sekolah",
-      "jumlah": "Rp 100.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "119a",
-      "name": "Andre nugroho",
       "jenis_tagihan": "Uang Gedung",
-      "jumlah": "Rp 1.225.000",
+      "jumlah": 1225000,
       "status": "Lunas"
     },
     {
-      "id": "002b",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 225.000",
+      "id": "adbe",
+      "name": "Fadhil nugraha",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
       "status": "Lunas"
     },
     {
-      "id": "7695",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 225.000",
+      "id": "d6bc",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "Kegiatan Sekolah",
+      "jumlah": "100000",
       "status": "Lunas"
     },
     {
-      "id": "7695",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "7695",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 225.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "9609",
-      "name": "Dafahusaeny",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 525.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "9609",
-      "name": "Dafahusaeny",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 525.000",
-      "status": "Lunas"
-    },
-    {
-      "id": "9609",
-      "name": "Dafahusaeny",
-      "jenis_tagihan": "SPP",
-      "jumlah": "Rp 525.000",
-      "status": "Lunas"
+      "id": "0c64",
+      "name": "Moreno Hadi prasetyo",
+      "jenis_tagihan": "Buku Paket",
+      "jumlah": 210000,
+      "status": "Belum lunas"
     }
   ],
   "jenistagihan": [
     {
-      "id": "acb8",
+      "id": "8160",
       "type_bill": "Uang gedung",
-      "harga": "Rp 1.225.000"
+      "keterangan": "Pembayaran sekali di awal tahun ajaran untuk fasilitas sekolah",
+      "masih": "nonaktif"
     },
     {
-      "id": "3ac6",
+      "id": "f7c0",
       "type_bill": "SPP",
-      "harga": "Rp 225.000"
+      "keterangan": "Pembayaran rutin bulanan untuk biaya pendidikan",
+      "masih": "aktif"
     },
     {
-      "id": "f828",
+      "id": "3aa1",
       "type_bill": "Seragam",
-      "harga": "Rp 500.000"
+      "keterangan": "Pembayaran untuk pembelian seragam lengkap siswa baru",
+      "masih": "Aktif"
     },
     {
-      "id": "b3f3",
+      "id": "bc16",
       "type_bill": "Kegiatan sekolah",
-      "harga": "Rp 100.00"
+      "keterangan": "Pembayaran untuk kegiatan ekstrakurikuler dan lomba",
+      "masih": "Aktif"
+    },
+    {
+      "id": "98ab",
+      "type_bill": "Buku paket",
+      "keterangan": "Pembelian buku paket pelajaran untuk satu semester",
+      "masih": "Aktif"
     }
   ],
-  "login": [
-    {
-      "id": "4153",
-      "email": "Ngebruk@gmail.com",
-      "password": "gfhgjhgjhjgd"
-    },
-    {
-      "id": "e841",
-      "email": "Dafagacor2025@gmail.com",
-      "password": "gfhgjhgjhjgd"
-    }
-  ]
+  "login": []
 }

@@ -11,6 +11,8 @@ function Editjenistagihan () {
 
   const [formData, setFormData] = useState({
     type_bill: "",
+    keterangan:"",
+    masih:"",
   
   });
   const [loading, setLoading] = useState(true);
@@ -90,6 +92,36 @@ function Editjenistagihan () {
               value={formData.type_bill}
               onChange={handleChange}
             />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="keterangan"
+              className="block text-sm font-bold mb-2"
+            >
+              Keterangan{" "}
+            </label>
+            <input
+              className="border-0 border-b-2 border-black focus:border-black focus:outline-none w-full py-2 px-0 leading-tight"
+              id="keterangan"
+              name="keterangan"
+              type="text"
+              value={formData.keterangan}
+              onChange={handleChange}
+            />
+          </div>
+         <div className="mb-4">
+            <label className="block mb-2 font-semibold">Status</label>
+            <select
+              className="border rounded w-full py-2 px-3 mb-4"
+              name="masih"
+              value={formData.masih}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Status --</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Tidak aktif">Tidak aktif</option>
+            </select>
           </div>
          
         

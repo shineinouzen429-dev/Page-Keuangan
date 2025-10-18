@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -9,6 +9,11 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+useEffect(() => {
+  setTimeout(() => setVisible(true), 100);
+}, []);
+
 
   const handleChange = (e) => {
     setFormdata({ ...formdata, [e.target.name]: e.target.value });
@@ -38,6 +43,7 @@ function Login() {
   };
 
   return (
+    <div className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-8 rounded-lg shadow-md w-full max-w-sm bg-white">
         <h1 className="text-2xl text-center mb-6">Login</h1>
@@ -102,6 +108,7 @@ function Login() {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }
