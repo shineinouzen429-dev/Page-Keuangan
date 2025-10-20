@@ -42,10 +42,10 @@ const Dashboard = () => {
       <div className="flex justify-center">
         <div className="w-full max-w-6xl p-6">
           <div className="flex flex-col items-center ">
-            <h1 className="text-3xl font-bold mb-8 text-center">DASHBOARD</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center"><i class="ri-dashboard-fill"></i>DASHBOARD</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 w-full max-w-3xl">
-              <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800 cursor-pointer">
+              <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800 curso">
                 <h2 className="text-white text-lg font-semibold mb-2">
                   Total Data
                 </h2>
