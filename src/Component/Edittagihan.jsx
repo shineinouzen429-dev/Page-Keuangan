@@ -17,20 +17,17 @@ function Edittagihan() {
 
   const [loading, setLoading] = useState(true);
 
-  // === 🔹 Format ke Rupiah ===
   const formatRupiah = (angka) => {
     if (!angka) return "";
     return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // === 🔹 Ambil data awal dari server ===
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/tagihan/${id}`);
         const data = Array.isArray(res.data) ? res.data[0] : res.data;
 
-        // ketika data dari server didapat, ubah jumlah jadi format rupiah
         setFormData({
           ...data,
           jumlah: formatRupiah(data.jumlah),
@@ -50,12 +47,10 @@ function Edittagihan() {
     fetchData();
   }, [id]);
 
-  // === 🔹 Handle input ===
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "jumlah") {
-      // Hapus semua karakter selain angka
       const numericValue = value.replace(/[^0-9]/g, "");
       setFormData({ ...formData, jumlah: formatRupiah(numericValue) });
     } else {
@@ -63,7 +58,6 @@ function Edittagihan() {
     }
   };
 
-  // === 🔹 Submit update ===
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,7 +70,6 @@ function Edittagihan() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // kirim ke backend tanpa "Rp " dan titik
           const payload = {
             ...formData,
             jumlah: parseInt(formData.jumlah.replace(/[^0-9]/g, "")),
@@ -105,7 +98,6 @@ function Edittagihan() {
       <div className="container mx-auto p-4 max-w-lg bg-white rounded-2xl shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-center">Edit Data</h1>
         <form onSubmit={handleSubmit} className="p-6">
-          {/* Nama */}
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-bold mb-2">
               Nama
@@ -120,8 +112,6 @@ function Edittagihan() {
               required
             />
           </div>
-
-          {/* Jenis Tagihan */}
           <div className="mb-4">
             <label className="block mb-2 font-semibold">Jenis Tagihan</label>
             <select
@@ -139,8 +129,6 @@ function Edittagihan() {
               <option value="Buku Paket">Buku Paket</option>
             </select>
           </div>
-
-          {/* Jumlah */}
           <div className="mb-4">
             <label htmlFor="jumlah" className="block text-sm font-bold mb-2">
               Jumlah
@@ -155,24 +143,7 @@ function Edittagihan() {
               required
             />
           </div>
-
-          {/* Status */}
-          <div className="mb-4">
-            <label className="block mb-2 font-semibold">Status Pembayaran</label>
-            <select
-              className="border rounded w-full py-2 px-3 mb-4"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Status Pembayaran --</option>
-              <option value="Lunas">Lunas</option>
-              <option value="Belum lunas">Belum lunas</option>
-            </select>
-          </div>
-
-          {/* Tombol */}
+         
           <div className="flex items-center justify-between">
             <button
               type="submit"

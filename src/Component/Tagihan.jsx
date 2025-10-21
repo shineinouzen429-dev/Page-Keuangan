@@ -60,6 +60,44 @@ function Tagihan() {
     });
   };
 
+  const handleBayar = async (id) => {
+    const tagihanDipilih = tagihan.find((item) => item.id === id);
+
+    if (tagihanDipilih.status === "Lunas") {
+      Swal.fire("Sudah Lunas!", "Tagihan ini sudah dibayar.", "info");
+      return;
+    }
+
+    Swal.fire({
+      title: "Konfirmasi Pembayaran",
+      text: `Apakah tagihan atas nama ${tagihanDipilih.name} sudah dibayar?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, bayar!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.put(`http://localhost:5000/tagihan/${id}`, {
+            ...tagihanDipilih,
+            status: "Lunas",
+          });
+
+          setTagihan((prev) =>
+            prev.map((item) =>
+              item.id === id ? { ...item, status: "Lunas" } : item
+            )
+          );
+
+          Swal.fire("Berhasil!", "Tagihan telah dilunasi.", "success");
+        } catch (error) {
+          console.error("Gagal memperbarui status:", error);
+          Swal.fire("Error!", "Gagal memperbarui status tagihan.", "error");
+        }
+      }
+    });
+  };
+
   if (loading) {
     return <p className="text-center mt-10">Loading...</p>;
   }
@@ -96,11 +134,11 @@ function Tagihan() {
             <thead className="bg-gray-200">
               <tr className="bg-sky-500 text-white">
                 <th className="text-center px-3 py-2">No</th>
-                <th className="text-left px-3 py-2">Nama</th>
-                <th className="text-left px-3 py-2">Jenis tagihan</th>
-                <th className="text-right px-3 py-2 align-middle">Jumlah</th>
-                <th className="text-center px-3 py-2">Status pembayaran</th>
-                <th className="text-left px-3 py-2">Aksi</th>
+                <th className="text-center px-3 py-2">Nama</th>
+                <th className="text-left px-3 py-2">Jenis Tagihan</th>
+                <th className="text-center px-3 py-2 align-middle">Jumlah</th>
+                <th className="text-center px-3 py-2">Status Pembayaran</th>
+                <th className="text-center px-3 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -117,21 +155,50 @@ function Tagihan() {
                       {formatRupiah(item.jumlah)}
                     </td>
 
-                    <td className="text-center px-3 py-2">{item.status}</td>
-                    <td className="px-3 py-2 text-left">
-                      <button
-                        onClick={() => navigate(`/Edittagihanedit/${item.id}`)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    <td className="text-center px-3 py-2">
+                      {" "}
+                      <span
+                        className={`${
+                          item.status === "Lunas"
+                            ? "text-green-600 bg-green-100 px-3 py-1 rounded"
+                            : "text-red-600 bg-red-100 px-3 py-1 rounded"
+                        }`}
                       >
-                        <i className="ri-edit-line"></i> Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-4"
-                      >
-                        <i class="ri-delete-bin-6-line"></i>
-                        Hapus
-                      </button>
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-center">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() =>
+                            navigate(`/Edittagihanedit/${item.id}`)
+                          }
+                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                        >
+                          <i className="ri-edit-line"></i> Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded"
+                        >
+                          <i className="ri-delete-bin-6-line"></i> Hapus
+                        </button>
+                        {item.status === "Belum lunas" ? (
+                          <button
+                            onClick={() => handleBayar(item.id)}
+                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
+                          >
+                            💰 Bayar
+                          </button>
+                        ) : (
+                          <button
+                            disabled
+                            className="bg-gray-400 text-white px-3 py-1 rounded cursor-not-allowed"
+                          >
+                            Sudah Lunas
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

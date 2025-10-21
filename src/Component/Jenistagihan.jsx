@@ -65,13 +65,11 @@ function Jenistagihan() {
 
     if (result.isConfirmed) {
       try {
-        // update ke backend
         await axios.put(`http://localhost:5000/jenistagihan/${item.id}`, {
           ...item,
           masih: newStatus,
         });
 
-        // update di state lokal biar langsung berubah di tampilan
         setTagihan((prev) =>
           prev.map((data) =>
             data.id === item.id ? { ...data, masih: newStatus } : data
