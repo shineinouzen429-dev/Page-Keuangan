@@ -1,38 +1,87 @@
 {
   "tagihan": [
     {
-      "id": "adbe",
-      "name": "Fadhil nugraha",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Lunas"
-    },
-    {
-      "id": "d6bc",
-      "name": "Andre nugroho",
-      "jenis_tagihan": "SPP",
-      "jumlah": 100000,
-      "status": "Lunas"
-    },
-    {
-      "id": "0c64",
-      "name": "Moreno Hadi prasetyo",
-      "jenis_tagihan": "Buku Paket",
-      "jumlah": 210000,
-      "status": "Lunas"
-    },
-    {
-      "id": "7c95",
-      "name": "Dafahusaeny",
+      "id": "be23",
+      "name": "Ayyas assadullah bilqis",
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
       "status": "Lunas"
     },
     {
-      "id": "24dc",
+      "id": "d393",
       "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Buku paket",
-      "jumlah": 200000,
+      "jenis_tagihan": "SPP",
+      "jumlah": 225000,
+      "status": "Belum lunas"
+    },
+    {
+      "id": "0339",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Lunas"
+    },
+    {
+      "id": "9b86",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1225000,
+      "status": "Belum lunas"
+    },
+    {
+      "id": "4b2e",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "SPP",
+      "jumlah": 225000,
+      "status": "Belum lunas"
+    },
+    {
+      "id": "c062",
+      "name": "Andre nugroho",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Lunas"
+    },
+    {
+      "id": "2ddd",
+      "name": "Moreno Hadi prasetyo",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1225000,
+      "status": "Lunas"
+    },
+    {
+      "id": "c393",
+      "name": "Moreno Hadi prasetyo",
+      "jenis_tagihan": "SPP",
+      "jumlah": 225000,
+      "status": "Belum lunas"
+    },
+    {
+      "id": "0b63",
+      "name": "Moreno Hadi prasetyo",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Lunas"
+    },
+    {
+      "id": "afd4",
+      "name": "Fadhil nugraha",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1225000,
+      "status": "Belum lunas"
+    },
+    {
+      "id": "a143",
+      "name": "Fadhil nugraha",
+      "jenis_tagihan": "SPP",
+      "jumlah": 225000,
+      "status": "Lunas"
+    },
+    {
+      "id": "6f08",
+      "name": "Fadhil nugraha",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
       "status": "Lunas"
     }
   ],
@@ -59,18 +108,12 @@
       "id": "bc16",
       "type_bill": "Kegiatan sekolah",
       "keterangan": "Pembayaran untuk kegiatan ekstrakurikuler dan lomba",
-      "masih": "nonaktif"
+      "masih": "aktif"
     },
     {
       "id": "98ab",
       "type_bill": "Buku paket",
       "keterangan": "Pembelian buku paket pelajaran untuk satu semester",
-      "masih": "aktif"
-    },
-    {
-      "id": "9a52",
-      "type_bill": "uang study tour",
-      "keterangan": "biaya study tour",
       "masih": "aktif"
     }
   ],

@@ -7,21 +7,54 @@ function Tagihan() {
   const [tagihan, setTagihan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedJenis, setSelectedJenis] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [jenisTagihan, setJenisTagihan] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleReset = async (id) => {
+    const tagihanDipilih = tagihan.find((item) => item.id === id);
+
+    Swal.fire({
+      title: "Reset Status?",
+      text: `Apakah ingin mengembalikan status tagihan ${tagihanDipilih.name} menjadi 'Belum lunas'?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, reset!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.put(`http://localhost:5000/tagihan/${id}`, {
+            ...tagihanDipilih,
+            status: "Belum lunas",
+          });
+
+          setTagihan((prev) =>
+            prev.map((item) =>
+              item.id === id ? { ...item, status: "Belum lunas" } : item
+            )
+          );
+
+          Swal.fire("Berhasil!", "Status berhasil direset.", "success");
+        } catch (error) {
+          console.error("Gagal reset status:", error);
+          Swal.fire("Error!", "Gagal mereset status tagihan.", "error");
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     setTimeout(() => setVisible(true), 100);
   }, []);
-
-  const [search, setSearch] = useState("");
-  const navigate = useNavigate();
 
   const formatRupiah = (angka) => {
     if (!angka && angka !== 0) return "";
     return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
-
-  const filteredTagihan = tagihan.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,14 +67,27 @@ function Tagihan() {
         setLoading(false);
       }
     };
-
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchJenisTagihan = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/jenistagihan");
+        const aktif = response.data.filter((item) => item.masih === "aktif");
+        setJenisTagihan(aktif);
+      } catch (error) {
+        console.error("Gagal ambil data jenis tagihan:", error);
+      }
+    };
+
+    fetchJenisTagihan();
   }, []);
 
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Yakin hapus?",
-      text: "Data akan hilang😜!",
+      text: "Data akan hilang 😜!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
@@ -98,9 +144,14 @@ function Tagihan() {
     });
   };
 
-  if (loading) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
+  const filteredTagihan = tagihan.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()) &&
+      (selectedJenis === "" || item.jenis_tagihan === selectedJenis) &&
+      (selectedStatus === "" || item.status === selectedStatus)
+  );
 
   return (
     <div
@@ -118,15 +169,43 @@ function Tagihan() {
             + Tambah Data
           </button>
         </div>
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">
+            🔍 Cari Data Tagihan
+          </h2>
 
-        <div className="mb-5">
-          <input
-            type="text"
-            placeholder="Cari data (nama siswa)..."
-            className="p-2 focus:outline-none text-black border-2 rounded-md"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="flex flex-wrap gap-4">
+            <input
+              type="text"
+              placeholder="Cari nama siswa..."
+              className="p-2 pl-4 w-64 border-2 border-gray-300 rounded-md text-gray-700 shadow-sm bg-white focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            <select
+              className="p-2 w-52 border-2 border-gray-300 rounded-md text-gray-700 bg-white shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200"
+              value={selectedJenis}
+              onChange={(e) => setSelectedJenis(e.target.value)}
+            >
+              <option value="">Semua Jenis Tagihan</option>
+              {jenisTagihan.map((jenis) => (
+                <option key={jenis.id} value={jenis.type_bill}>
+                  {jenis.type_bill}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className="p-2 w-44 border-2 border-gray-300 rounded-md text-gray-700 bg-white shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              <option value="">Semua Status</option>
+              <option value="Lunas">Lunas</option>
+              <option value="Belum lunas">Belum Lunas</option>
+            </select>
+          </div>
         </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-2xl">
@@ -135,9 +214,9 @@ function Tagihan() {
               <tr className="bg-sky-500 text-white">
                 <th className="text-center px-3 py-2">No</th>
                 <th className="text-center px-3 py-2">Nama</th>
-                <th className="text-left px-3 py-2">Jenis Tagihan</th>
-                <th className="text-center px-3 py-2 align-middle">Jumlah</th>
-                <th className="text-center px-3 py-2">Status Pembayaran</th>
+                <th className="text-center px-3 py-2">Jenis Tagihan</th>
+                <th className="text-center px-3 py-2">Jumlah</th>
+                <th className="text-center px-3 py-2">Status</th>
                 <th className="text-center px-3 py-2">Aksi</th>
               </tr>
             </thead>
@@ -150,13 +229,10 @@ function Tagihan() {
                     <td className="text-left px-3 py-2">
                       {item.jenis_tagihan}
                     </td>
-
-                    <td className="text-right px-3 py-2 align-middle">
+                    <td className="text-right px-3 py-2">
                       {formatRupiah(item.jumlah)}
                     </td>
-
                     <td className="text-center px-3 py-2">
-                      {" "}
                       <span
                         className={`${
                           item.status === "Lunas"
@@ -192,10 +268,10 @@ function Tagihan() {
                           </button>
                         ) : (
                           <button
-                            disabled
-                            className="bg-gray-400 text-white px-3 py-1 rounded cursor-not-allowed"
+                            onClick={() => handleReset(item.id)}
+                            className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
                           >
-                            Sudah Lunas
+                            🔁 Reset
                           </button>
                         )}
                       </div>
@@ -205,10 +281,10 @@ function Tagihan() {
               ) : (
                 <tr>
                   <td
-                    colSpan="7"
+                    colSpan="6"
                     className="text-center py-6 text-gray-500 italic"
                   >
-                    Belum ada data
+                    Tidak ada data ditemukan
                   </td>
                 </tr>
               )}

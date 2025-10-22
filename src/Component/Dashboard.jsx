@@ -52,7 +52,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 w-full max-w-3xl">
               <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800">
                 <h2 className="text-white text-lg font-semibold mb-2">
-                  Total Data (Lunas)
+                  Total Data Lunas
                 </h2>
                 <p className="text-white text-2xl font-bold">{totalData}</p>
               </div>
@@ -69,7 +69,7 @@ const Dashboard = () => {
 
             <div className="w-full p-10 ">
               <h2 className="text-3xl font-semibold mb-4 text-center text-gray-700">
-                Daftar Pembayaran (Lunas)
+                Daftar Pembayaran Lunas
               </h2>
 
               <table className="table-auto w-full border-collapse shadow-lg rounded-xl overflow-hidden">
@@ -79,7 +79,7 @@ const Dashboard = () => {
                     <th className="py-3 px-4 text-left border-b border-gray-600">
                       Nama
                     </th>
-                    <th className="py-3 px-4 text-right border-b border-gray-600">
+                    <th className="py-3 px-4 text-center border-b border-gray-600">
                       Jumlah
                     </th>
                     <th className="py-3 px-4 text-center border-b border-gray-600">
