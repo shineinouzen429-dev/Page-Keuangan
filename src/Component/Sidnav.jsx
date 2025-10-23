@@ -27,34 +27,43 @@ function Sidnav() {
           <i class="ri-wallet-line"></i> Daftar <br /> Keuangan
         </div>
 
-        <nav className="space-y-9 mt-10">
+        <nav className="mt-10 space-y-9 p-5">
           <Link
             to="/Dashboard"
-            className={`block py-4 px-3 font-bold text-xl text-left ${
-              isActive("/Dashboard") ? "bg-blue-600" : "hover:bg-blue-600"
+            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+              isActive("/Dashboard")
+                ? "bg-blue-500 shadow-inner"
+                : "hover:bg-blue-600 hover:translate-x-1"
             }`}
           >
-            <i class="ri-dashboard-fill"></i> Dashboard
+            <i className="ri-dashboard-fill mr-2"></i> Dashboard
           </Link>
+
           <Link
             to="/Tagihan"
-            className={`block py-4 px-3 font-bold text-left text-xl ${
-              isActive("/Tagihan") ? "bg-blue-600" : "hover:bg-blue-600"
+            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+              isActive("/Tagihan")
+                ? "bg-blue-500 shadow-inner"
+                : "hover:bg-blue-600 hover:translate-x-1"
             }`}
           >
-            <i class="ri-bill-line"></i> Tagihan
+            <i className="ri-bill-line mr-2"></i> Tagihan
           </Link>
+
           <Link
             to="/Jenistagihan"
-            className={`block py-4 px-3 font-bold text-xl text-left ${
-              isActive("/Jenistagihan") ? "bg-blue-600" : "hover:bg-blue-600"
+            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+              isActive("/Jenistagihan")
+                ? "bg-blue-500 shadow-inner"
+                : "hover:bg-blue-600 hover:translate-x-1"
             }`}
           >
-            <i class="ri-wallet-2-line"></i> Jenis Tagihan
+            <i className="ri-wallet-2-line mr-2"></i> Jenis Tagihan
           </Link>
+
           <a
             href="/Login"
-            className="block py-2 px-3 rounded font-bold text-center bg-red-600 mt-100 mr-2 hover:bg-red-800"
+            className="block py-2 px-3 rounded-md font-bold text-center bg-red-600 mt-100 mr-2 hover:bg-red-800 "
           >
             <i class="ri-logout-box-line mr-3"></i>
             Log out

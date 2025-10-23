@@ -12,7 +12,7 @@ function Tambahtagihan() {
   });
 
   const [jenisTagihanList, setJenisTagihanList] = useState([]);
-  const [activeCount, setActiveCount] = useState(0);
+  
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function Tambahtagihan() {
         );
 
         setJenisTagihanList(aktifOnly);
-        setActiveCount(aktifOnly.length); 
+    
       } catch (error) {
         console.error("Gagal mengambil data jenis tagihan:", error);
         Swal.fire("Error!", "Tidak bisa mengambil data jenis tagihan", "error");
@@ -79,9 +79,7 @@ function Tambahtagihan() {
     <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-no-repeat">
       <div className="mr-12 bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm">
         <h1 className="text-2xl font-bold text-center mb-4">Tambah Tagihan</h1>
-        <p className="text-center text-gray-600 mb-6">
-          Jenis tagihan aktif: <span className="font-semibold">{activeCount}</span>
-        </p>
+       
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

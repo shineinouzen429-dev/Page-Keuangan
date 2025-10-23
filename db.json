@@ -83,6 +83,13 @@
       "jenis_tagihan": "Seragam",
       "jumlah": 525000,
       "status": "Lunas"
+    },
+    {
+      "id": "2a9d",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 200000,
+      "status": "Belum lunas"
     }
   ],
   "jenistagihan": [
@@ -102,7 +109,7 @@
       "id": "3aa1",
       "type_bill": "Seragam",
       "keterangan": "Pembayaran untuk pembelian seragam lengkap siswa baru",
-      "masih": "Aktif"
+      "masih": "aktif"
     },
     {
       "id": "bc16",

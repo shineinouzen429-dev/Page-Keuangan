@@ -26,7 +26,7 @@ const Dashboard = () => {
     (item) => item.status && item.status.toLowerCase() === "lunas"
   );
 
-  const totalData = tagihanLunas.length;
+  const totalData = tagihan.length;
 
   const totalMasuk = tagihanLunas.reduce((sum, item) => {
     const jumlah =
@@ -44,15 +44,14 @@ const Dashboard = () => {
     >
       <div className="flex justify-center">
         <div className="w-full max-w-6xl p-6">
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-8 text-center">
-              <i class="ri-dashboard-line text-blue-600"></i> DASHBOARD
+              <i className="ri-dashboard-line text-blue-600"></i> DASHBOARD
             </h1>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 w-full max-w-3xl">
               <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800">
                 <h2 className="text-white text-lg font-semibold mb-2">
-                  Total Data Lunas
+                  Total Data
                 </h2>
                 <p className="text-white text-2xl font-bold">{totalData}</p>
               </div>
@@ -66,10 +65,9 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
-
-            <div className="w-full p-10 ">
+            <div className="w-full p-10">
               <h2 className="text-3xl font-semibold mb-4 text-center text-gray-700">
-                Daftar Pembayaran Lunas
+                Daftar Pembayaran
               </h2>
 
               <table className="table-auto w-full border-collapse shadow-lg rounded-xl overflow-hidden">
@@ -79,17 +77,14 @@ const Dashboard = () => {
                     <th className="py-3 px-4 text-left border-b border-gray-600">
                       Nama
                     </th>
-                    <th className="py-3 px-4 text-center border-b border-gray-600">
-                      Jumlah
-                    </th>
-                    <th className="py-3 px-4 text-center border-b border-gray-600">
-                      Status
+                    <th className="py-3 px-4 text-left border-b border-gray-600">
+                      Jenis Tagihan
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {tagihanLunas.length > 0 ? (
-                    tagihanLunas.map((item, index) => (
+                  {tagihan.length > 0 ? (
+                    tagihan.map((item, index) => (
                       <tr
                         key={item.id}
                         className="text-gray-800 even:bg-gray-50 odd:bg-white transition-all duration-200"
@@ -100,23 +95,18 @@ const Dashboard = () => {
                         <td className="px-4 py-3 text-left border-b border-gray-200 font-medium">
                           {item.name}
                         </td>
-                        <td className="px-4 py-3 text-right border-b border-gray-200 font-semibold text-gray-700">
-                          Rp {Number(item.jumlah).toLocaleString("id-ID")}
-                        </td>
-                        <td className="px-4 py-3 text-center border-b border-gray-200 font-semibold text-gray-700">
-                          <span className="text-green-600 bg-green-100 px-3 py-1 rounded">
-                            {item.status}
-                          </span>
+                        <td className="px-4 py-3 text-left border-b border-gray-200 font-semibold text-gray-700">
+                          {item.jenis_tagihan || "-"}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
-                        colSpan="4"
+                        colSpan="3"
                         className="text-center py-6 text-gray-500 italic bg-gray-50"
                       >
-                        Tidak ada data lunas
+                        Tidak ada data tagihan
                       </td>
                     </tr>
                   )}
