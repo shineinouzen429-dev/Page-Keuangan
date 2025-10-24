@@ -15,11 +15,11 @@
       "status": "Belum lunas"
     },
     {
-      "id": "0339",
       "name": "Ayyas assadullah bilqis",
       "jenis_tagihan": "Seragam",
       "jumlah": 525000,
-      "status": "Lunas"
+      "status": "Lunas",
+      "id": "0339"
     },
     {
       "id": "9b86",
@@ -90,6 +90,13 @@
       "jenis_tagihan": "Uang gedung",
       "jumlah": 200000,
       "status": "Belum lunas"
+    },
+    {
+      "id": "7471",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 200000,
+      "status": "Belum lunas"
     }
   ],
   "jenistagihan": [
@@ -122,6 +129,12 @@
       "type_bill": "Buku paket",
       "keterangan": "Pembelian buku paket pelajaran untuk satu semester",
       "masih": "aktif"
+    },
+    {
+      "id": "d823",
+      "type_bill": "Uang Study Tour",
+      "keterangan": "Biaya Liburan sambil belajar",
+      "masih": "Aktif"
     }
   ],
   "login": []

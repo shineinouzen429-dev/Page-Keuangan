@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 
 function Login() {
   const [formdata, setFormdata] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -39,7 +38,7 @@ function Login() {
     } else {
       Swal.fire({
         title: "Login Gagal!",
-        text: "Nama, Email atau password salah!",
+        text: "Email atau password salah!",
         icon: "error",
       });
     }
@@ -55,23 +54,6 @@ function Login() {
         <div className="p-8 rounded-lg shadow-md w-full max-w-sm bg-gradient-to-br from-blue-300 to-blue-100">
           <h1 className="text-2xl text-center mb-6 font-bold">Login</h1>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="name"
-              >
-                Name
-              </label>
-              <input
-                className="shadow appearance-none rounded-full w-full py-2 px-4 text-gray-700 bg-blue-50 focus:bg-white focus:outline-none focus:shadow-outline"
-                id="name"
-                type="text"
-                name="name"
-                value={formdata.name}
-                onChange={handleChange}
-                placeholder="Enter name"
-              />
-            </div>
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -182,7 +164,7 @@ function Login() {
                   to="/"
                   className="text-blue-600 hover:text-blue-800 font-bold"
                 >
-                  Register
+                  Daftar
                 </Link>
               </p>
             </div>

@@ -15,25 +15,24 @@ function Sidnav() {
       >
         {open ? "Tutup" : "Buka"}
       </button>
-
       <div
-        className={`fixed top-0 left-0 h-full w-65 
-    bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700
-    text-white z-40 shadow-2xl border-r border-slate-700
-    transform transition-transform duration-300 ease-in-out
-    ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+        className={`fixed top-0 left-0 h-screen w-64 
+          bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700
+          text-white z-40 shadow-2xl border-r border-slate-700
+          flex flex-col justify-between
+          transform transition-transform duration-300 ease-in-out
+          ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        <div className="text-xl font-bold mb-8 text-center bg-gray-700 py-4 shadow-lg">
-          <i class="ri-wallet-line"></i> Daftar <br /> Keuangan
+        <div className="text-2xl font-bold text-center bg-blue-800 py-5 shadow-lg text-white">
+          💰 Keuangan
         </div>
-
-        <nav className="mt-10 space-y-9 p-5">
+        <nav className="flex-1 space-y-3 px-3 mt-4">
           <Link
             to="/Dashboard"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Dashboard")
-                ? "bg-blue-500 shadow-inner"
-                : "hover:bg-blue-600 hover:translate-x-1"
+                ? "bg-yellow-400 shadow-inner text-white"
+                : "hover:bg-yellow-500 hover:translate-x-1"
             }`}
           >
             <i className="ri-dashboard-fill mr-2"></i> Dashboard
@@ -41,10 +40,10 @@ function Sidnav() {
 
           <Link
             to="/Tagihan"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Tagihan")
-                ? "bg-blue-500 shadow-inner"
-                : "hover:bg-blue-600 hover:translate-x-1"
+                ? "bg-yellow-400 shadow-inner text-white"
+                : "hover:bg-yellow-500 hover:translate-x-1"
             }`}
           >
             <i className="ri-bill-line mr-2"></i> Tagihan
@@ -52,23 +51,25 @@ function Sidnav() {
 
           <Link
             to="/Jenistagihan"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl text-white transition-all duration-300 ${
+            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Jenistagihan")
-                ? "bg-blue-500 shadow-inner"
-                : "hover:bg-blue-600 hover:translate-x-1"
+                ? "bg-yellow-400 shadow-inner text-white"
+                : "hover:bg-yellow-500 hover:translate-x-1"
             }`}
           >
             <i className="ri-wallet-2-line mr-2"></i> Jenis Tagihan
           </Link>
+        </nav>
 
+        <div className="p-4">
           <a
             href="/Login"
-            className="block py-2 px-3 rounded-md font-bold text-center bg-red-600 mt-100 mr-2 hover:bg-red-800 "
+            className="block w-full text-center py-2 rounded-md font-bold bg-red-600 hover:bg-red-700 transition"
           >
-            <i class="ri-logout-box-line mr-3"></i>
+            <i className="ri-logout-box-line mr-2"></i>
             Log out
           </a>
-        </nav>
+        </div>
       </div>
     </>
   );

@@ -49,14 +49,14 @@ const Dashboard = () => {
               <i className="ri-dashboard-line text-blue-600"></i> DASHBOARD
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 w-full max-w-3xl">
-              <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800">
+              <div className="bg-yellow-500 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-yellow-500">
                 <h2 className="text-white text-lg font-semibold mb-2">
                   Total Data
                 </h2>
                 <p className="text-white text-2xl font-bold">{totalData}</p>
               </div>
 
-              <div className="bg-gray-700 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800 cursor-pointer">
+              <div className="bg-yellow-500 p-5 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:bg-yellow-500 cursor-pointer">
                 <h2 className="text-white text-lg font-semibold mb-2">
                   Total Nominal Masuk
                 </h2>
@@ -71,7 +71,7 @@ const Dashboard = () => {
               </h2>
 
               <table className="table-auto w-full border-collapse shadow-lg rounded-xl overflow-hidden">
-                <thead className="bg-gray-700 text-white">
+                <thead className="bg-sky-500 text-white">
                   <tr>
                     <th className="py-3 px-4 border-b border-gray-600">No</th>
                     <th className="py-3 px-4 text-left border-b border-gray-600">
