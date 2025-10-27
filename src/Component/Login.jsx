@@ -162,7 +162,7 @@ function Login() {
                 Belum punya akun?{" "}
                 <Link
                   to="/"
-                  className="text-blue-600 hover:text-blue-800 font-bold"
+                  className="text-blue-600 hover:text-blue-800 font-bold hover:underline"
                 >
                   Daftar
                 </Link>

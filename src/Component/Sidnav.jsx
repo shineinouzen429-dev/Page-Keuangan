@@ -17,13 +17,13 @@ function Sidnav() {
       </button>
       <div
         className={`fixed top-0 left-0 h-screen w-64 
-          bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700
+          bg-blue-950
           text-white z-40 shadow-2xl border-r border-slate-700
           flex flex-col justify-between
           transform transition-transform duration-300 ease-in-out
           ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        <div className="text-2xl font-bold text-center bg-blue-800 py-5 shadow-lg text-white">
+        <div className="text-2xl font-bold text-center bg-blue-900 py-4 shadow-5xl text-white">
           💰 Keuangan
         </div>
         <nav className="flex-1 space-y-3 px-3 mt-4">
@@ -31,8 +31,8 @@ function Sidnav() {
             to="/Dashboard"
             className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Dashboard")
-                ? "bg-yellow-400 shadow-inner text-white"
-                : "hover:bg-yellow-500 hover:translate-x-1"
+                ? "bg-blue-900 shadow-inner text-white"
+                : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
             <i className="ri-dashboard-fill mr-2"></i> Dashboard
@@ -42,8 +42,8 @@ function Sidnav() {
             to="/Tagihan"
             className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Tagihan")
-                ? "bg-yellow-400 shadow-inner text-white"
-                : "hover:bg-yellow-500 hover:translate-x-1"
+                ? "bg-blue-900 shadow-inner text-white"
+                : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
             <i className="ri-bill-line mr-2"></i> Tagihan
@@ -53,8 +53,8 @@ function Sidnav() {
             to="/Jenistagihan"
             className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
               isActive("/Jenistagihan")
-                ? "bg-yellow-400 shadow-inner text-white"
-                : "hover:bg-yellow-500 hover:translate-x-1"
+                ? "bg-blue-900 shadow-inner text-white"
+                : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
             <i className="ri-wallet-2-line mr-2"></i> Jenis Tagihan

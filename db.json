@@ -1,101 +1,17 @@
 {
   "tagihan": [
     {
-      "id": "be23",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
-      "status": "Lunas"
-    },
-    {
-      "id": "d393",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": 225000,
-      "status": "Belum lunas"
-    },
-    {
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Lunas",
-      "id": "0339"
-    },
-    {
-      "id": "9b86",
-      "name": "Andre nugroho",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
-      "status": "Belum lunas"
-    },
-    {
       "id": "4b2e",
       "name": "Andre nugroho",
       "jenis_tagihan": "SPP",
       "jumlah": 225000,
-      "status": "Belum lunas"
-    },
-    {
-      "id": "c062",
-      "name": "Andre nugroho",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
       "status": "Lunas"
     },
     {
-      "id": "2ddd",
-      "name": "Moreno Hadi prasetyo",
+      "id": "f6d9",
+      "name": "Dafahusaeny",
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
-      "status": "Lunas"
-    },
-    {
-      "id": "c393",
-      "name": "Moreno Hadi prasetyo",
-      "jenis_tagihan": "SPP",
-      "jumlah": 225000,
-      "status": "Belum lunas"
-    },
-    {
-      "id": "0b63",
-      "name": "Moreno Hadi prasetyo",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Lunas"
-    },
-    {
-      "id": "afd4",
-      "name": "Fadhil nugraha",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
-      "status": "Belum lunas"
-    },
-    {
-      "id": "a143",
-      "name": "Fadhil nugraha",
-      "jenis_tagihan": "SPP",
-      "jumlah": 225000,
-      "status": "Lunas"
-    },
-    {
-      "id": "6f08",
-      "name": "Fadhil nugraha",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Lunas"
-    },
-    {
-      "id": "2a9d",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 200000,
-      "status": "Belum lunas"
-    },
-    {
-      "id": "7471",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 200000,
       "status": "Belum lunas"
     }
   ],
@@ -123,18 +39,6 @@
       "type_bill": "Kegiatan sekolah",
       "keterangan": "Pembayaran untuk kegiatan ekstrakurikuler dan lomba",
       "masih": "aktif"
-    },
-    {
-      "id": "98ab",
-      "type_bill": "Buku paket",
-      "keterangan": "Pembelian buku paket pelajaran untuk satu semester",
-      "masih": "aktif"
-    },
-    {
-      "id": "d823",
-      "type_bill": "Uang Study Tour",
-      "keterangan": "Biaya Liburan sambil belajar",
-      "masih": "Aktif"
     }
   ],
   "login": []

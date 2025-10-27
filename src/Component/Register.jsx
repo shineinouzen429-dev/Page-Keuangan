@@ -39,14 +39,14 @@ function Register() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-300 via-blue-200 to-blue-100">
       <div className="p-8 rounded-lg shadow-md w-full max-w-sm bg-gradient-to-br from-blue-300 to-blue-100">
-        <h1 className="text-2xl text-center mb-6 font-bold">Register</h1>
+        <h1 className="text-2xl text-center mb-6 font-bold">Daftar</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="name"
             >
-              Name
+              Nama
             </label>
             <input
               className="border rounded-2xl focus:border-black focus:outline-none bg-blue-50 focus:bg-white w-full py-2 px-3 text-gray-700 leading-tight"
@@ -169,7 +169,7 @@ function Register() {
               Sudah punya akun?{" "}
               <Link
                 to="/Login"
-                className="text-blue-600 hover:text-blue-800 font-bold"
+                className="text-blue-600 hover:text-blue-800 font-bold hover:underline"
               >
                 Login
               </Link>

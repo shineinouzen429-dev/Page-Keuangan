@@ -10,7 +10,6 @@ function Tagihan() {
   const [search, setSearch] = useState("");
   const [selectedJenis, setSelectedJenis] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -130,20 +129,40 @@ function Tagihan() {
     });
   };
 
-  const handleBayar = async (id) => {
-    const selected = tagihan.find((t) => t.id === id);
-    if (selected.status === "Lunas")
-      return Swal.fire("Sudah lunas!", "Tagihan sudah dibayar.", "info");
+const handleBayar = async (id) => {
+  const selected = tagihan.find((t) => t.id === id);
 
-    await axios.put(`http://localhost:5000/tagihan/${id}`, {
-      ...selected,
-      status: "Lunas",
-    });
-    setTagihan((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
-    );
-    Swal.fire("Berhasil!", "Status diperbarui menjadi Lunas.", "success");
-  };
+  if (selected.status === "Lunas") {
+    return Swal.fire("Sudah lunas!", "Tagihan sudah dibayar.", "info");
+  }
+
+  // Tambahkan konfirmasi sebelum ubah status
+  Swal.fire({
+    title: "Yakin ingin membayar?",
+    text: "Status tagihan akan diubah menjadi Lunas.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya, bayar!",
+    cancelButtonText: "Batal",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await axios.put(`http://localhost:5000/tagihan/${id}`, {
+          ...selected,
+          status: "Lunas",
+        });
+        setTagihan((prev) =>
+          prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
+        );
+        Swal.fire("Berhasil!", "Status diperbarui menjadi Lunas.", "success");
+      } catch (err) {
+        console.error(err);
+        Swal.fire("Gagal!", "Terjadi kesalahan saat mengubah status.", "error");
+      }
+    }
+  });
+};
+
 
   const handleReset = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
@@ -169,7 +188,7 @@ function Tagihan() {
   return (
    
       <div className="p-6 ml-3">
-        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-20 bg-yellow-400">
+        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
           <h1 className="text-2xl font-bold">Halaman Tagihan</h1>
           <button
             onClick={openAddModal}
@@ -216,7 +235,7 @@ function Tagihan() {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       }`}>
           <table className="table-auto w-full border-gray-300">
-            <thead className="bg-sky-500 text-white">
+            <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
               <tr>
                 <th className="px-3 py-2">No</th>
                 <th className="px-3 py-2">Nama</th>

@@ -60,7 +60,7 @@ function Jenistagihan() {
         try {
           await axios.delete(`http://localhost:5000/jenistagihan/${id}`);
           setTagihan((prev) => prev.filter((item) => item.id !== id));
-          Swal.fire("Deleted!", "Data berhasil dihapus.", "success");
+          Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
         } catch (err) {
           console.error("Gagal menghapus data:", err);
           Swal.fire("Error!", "Gagal menghapus data.", "error");
@@ -109,8 +109,8 @@ function Jenistagihan() {
    
       <div className="p-6 ml-3 min-h-screen">
         
-        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-yellow-400 shadow-md relative">
-          <h1 className="text-2xl font-bold text-center w-full">Jenis Tagihan</h1>
+        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
+          <h1 className="text-2xl font-bold text-left w-full">Jenis Tagihan</h1>
           <button
             onClick={() => setModal(true)}
             className="absolute right-10 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow"
@@ -123,7 +123,7 @@ function Jenistagihan() {
       }`}>
           <table className="min-w-full border-collapse">
             <thead>
-              <tr className="bg-sky-500 text-white text-sm uppercase tracking-wider">
+              <tr className="bg-gradient-to-l from-blue-800 to-blue-600 text-white text-sm uppercase tracking-wider">
                 <th className="px-4 py-3 text-center w-[8%] rounded-tl-2xl">No</th>
                 <th className="px-4 py-3 text-left w-[25%]">Jenis Tagihan</th>
                 <th className="px-4 py-3 text-left w-[35%]">Keterangan</th>
