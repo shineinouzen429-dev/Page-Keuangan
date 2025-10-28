@@ -50,7 +50,7 @@ function Jenistagihan() {
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Yakin hapus?",
-      text: "Data akan hilang 😜!",
+      text: "Data akan hilang !",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",

@@ -1,18 +1,18 @@
 {
   "tagihan": [
     {
-      "id": "4b2e",
       "name": "Andre nugroho",
       "jenis_tagihan": "SPP",
       "jumlah": 225000,
-      "status": "Lunas"
+      "status": "Belum lunas",
+      "id": "4b2e"
     },
     {
       "id": "f6d9",
       "name": "Dafahusaeny",
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
-      "status": "Belum lunas"
+      "status": "Lunas"
     }
   ],
   "jenistagihan": [

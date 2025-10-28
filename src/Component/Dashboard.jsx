@@ -55,7 +55,7 @@ const Dashboard = () => {
         <div className="w-full max-w-6xl p-6">
           <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-8 text-center">
-              <i className="ri-dashboard-line text-blue-600"></i> DASHBOARD
+              <i className="ri-dashboard-line text-blue-600"></i>  DASHBOARD
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 w-full max-w-5xl">
               <div className="bg-yellow-400 p-5 rounded-lg shadow-lg text-center hover:scale-105 transition-transform">

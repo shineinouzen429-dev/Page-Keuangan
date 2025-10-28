@@ -68,7 +68,7 @@ function Login() {
                 name="email"
                 value={formdata.email}
                 onChange={handleChange}
-                placeholder="Enter email"
+                placeholder="Massukan Email"
                 required
               />
             </div>
@@ -87,7 +87,7 @@ function Login() {
                   name="password"
                   value={formdata.password}
                   onChange={handleChange}
-                  placeholder="Enter password"
+                  placeholder="Massukan Password"
                   required
                   aria-describedby="togglePassword"
                 />
