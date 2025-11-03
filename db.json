@@ -1,21 +1,35 @@
 {
   "tagihan": [
     {
-      "name": "Andre nugroho",
+      "name": "Andre Nugroho",
       "jenis_tagihan": "SPP",
       "jumlah": 225000,
       "status": "Belum lunas",
       "id": "4b2e"
     },
     {
-      "id": "f6d9",
-      "name": "Dafahusaeny",
+      "name": "Dafa Husaeny",
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
-      "status": "Lunas"
+      "status": "Lunas",
+      "id": "f6d9"
+    },
+    {
+      "name": "Ayyas Assadullah Bilqis",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 520000,
+      "status": "Lunas",
+      "id": "7ab2"
+    },
+    {
+      "name": "Fadhil Nugraha",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1225000,
+      "status": "Belum lunas",
+      "id": "629b"
     }
   ],
-  "jenistagihan": [
+  "kategoritagihan": [
     {
       "id": "8160",
       "type_bill": "Uang gedung",
@@ -39,7 +53,21 @@
       "type_bill": "Kegiatan sekolah",
       "keterangan": "Pembayaran untuk kegiatan ekstrakurikuler dan lomba",
       "masih": "aktif"
+    },
+    {
+      "id": "b55a",
+      "type_bill": "Uang Study Tour",
+      "keterangan": "Biaya Liburan sambil belajar",
+      "masih": "Aktif"
     }
   ],
-  "login": []
+  "login": [],
+  "daftar": [
+    {
+      "id": "a8cc",
+      "nama": "Dafa",
+      "kategori": "Siswa",
+      "jabatan": "Kelas 1"
+    }
+  ]
 }

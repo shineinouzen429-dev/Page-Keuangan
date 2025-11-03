@@ -136,7 +136,6 @@ const handleBayar = async (id) => {
     return Swal.fire("Sudah lunas!", "Tagihan sudah dibayar.", "info");
   }
 
-  // Tambahkan konfirmasi sebelum ubah status
   Swal.fire({
     title: "Yakin ingin membayar?",
     text: "Status tagihan akan diubah menjadi Lunas.",

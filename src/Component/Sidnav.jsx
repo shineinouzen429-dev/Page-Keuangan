@@ -15,49 +15,88 @@ function Sidnav() {
       >
         {open ? "Tutup" : "Buka"}
       </button>
+
       <div
-        className={`fixed top-0 left-0 h-screen w-64 
-          bg-blue-950
-          text-white z-40 shadow-2xl border-r border-slate-700
-          flex flex-col justify-between
-          transform transition-transform duration-300 ease-in-out
+        className={`fixed top-0 left-0 h-screen w-64 bg-blue-950 text-white z-40 shadow-2xl border-r border-slate-700 flex flex-col justify-between transform transition-transform duration-300 ease-in-out
           ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
+
         <div className="text-2xl font-bold text-center bg-blue-900 py-4 shadow-5xl text-white">
-          💰 Keuangan
+          <i class="ri-bar-chart-fill"></i> Statistik Data
         </div>
-        <nav className="flex-1 space-y-3 px-3 mt-4">
+
+        <nav className="flex-1 space-y-2 px-3 mt-4">
+
+         
+
+          <p className="text-yellow-300 font-bold text-sm mt-4">Database</p>
+
           <Link
-            to="/Dashboard"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
-              isActive("/Dashboard")
-                ? "bg-blue-900 shadow-inner text-white"
+            to="/KategoriData"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/KategoriData")
+                ? "bg-blue-900 shadow-inner"
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            <i className="ri-dashboard-fill mr-2"></i> Dashboard
+            Kategori Data
+          </Link>
+
+          <Link
+            to="/Kelas"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/Kelas")
+                ? "bg-blue-900 shadow-inner"
+                : "hover:bg-blue-900 hover:translate-x-1"
+            }`}
+          >
+            Kelas
+          </Link>
+
+          <Link
+            to="/MasterData"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/MasterData")
+                ? "bg-blue-900 shadow-inner"
+                : "hover:bg-blue-900 hover:translate-x-1"
+            }`}
+          >
+            Master Data
+          </Link>
+
+          <p className="text-orange-300 font-bold text-sm mt-4">Keuangan</p>
+
+          <Link
+            to="/KategoriTagihan"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/KategoriTagihan")
+                ? "bg-blue-900 shadow-inner"
+                : "hover:bg-blue-900 hover:translate-x-1"
+            }`}
+          >
+            Kategori Tagihan
           </Link>
 
           <Link
             to="/Tagihan"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/Tagihan")
-                ? "bg-blue-900 shadow-inner text-white"
+                ? "bg-blue-900 shadow-inner"
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            <i className="ri-bill-line mr-2"></i> Tagihan
+            Tagihan
           </Link>
 
           <Link
-            to="/Jenistagihan"
-            className={`block py-3 px-4 font-bold text-lg rounded-xl transition-all duration-300 text-white ${
-              isActive("/Jenistagihan")
-                ? "bg-blue-900 shadow-inner text-white"
+            to="/Rekap"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/Rekap")
+                ? "bg-blue-900 shadow-inner"
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            <i className="ri-wallet-2-line mr-2"></i> Jenis Tagihan
+            Rekap Tagihan
           </Link>
         </nav>
 
@@ -66,7 +105,6 @@ function Sidnav() {
             href="/Login"
             className="block w-full text-center py-2 rounded-md font-bold bg-red-600 hover:bg-red-700 transition"
           >
-            <i className="ri-logout-box-line mr-2"></i>
             Log out
           </a>
         </div>

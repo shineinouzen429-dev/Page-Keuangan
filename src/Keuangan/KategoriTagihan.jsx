@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-function Jenistagihan() {
+function KategoriTagihan() {
   const [tagihan, setTagihan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -20,7 +20,7 @@ function Jenistagihan() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/jenistagihan");
+      const response = await axios.get("http://localhost:5000/kategoritagihan");
       setTagihan(response.data);
     } catch (error) {
       console.error("Gagal ambil data tagihan:", error);
@@ -32,10 +32,10 @@ function Jenistagihan() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/jenistagihan", formData);
+      await axios.post("http://localhost:5000/kategoritagihan", formData);
       Swal.fire({
         title: "Berhasil!",
-        text: "Data berhasil ditambahkan.",
+        text: "Data Berhasil Ditambahkan.",
         icon: "success",
       });
       setModal(false);
@@ -58,7 +58,7 @@ function Jenistagihan() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/jenistagihan/${id}`);
+          await axios.delete(`http://localhost:5000/kategoritagihan/${id}`);
           setTagihan((prev) => prev.filter((item) => item.id !== id));
           Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
         } catch (err) {
@@ -84,7 +84,7 @@ function Jenistagihan() {
 
     if (result.isConfirmed) {
       try {
-        await axios.put(`http://localhost:5000/jenistagihan/${item.id}`, {
+        await axios.put(`http://localhost:5000/kategoritagihan/${item.id}`, {
           ...item,
           masih: newStatus,
         });
@@ -255,4 +255,4 @@ function Jenistagihan() {
   );
 }
 
-export default Jenistagihan;
+export default KategoriTagihan;

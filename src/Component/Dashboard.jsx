@@ -75,7 +75,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="w-full p-10">
-        <h2 className="text-3xl font-bold mb-4 text-center text-gray-700 text-2xl">
+        <h2 className="text-3xl font-bold mb-4 text-center text-gray-700">
           Daftar Pembayaran
         </h2>
 

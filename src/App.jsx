@@ -4,13 +4,18 @@ import Dashboard from './Component/Dashboard';
 import Login from './Component/Login';
 import Register from './Component/Register';
 
-import Tagihan from './Component/Tagihan';
-import Tambahtagihan from './Component/Tambahtagihan';
-import Edittagihan from './Component/Edittagihan';
+import Tambahtagihan from './Abaikan/Tambahtagihan';
+import Edittagihan from './Abaikan/Edittagihan';
+import Tambahjenistagihan from './Abaikan/Tambahjenistagihan';
+import Editjenistagihan from './Abaikan/Editjenistagihan';
 
-import Jenistagihan from './Component/Jenistagihan';
-import Tambahjenistagihan from './Component/Tambahjenistagihan';
-import Editjenistagihan from './Component/Editjenistagihan';
+import KategoriTagihan from './Keuangan/KategoriTagihan';
+import Tagihan from './Keuangan/Tagihan';
+import Rekap from './Keuangan/Rekap';
+
+import KategoriData from './Database/KategoriData';
+import Kelas from './Database/Kelas';
+import MasterData from './Database/Masterdata';
 
 import MainLayout from './Component/MainLayout';
 
@@ -26,14 +31,12 @@ function App() {
           <Route path="Dashboard" element={<Dashboard />} />
 
           <Route path="Tagihan" element={<Tagihan />} />
-          <Route path="Tambahtagihan" element={<Tambahtagihan />} />
-          <Route path="Edittagihanedit/:id" element={<Edittagihan />} />
-   
-
-          <Route path="Jenistagihan" element={<Jenistagihan />} />
-          <Route path="TambahJenistagihan" element={<Tambahjenistagihan />} />
-          <Route path="EditjenisTagihanedit/:id" element={<Editjenistagihan />} />
-
+          <Route path="Rekap" element={<Rekap />} />
+          <Route path="KategoriTagihan" element={<KategoriTagihan />} />
+        
+          <Route path="KategoriData" element={<KategoriData />} />
+          <Route path="Kelas" element={<Kelas />} />
+          <Route path="MasterData" element={<MasterData />} />
         </Route>
       </Routes>
     </BrowserRouter>
