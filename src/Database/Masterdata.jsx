@@ -37,16 +37,7 @@ function MasterData() {
     setShowModal(true);
   };
 
-  const openEditModal = (item) => {
-    setForm({
-      nama: item.nama ?? "",
-      kategori: item.kategori ?? "Guru",
-      jabatan: item.jabatan ?? "",
-    });
-    setIsEditing(true);
-    setCurrentId(item.id);
-    setShowModal(true);
-  };
+ 
 
   const closeModal = () => {
     setShowModal(false);
@@ -85,27 +76,7 @@ function MasterData() {
     }
   };
 
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Yakin hapus data ini?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#d33",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`${API_URL}/${id}`);
-          setData((prev) => prev.filter((d) => d.id !== id));
-          Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
-        } catch (err) {
-          console.error("Gagal hapus:", err.response?.data || err.message);
-          Swal.fire("Gagal hapus data!", "", "error");
-        }
-      }
-    });
-  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -155,7 +126,7 @@ function MasterData() {
                   <th className="p-3">Nama</th>
                   <th className="p-3">Jabatan / Kelas / Bagian</th>
                   <th className="p-3">Kategori</th>
-                  <th className="p-3 text-center">Aksi</th>
+               
                 </tr>
               </thead>
 
@@ -182,23 +153,7 @@ function MasterData() {
                           {item.kategori}
                         </span>
                       </td>
-                      <td className="p-3 align-middle text-center">
-                        <div className="inline-flex gap-2">
-                          <button
-                            onClick={() => openEditModal(item)}
-                            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg shadow"
-                          >
-                            <i className="ri-edit-line"></i> Edit
-                          </button>
-
-                          <button
-                            onClick={() => handleDelete(item.id)}
-                            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg shadow"
-                          >
-                            <i className="ri-delete-bin-line"></i> Hapus
-                          </button>
-                        </div>
-                      </td>
+                      
                     </tr>
                   ))
                 ) : (
@@ -256,7 +211,7 @@ function MasterData() {
 
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  Jabatan / Kelas / Bagian
+                  Mapel / Kelas / Bagian
                 </label>
                 <input
                   type="text"
@@ -264,7 +219,7 @@ function MasterData() {
                   value={form.jabatan}
                   onChange={handleChange}
                   className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  placeholder="Contoh: Matematika / X-1 / Administrasi"
+                  placeholder=""
                   required
                 />
               </div>

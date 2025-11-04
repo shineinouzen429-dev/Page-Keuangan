@@ -110,7 +110,7 @@ function KategoriTagihan() {
       <div className="p-6 ml-3 min-h-screen">
         
         <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
-          <h1 className="text-2xl font-bold text-left w-full text-white">Jenis Tagihan</h1>
+          <h1 className="text-2xl font-bold text-left w-full text-white">Kategori Tagihan</h1>
           <button
             onClick={() => setModal(true)}
             className="absolute right-10 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow"

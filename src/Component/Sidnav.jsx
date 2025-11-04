@@ -29,7 +29,7 @@ function Sidnav() {
 
          
 
-          <p className="text-yellow-300 font-bold text-sm mt-4">Database</p>
+          <p className="text-white font-bold text-lg mt-4 border-b border-white">Database</p>
 
           <Link
             to="/KategoriData"
@@ -39,7 +39,7 @@ function Sidnav() {
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Kategori Data
+            <i class="ri-folder-user-fill"></i>Kategori Data
           </Link>
 
           <Link
@@ -50,7 +50,7 @@ function Sidnav() {
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Kelas
+            <i class="ri-team-fill"></i>Kelas
           </Link>
 
           <Link
@@ -61,10 +61,10 @@ function Sidnav() {
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Master Data
+            <i class="ri-database-fill"></i>Master Data
           </Link>
 
-          <p className="text-orange-300 font-bold text-sm mt-4">Keuangan</p>
+          <p className="text-white font-bold text-lg mt-4 border-b border-white">Keuangan</p>
 
           <Link
             to="/KategoriTagihan"
@@ -74,7 +74,7 @@ function Sidnav() {
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Kategori Tagihan
+            <i class="ri-list-check-3"></i>Kategori Tagihan
           </Link>
 
           <Link
@@ -85,18 +85,18 @@ function Sidnav() {
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Tagihan
+            <i class="ri-bill-fill"></i>Tagihan
           </Link>
 
           <Link
-            to="/Rekap"
+            to="/RekapTagihan"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/Rekap")
                 ? "bg-blue-900 shadow-inner"
                 : "hover:bg-blue-900 hover:translate-x-1"
             }`}
           >
-            Rekap Tagihan
+            <i class="ri-bar-chart-fill"></i>Rekap Tagihan
           </Link>
         </nav>
 

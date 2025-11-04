@@ -4,7 +4,8 @@
       "name": "Andre Nugroho",
       "jenis_tagihan": "SPP",
       "jumlah": 225000,
-      "status": "Belum lunas",
+      "status": "Lunas",
+      "created_at": "2025-11-04T05:59:03.839Z",
       "id": "4b2e"
     },
     {
@@ -12,13 +13,15 @@
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
       "status": "Lunas",
+      "created_at": "2025-11-04T05:59:06.823Z",
       "id": "f6d9"
     },
     {
       "name": "Ayyas Assadullah Bilqis",
       "jenis_tagihan": "Seragam",
       "jumlah": 520000,
-      "status": "Lunas",
+      "status": "Belum lunas",
+      "created_at": "2025-11-04T05:59:09.407Z",
       "id": "7ab2"
     },
     {
@@ -26,7 +29,16 @@
       "jenis_tagihan": "Uang gedung",
       "jumlah": 1225000,
       "status": "Belum lunas",
+      "created_at": "2025-11-04T05:59:22.767Z",
       "id": "629b"
+    },
+    {
+      "id": "b37f",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 225000,
+      "status": "Lunas",
+      "created_at": "2025-11-04T05:58:00.551Z"
     }
   ],
   "kategoritagihan": [
@@ -58,7 +70,7 @@
       "id": "b55a",
       "type_bill": "Uang Study Tour",
       "keterangan": "Biaya Liburan sambil belajar",
-      "masih": "Aktif"
+      "masih": "aktif"
     }
   ],
   "login": [],
@@ -68,6 +80,63 @@
       "nama": "Dafa",
       "kategori": "Siswa",
       "jabatan": "Kelas 1"
+    },
+    {
+      "nama": "Fadhil",
+      "kategori": "Guru",
+      "jabatan": "Matematika",
+      "id": "d4fe"
+    },
+    {
+      "id": "a7c0",
+      "nama": "Moreno",
+      "kategori": "Karyawan",
+      "jabatan": "Satpam"
+    }
+  ],
+  "rekaptagihan": [
+    {
+      "jenis_tagihan": "SPP",
+      "jumlah_siswa": 300,
+      "nominal": 225000,
+      "lunas": 209,
+      "belum": 91,
+      "id": "06bd"
+    }
+  ],
+  "kategoridata": [
+    {
+      "id": "26b9",
+      "kategori": "Guru",
+      "deskripsi": "semua data pegawai pendidik",
+      "status": "Aktif"
+    },
+    {
+      "id": "b07a",
+      "nama": "Andre",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": ""
+    },
+    {
+      "id": "208b",
+      "nama": "Dafa",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": ""
+    },
+    {
+      "id": "5cb0",
+      "nama": "Dafa",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "AKT",
+      "jabatan": "",
+      "bagian": ""
     }
   ]
 }

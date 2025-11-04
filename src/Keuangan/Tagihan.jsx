@@ -43,11 +43,14 @@ function Tagihan() {
     fetchData();
   }, []);
 
+
   useEffect(() => {
     const fetchJenisTagihan = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/jenistagihan");
-        setJenisTagihan(res.data.filter((j) => j.masih === "aktif"));
+        const res = await axios.get("http://localhost:5000/kategoritagihan");
+        setJenisTagihan(
+          res.data.filter((j) => j.masih?.toLowerCase() === "aktif")
+        );
       } catch (err) {
         console.error(err);
       }
@@ -56,7 +59,12 @@ function Tagihan() {
   }, []);
 
   const openAddModal = () => {
-    setFormData({ name: "", jenis_tagihan: "", jumlah: "", status: "Belum lunas" });
+    setFormData({
+      name: "",
+      jenis_tagihan: "",
+      jumlah: "",
+      status: "Belum lunas",
+    });
     setIsEditing(false);
     setShowModal(true);
   };
@@ -76,7 +84,12 @@ function Tagihan() {
   const handleCloseModal = () => {
     setShowModal(false);
     setIsEditing(false);
-    setFormData({ name: "", jenis_tagihan: "", jumlah: "", status: "Belum lunas" });
+    setFormData({
+      name: "",
+      jenis_tagihan: "",
+      jumlah: "",
+      status: "Belum lunas",
+    });
   };
 
   const handleChange = (e) => {
@@ -91,7 +104,11 @@ function Tagihan() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { ...formData, jumlah: unformatRupiah(formData.jumlah) };
+    const payload = {
+      ...formData,
+      jumlah: unformatRupiah(formData.jumlah),
+      created_at: new Date().toISOString(),
+    };
 
     try {
       if (isEditing) {
@@ -112,7 +129,6 @@ function Tagihan() {
     }
   };
 
-
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Yakin hapus?",
@@ -129,39 +145,41 @@ function Tagihan() {
     });
   };
 
-const handleBayar = async (id) => {
-  const selected = tagihan.find((t) => t.id === id);
-
-  if (selected.status === "Lunas") {
-    return Swal.fire("Sudah lunas!", "Tagihan sudah dibayar.", "info");
-  }
-
-  Swal.fire({
-    title: "Yakin ingin membayar?",
-    text: "Status tagihan akan diubah menjadi Lunas.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Ya, bayar!",
-    cancelButtonText: "Batal",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        await axios.put(`http://localhost:5000/tagihan/${id}`, {
-          ...selected,
-          status: "Lunas",
-        });
-        setTagihan((prev) =>
-          prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
-        );
-        Swal.fire("Berhasil!", "Status diperbarui menjadi Lunas.", "success");
-      } catch (err) {
-        console.error(err);
-        Swal.fire("Gagal!", "Terjadi kesalahan saat mengubah status.", "error");
-      }
+  const handleBayar = async (id) => {
+    const selected = tagihan.find((t) => t.id === id);
+    if (selected.status === "Lunas") {
+      return Swal.fire("Sudah lunas!", "Tagihan sudah dibayar.", "info");
     }
-  });
-};
 
+    Swal.fire({
+      title: "Yakin ingin membayar?",
+      text: "Status tagihan akan diubah menjadi Lunas.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, bayar!",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.put(`http://localhost:5000/tagihan/${id}`, {
+            ...selected,
+            status: "Lunas",
+          });
+          setTagihan((prev) =>
+            prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
+          );
+          Swal.fire("Berhasil!", "Status diperbarui menjadi Lunas.", "success");
+        } catch (err) {
+          console.error(err);
+          Swal.fire(
+            "Gagal!",
+            "Terjadi kesalahan saat mengubah status.",
+            "error"
+          );
+        }
+      }
+    });
+  };
 
   const handleReset = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
@@ -185,196 +203,203 @@ const handleBayar = async (id) => {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-   
-      <div className="p-6 ml-3">
-        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
-          <h1 className="text-2xl text-white font-bold">Halaman Tagihan</h1>
-          <button
-            onClick={openAddModal}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
+    <div className="p-6 ml-3">
+      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
+        <h1 className="text-2xl text-white font-bold">Halaman Tagihan</h1>
+        <button
+          onClick={openAddModal}
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
+        >
+          + Tambah Data
+        </button>
+      </div>
+      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
+        <div className="flex flex-wrap gap-4">
+          <input
+            type="text"
+            placeholder="Cari nama siswa..."
+            className="p-2 pl-4 w-64 border-2 border-gray-300 rounded-md"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <select
+            className="p-2 w-52 border-2 border-gray-300 rounded-md"
+            value={selectedJenis}
+            onChange={(e) => setSelectedJenis(e.target.value)}
           >
-            + Tambah Data
-          </button>
+            <option value="">Semua Jenis Tagihan</option>
+            {jenisTagihan.map((j) => (
+              <option key={j.id} value={j.type_bill}>
+                {j.type_bill}
+              </option>
+            ))}
+          </select>
+          <select
+            className="p-2 w-44 border-2 border-gray-300 rounded-md"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="">Semua Status</option>
+            <option value="Lunas">Lunas</option>
+            <option value="Belum lunas">Belum Lunas</option>
+          </select>
         </div>
+      </div>
+      <div
+        className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+        }`}
+      >
+        <table className="table-auto w-full border-gray-300">
+          <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
+            <tr>
+              <th className="px-3 py-2">No</th>
+              <th className="px-3 py-2">Nama</th>
+              <th className="px-3 py-2">Jenis Tagihan</th>
+              <th className="px-3 py-2">Jumlah</th>
+              <th className="px-3 py-2">Status</th>
+              <th className="px-3 py-2">Tanggal</th>
+              <th className="px-3 py-2">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.length > 0 ? (
+              filtered.map((t, i) => (
+                <tr key={t.id} className="hover:bg-gray-50">
+                  <td className="text-center">{i + 1}</td>
+                  <td className="text-left px-3 py-2">{t.name}</td>
+                  <td className="text-left px-3 py-2">{t.jenis_tagihan}</td>
+                  <td className="text-right px-3 py-2">
+                    {formatRupiah(t.jumlah)}
+                  </td>
+                  <td className="text-center px-3 py-2">
+                    <span
+                      className={`px-2 py-1 rounded-full font-semibold ${
+                        t.status === "Lunas"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {t.status}
+                    </span>
+                  </td>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
-          <div className="flex flex-wrap gap-4">
-            <input
-              type="text"
-              placeholder="Cari nama siswa..."
-              className="p-2 pl-4 w-64 border-2 border-gray-300 rounded-md"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <select
-              className="p-2 w-52 border-2 border-gray-300 rounded-md"
-              value={selectedJenis}
-              onChange={(e) => setSelectedJenis(e.target.value)}
-            >
-              <option value="">Semua Jenis Tagihan</option>
-              {jenisTagihan.map((j) => (
-                <option key={j.id} value={j.type_bill}>
-                  {j.type_bill}
-                </option>
-              ))}
-            </select>
-            <select
-              className="p-2 w-44 border-2 border-gray-300 rounded-md"
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-            >
-              <option value="">Semua Status</option>
-              <option value="Lunas">Lunas</option>
-              <option value="Belum lunas">Belum Lunas</option>
-            </select>
-          </div>
-        </div>
-
-        <div className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-      }`}>
-          <table className="table-auto w-full border-gray-300">
-            <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
-              <tr>
-                <th className="px-3 py-2">No</th>
-                <th className="px-3 py-2">Nama</th>
-                <th className="px-3 py-2">Jenis Tagihan</th>
-                <th className="px-3 py-2">Jumlah</th>
-                <th className="px-3 py-2">Status</th>
-                <th className="px-3 py-2">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length > 0 ? (
-                filtered.map((t, i) => (
-                  <tr key={t.id} className="">
-                    <td className="text-center">{i + 1}</td>
-                    <td className="text-left px-3 py-2">{t.name}</td>
-                    <td className="text-left px-3 py-2">{t.jenis_tagihan}</td>
-                    <td className="text-right px-3 py-2">{formatRupiah(t.jumlah)}</td>
-                   <td className="text-center px-3 py-2">
-                      <span
-                        className={`${
-                          t.status === "Lunas"
-                            ? "text-green-600 bg-green-100 px-3 py-1 rounded"
-                            : "text-red-600 bg-red-100 px-3 py-1 rounded"
-                        }`}
+                  <td className="text-center px-3 py-2">
+                    {new Date(t.created_at).toLocaleDateString("id-ID")}
+                  </td>
+                  <td className="text-center px-3 py-2 flex gap-2 justify-center">
+                    <button
+                      onClick={() => openEditModal(t)}
+                      className="bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded text-white text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(t.id)}
+                      className="bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white text-sm"
+                    >
+                      Hapus
+                    </button>
+                    {t.status === "Belum lunas" ? (
+                      <button
+                        onClick={() => handleBayar(t.id)}
+                        className="bg-green-500 hover:bg-green-600 px-2 py-1 rounded text-white text-sm"
                       >
-                        {t.status}
-                      </span>
-                    </td>
-
-                    <td className="text-center">
-                      <div className="flex justify-center gap-2">
-                        <button
-                          onClick={() => openEditModal(t)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-                        >
-                          <i class="ri-pencil-line"></i> Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(t.id)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                        >
-                          <i class="ri-delete-bin-6-fill"></i> Hapus
-                        </button>
-                        {t.status === "Belum lunas" ? (
-                          <button
-                            onClick={() => handleBayar(t.id)}
-                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
-                          >
-                            💲 Bayar
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleReset(t.id)}
-                            className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
-                          >
-                            🔁 Reset
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center py-6 text-gray-500 italic">
-                    Tidak ada data
+                        Bayar
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleReset(t.id)}
+                        className="bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded text-white text-sm"
+                      >
+                        Reset
+                      </button>
+                    )}
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {showModal && (
-          <div className="fixed inset-0 bg-black/40 bg-opacity-40 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-[400px] relative mb-35">
-              <h2 className="text-xl font-bold mb-4 text-center">
-                {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <div>
-                  <label className="block font-semibold">Nama</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="border w-full rounded p-2"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold">Jenis Tagihan</label>
-                  <select
-                    name="jenis_tagihan"
-                    value={formData.jenis_tagihan}
-                    onChange={handleChange}
-                    required
-                    className="border w-full rounded p-2"
-                  >
-                    <option value="">-- Pilih Jenis Tagihan --</option>
-                    {jenisTagihan.map((j) => (
-                      <option key={j.id} value={j.type_bill}>
-                        {j.type_bill}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-semibold">Jumlah</label>
-                  <input
-                    type="text"
-                    name="jumlah"
-                    value={formData.jumlah}
-                    onChange={handleChange}
-                    required
-                    className="border w-full rounded p-2"
-                  />
-                </div>
-                <div className="flex justify-end gap-3 pt-3">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded"
-                  >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-                  >
-                    {isEditing ? "Update" : "Simpan"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="7"
+                  className="text-center py-6 text-gray-500 italic"
+                >
+                  Tidak ada data
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
- 
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl w-96 p-6 relative">
+            <h2 className="text-xl font-bold mb-4">
+              {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
+            </h2>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="text"
+                name="name"
+                placeholder="Nama"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="p-2 border rounded-md"
+              />
+              <select
+                name="jenis_tagihan"
+                value={formData.jenis_tagihan}
+                onChange={handleChange}
+                required
+                className="p-2 border rounded-md"
+              >
+                <option value="">Pilih Jenis Tagihan</option>
+                {jenisTagihan.map((j) => (
+                  <option key={j.id} value={j.type_bill}>
+                    {j.type_bill}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="jumlah"
+                placeholder="Jumlah"
+                value={formData.jumlah}
+                onChange={handleChange}
+                required
+                className="p-2 border rounded-md"
+              />
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="p-2 border rounded-md"
+              >
+                <option value="Belum lunas">Belum lunas</option>
+                <option value="Lunas">Lunas</option>
+              </select>
+              <div className="flex justify-end gap-2 mt-3">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  {isEditing ? "Update" : "Tambah"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

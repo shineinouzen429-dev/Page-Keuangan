@@ -11,7 +11,7 @@ import Editjenistagihan from './Abaikan/Editjenistagihan';
 
 import KategoriTagihan from './Keuangan/KategoriTagihan';
 import Tagihan from './Keuangan/Tagihan';
-import Rekap from './Keuangan/Rekap';
+import RekapTagihan from './Keuangan/RekapTagihan';
 
 import KategoriData from './Database/KategoriData';
 import Kelas from './Database/Kelas';
@@ -31,7 +31,7 @@ function App() {
           <Route path="Dashboard" element={<Dashboard />} />
 
           <Route path="Tagihan" element={<Tagihan />} />
-          <Route path="Rekap" element={<Rekap />} />
+          <Route path="RekapTagihan" element={<RekapTagihan />} />
           <Route path="KategoriTagihan" element={<KategoriTagihan />} />
         
           <Route path="KategoriData" element={<KategoriData />} />
