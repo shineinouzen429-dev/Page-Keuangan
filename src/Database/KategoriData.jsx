@@ -258,7 +258,7 @@ function KategoriData({ onDataChange }) {
                 <label className="block text-sm font-bold mb-2">Nama</label>
                 <input
                   className="border rounded w-full py-2 px-3"
-                  name="nama"
+                  name="nama"  
                   type="text"
                   placeholder="Masukkan nama"
                   value={formData.nama}
@@ -340,7 +340,7 @@ function KategoriData({ onDataChange }) {
                     className="border rounded w-full py-2 px-3"
                     name="jabatan"
                     type="text"
-                    placeholder="Contoh: Guru Matematika"
+                    placeholder="Masukkan Data Guru"
                     value={formData.jabatan}
                     onChange={(e) =>
                       setFormData({ ...formData, jabatan: e.target.value })
@@ -357,7 +357,7 @@ function KategoriData({ onDataChange }) {
                     className="border rounded w-full py-2 px-3"
                     name="bagian"
                     type="text"
-                    placeholder="Contoh: Keuangan"
+                    placeholder="Masukkan Data Bagian"
                     value={formData.bagian}
                     onChange={(e) =>
                       setFormData({ ...formData, bagian: e.target.value })

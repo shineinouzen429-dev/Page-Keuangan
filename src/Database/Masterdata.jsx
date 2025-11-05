@@ -37,7 +37,6 @@ function MasterData() {
     setShowModal(true);
   };
 
- 
 
   const closeModal = () => {
     setShowModal(false);

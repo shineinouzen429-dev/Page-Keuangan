@@ -27,6 +27,12 @@ function Kelas() {
     }
   };
 
+  const handleResetFilter = () => {
+    setSelectedKelas(null);
+    setSelectedJurusan(null);
+    setSearch("");
+  };
+
   const filteredData = data.filter(
     (d) =>
       d.kategori === "siswa" &&
@@ -39,14 +45,14 @@ function Kelas() {
 
   return (
     <div className="p-6 ml-3">
-
       <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
         <h1 className="text-2xl font-bold text-left w-full text-white">
           Menu Kelas
         </h1>
       </div>
+
       <div className="bg-white shadow-md rounded-2xl p-6 mb-6">
-        <div className="mb-4 flex flex-col sm:flex-row gap-3">
+        <div className="mb-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <input
             type="text"
             placeholder="Cari nama siswa..."
@@ -54,7 +60,12 @@ function Kelas() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full sm:w-1/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-          
+          <button
+            onClick={handleResetFilter}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition"
+          >
+            Reset Filter
+          </button>
         </div>
         <div className="flex flex-wrap gap-3 mb-3">
           {groupKelas.map((kelas) => (
@@ -118,12 +129,10 @@ function Kelas() {
                   key={siswa.id || index}
                   className="hover:bg-gray-50 transition"
                 >
-                  <td className="px-4 py-2  text-center">{index + 1}</td>
-                  <td className="px-4 py-2 ">{siswa.nama}</td>
-                  <td className="px-4 py-2  text-center">{siswa.kelas}</td>
-                  <td className="px-4 py-2  text-center">
-                    {siswa.jurusan}
-                  </td>
+                  <td className="px-4 py-2 text-center">{index + 1}</td>
+                  <td className="px-4 py-2">{siswa.nama}</td>
+                  <td className="px-4 py-2 text-center">{siswa.kelas}</td>
+                  <td className="px-4 py-2 text-center">{siswa.jurusan}</td>
                 </tr>
               ))}
             </tbody>

@@ -48,16 +48,16 @@ function RekapTagihan() {
   return (
     <div className="p-6 ml-3">
       <div className="flex flex-wrap gap-4 mb-8">
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-700 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-check-double-line absolute right-2 bottom-2 text-[70px] opacity-20"></i>
+        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-600 to-green-500 text-white rounded-lg shadow-lg p-4 text-center">
+          <i className="ri-check-double-line text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Data Lunas</p>
           <h2 className="text-2xl font-bold mt-1 relative z-10">
             {lunasData.length}
           </h2>
         </div>
 
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-700 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-error-warning-line absolute right-2 bottom-2 text-[70px] opacity-20"></i>
+        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-orange-600 to-orange-500 text-white rounded-lg shadow-lg p-4 text-center">
+          <i className="ri-error-warning-line text-orange-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">
             Data Belum Lunas
           </p>
@@ -67,7 +67,7 @@ function RekapTagihan() {
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-700 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-money-dollar-circle-line absolute right-2 bottom-2 text-[70px] opacity-20"></i>
+          <i className="ri-money-dollar-circle-line text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">
             Total Nominal Lunas
           </p>
