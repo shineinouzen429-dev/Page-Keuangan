@@ -39,6 +39,14 @@
       "jumlah": 225000,
       "status": "Lunas",
       "created_at": "2025-11-04T05:58:00.551Z"
+    },
+    {
+      "id": "9cde",
+      "name": "Ayyas assadullah bilqis",
+      "jenis_tagihan": "Uang Study Tour",
+      "jumlah": 200000,
+      "status": "Lunas",
+      "created_at": "2025-11-06T03:06:03.254Z"
     }
   ],
   "kategoritagihan": [
@@ -58,7 +66,7 @@
       "id": "3aa1",
       "type_bill": "Seragam",
       "keterangan": "Pembayaran untuk pembelian seragam lengkap siswa baru",
-      "masih": "aktif"
+      "masih": "tidak aktif"
     },
     {
       "id": "bc16",
@@ -106,19 +114,13 @@
   ],
   "kategoridata": [
     {
-      "id": "26b9",
-      "kategori": "Guru",
-      "deskripsi": "semua data pegawai pendidik",
-      "status": "Aktif"
-    },
-    {
-      "id": "b07a",
       "nama": "Andre",
       "kategori": "siswa",
-      "kelas": "XI",
+      "kelas": "X",
       "jurusan": "TSM",
       "jabatan": "",
-      "bagian": ""
+      "bagian": "",
+      "id": "b07a"
     },
     {
       "id": "208b",
@@ -139,12 +141,84 @@
       "bagian": ""
     },
     {
-      "id": "130b",
       "nama": "Dafa x Ml 20214",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
-      "jabatan": "Guru bahasa thailand",
+      "jabatan": "Bahasa thailand",
+      "bagian": "",
+      "id": "130b"
+    },
+    {
+      "id": "a432",
+      "nama": "Moreno",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Satpam"
+    },
+    {
+      "id": "6515",
+      "nama": "Andre",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": ""
+    },
+    {
+      "id": "b9bb",
+      "nama": "Farel",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Pembersih toilet"
+    },
+    {
+      "id": "a196",
+      "nama": "Darenn",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Pengurus Kantin"
+    },
+    {
+      "id": "8888",
+      "nama": "Fadhil",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Pembersih koridor"
+    },
+    {
+      "id": "8bc5",
+      "nama": "Sakti",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Jaringan Komputer",
+      "bagian": ""
+    },
+    {
+      "id": "0726",
+      "nama": "Ayyas",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Indonsia",
+      "bagian": ""
+    },
+    {
+      "id": "c7d3",
+      "nama": "Dimas",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Pjok",
       "bagian": ""
     }
   ]

@@ -14,7 +14,7 @@ function KategoriTagihan() {
   });
 
   useEffect(() => {
-    setTimeout(() => setVisible(true), 100);
+    setTimeout(() => setVisible(true), 150);
     fetchData();
   }, []);
 
@@ -103,155 +103,195 @@ function KategoriTagihan() {
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-gray-600 font-medium text-lg">
+        Loading...
+      </p>
+    );
 
   return (
-   
-      <div className="p-6 ml-3 min-h-screen">
-        
-        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
-          <h1 className="text-2xl font-bold text-left w-full text-white">Kategori Tagihan</h1>
-          <button
-            onClick={() => setModal(true)}
-            className="absolute right-10 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow"
+    <div className="p-6 ml-3 min-h-screen">
+      <div className="relative flex justify-between items-center mb-8 rounded-3xl py-6 px-10 bg-gradient-to-r from-blue-700 to-blue-900 shadow-lg text-white font-semibold text-2xl tracking-wide select-none">
+        Kategori Tagihan
+        <button
+          onClick={() => setModal(true)}
+          className="absolute right-10 bg-green-500 hover:bg-green-600 active:scale-95 transition-transform shadow-md rounded-lg px-5 py-2 font-bold flex items-center gap-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            + Tambah Data
-          </button>
-        </div>
-        <div className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-      }`}>
-          <table className="min-w-full border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-l from-blue-800 to-blue-600 text-white text-sm uppercase tracking-wider">
-                <th className="px-4 py-3 text-center w-[8%] rounded-tl-2xl">No</th>
-                <th className="px-4 py-3 text-left w-[25%]">Jenis Tagihan</th>
-                <th className="px-4 py-3 text-left w-[35%]">Keterangan</th>
-                <th className="px-4 py-3 text-center w-[15%]">Status</th>
-                <th className="px-4 py-3 text-center w-[17%] rounded-tr-2xl">
-                  Aksi
-                </th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-800">
-              {tagihan.length > 0 ? (
-                tagihan.map((item, index) => (
-                  <tr
-                    key={item.id}
-                    className="border-b hover:bg-gray-50 transition duration-150 text-sm"
-                  >
-                    <td className="text-center px-4 py-3">{index + 1}</td>
-                    <td className="text-left px-4 py-3">{item.type_bill}</td>
-                    <td className="text-left px-4 py-3">{item.keterangan || "-"}</td>
-                    <td className="text-center px-4 py-3">
-                      <button
-                        onClick={() => handleToggleStatus(item)}
-                        className={`px-3 py-1 rounded text-white text-xs font-semibold transition ${
-                          item.masih?.toLowerCase() === "aktif"
-                            ? "bg-green-500 hover:bg-green-600"
-                            : "bg-gray-500 hover:bg-gray-600"
-                        }`}
-                      >
-                        {item.masih?.toUpperCase() || "TIDAK DIKETAHUI"}
-                      </button>
-                    </td>
-                    <td className="text-center px-4 py-3">
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm"
-                      >
-                        <i className="ri-delete-bin-6-line mr-1"></i> Hapus
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center py-6 text-gray-500 italic">
-                    Belum ada data
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Tambah Data
+        </button>
+      </div>
+      <div
+        className={`transition-all duration-700 overflow-x-auto bg-white/80 backdrop-blur-md shadow-lg rounded-3xl border border-blue-200 ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+        }`}
+      >
+        <table className="min-w-full border-collapse text-gray-800">
+          <thead>
+            <tr className="bg-gradient-to-r from-blue-700 to-blue-900 text-white text-sm uppercase tracking-wider select-none rounded-t-3xl">
+              <th className="px-5 py-4 text-center w-[8%] rounded-tl-3xl">No</th>
+              <th className="px-5 py-4 text-left w-[25%]">Jenis Tagihan</th>
+              <th className="px-5 py-4 text-left w-[35%]">Keterangan</th>
+              <th className="px-5 py-4 text-center w-[15%]">Status</th>
+              <th className="px-5 py-4 text-center w-[17%] rounded-tr-3xl">
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {tagihan.length > 0 ? (
+              tagihan.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className="border-b hover:bg-blue-50 transition duration-200 text-sm cursor-default"
+                >
+                  <td className="text-center px-5 py-4 font-semibold">{index + 1}</td>
+                  <td className="text-left px-5 py-4 font-medium">{item.type_bill}</td>
+                  <td className="text-left px-5 py-4 italic text-gray-600">
+                    {item.keterangan || "-"}
+                  </td>
+                  <td className="text-center px-5 py-4">
+                    <button
+                      onClick={() => handleToggleStatus(item)}
+                      className={`px-4 py-1 rounded-full text-white text-xs font-semibold transition shadow-sm select-none ${
+                        item.masih?.toLowerCase() === "aktif"
+                          ? "bg-green-500 hover:bg-green-600"
+                          : "bg-gray-500 hover:bg-gray-600"
+                      }`}
+                      aria-label={`Ubah status menjadi ${
+                        item.masih?.toLowerCase() === "aktif"
+                          ? "tidak aktif"
+                          : "aktif"
+                      }`}
+                    >
+                      {item.masih?.toUpperCase() || "TIDAK DIKETAHUI"}
+                    </button>
+                  </td>
+                  <td className="text-center px-5 py-4">
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="inline-flex items-center gap-2 px-4 py-1 bg-red-600 hover:bg-red-700 active:scale-95 rounded-lg text-white text-sm shadow-md transition select-none"
+                      aria-label="Hapus data tagihan"
+                    >
+                     <i class="ri-delete-bin-6-fill"></i>
+                      Hapus
+                    </button>
                   </td>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {modal && (
-          <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-            <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6 relative animate-fadeIn mb-20">
-              <h2 className="text-xl font-bold mb-4 text-center">Tambah Data</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">
-                    Jenis Tagihan
-                  </label>
-                  <input
-                    className="border rounded w-full py-2 px-3"
-                    name="type_bill"
-                    type="text"
-                    placeholder="Masukkan Jenis Tagihan"
-                    value={formData.type_bill}
-                    onChange={(e) =>
-                      setFormData({ ...formData, type_bill: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">
-                    Keterangan
-                  </label>
-                  <input
-                    className="border rounded w-full py-2 px-3"
-                    name="keterangan"
-                    type="text"
-                    placeholder="Masukkan Keterangan"
-                    value={formData.keterangan}
-                    onChange={(e) =>
-                      setFormData({ ...formData, keterangan: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">Status</label>
-                  <select
-                    className="border rounded w-full py-2 px-3"
-                    name="masih"
-                    value={formData.masih}
-                    onChange={(e) =>
-                      setFormData({ ...formData, masih: e.target.value })
-                    }
-                    required
-                  >
-                    <option value="">-- Pilih Status --</option>
-                    <option value="Aktif">Aktif</option>
-                    <option value="Tidak aktif">Tidak aktif</option>
-                  </select>
-                </div>
-
-                <div className="flex justify-end space-x-3 mt-4">
-                  <button
-                    type="button"
-                    onClick={() => setModal(false)}
-                    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                  >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                  >
-                    Simpan
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="5"
+                  className="text-center py-8 text-gray-400 italic select-none"
+                >
+                  Belum ada data
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
+      {modal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-8 relative">
+            <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">
+              Tambah Data Tagihan
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Jenis Tagihan
+                </label>
+                <input
+                  type="text"
+                  name="type_bill"
+                  placeholder="Masukkan Jenis Tagihan"
+                  value={formData.type_bill}
+                  onChange={(e) =>
+                    setFormData({ ...formData, type_bill: e.target.value })
+                  }
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Keterangan
+                </label>
+                <input
+                  type="text"
+                  name="keterangan"
+                  placeholder="Masukkan Keterangan"
+                  value={formData.keterangan}
+                  onChange={(e) =>
+                    setFormData({ ...formData, keterangan: e.target.value })
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-semibold text-gray-700">
+                  Status
+                </label>
+                <select
+                  name="masih"
+                  value={formData.masih}
+                  onChange={(e) =>
+                    setFormData({ ...formData, masih: e.target.value })
+                  }
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+                  <option value="">-- Pilih Status --</option>
+                  <option value="Aktif">Aktif</option>
+                  <option value="Tidak aktif">Tidak aktif</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-8">
+                <button
+                  type="button"
+                  onClick={() => setModal(false)}
+                  className="px-5 py-2 rounded-lg bg-gray-400 hover:bg-gray-500 text-white font-semibold transition active:scale-95"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition active:scale-95"
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease forwards;
+        }
+      `}</style>
+    </div>
   );
 }
 

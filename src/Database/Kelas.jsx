@@ -4,8 +4,8 @@ import axios from "axios";
 function Kelas() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedKelas, setSelectedKelas] = useState(null);
-  const [selectedJurusan, setSelectedJurusan] = useState(null);
+  const [selectedKelas, setSelectedKelas] = useState("");
+  const [selectedJurusan, setSelectedJurusan] = useState("");
   const [search, setSearch] = useState("");
 
   const groupKelas = ["X", "XI", "XII"];
@@ -28,8 +28,8 @@ function Kelas() {
   };
 
   const handleResetFilter = () => {
-    setSelectedKelas(null);
-    setSelectedJurusan(null);
+    setSelectedKelas("");
+    setSelectedJurusan("");
     setSearch("");
   };
 
@@ -41,72 +41,85 @@ function Kelas() {
       d.nama.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 ml-3">
-      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
-        <h1 className="text-2xl font-bold text-left w-full text-white">
-          Menu Kelas
+    <div className="p-8 ml-3 bg-gradient-to-br from-slate-100 to-blue-100 min-h-screen rounded-3xl transition-all duration-300">
+
+      <div className="flex justify-between items-center mb-8 bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-2xl py-6 px-10 shadow-lg">
+        <h1 className="text-3xl font-extrabold tracking-wide drop-shadow">
+           Menu Kelas
         </h1>
+        <span className="text-sm opacity-80 italic">
+          Manajemen Data Siswa
+        </span>
       </div>
 
-      <div className="bg-white shadow-md rounded-2xl p-6 mb-6">
-        <div className="mb-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="bg-white/80 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-8 border border-gray-200 hover:shadow-xl transition-all">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-5">
           <input
             type="text"
-            placeholder="Cari nama siswa..."
+            placeholder="🔍 Cari nama siswa..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-1/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full sm:w-1/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
           />
           <button
             onClick={handleResetFilter}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition"
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg transition-all shadow-sm"
           >
             Reset Filter
           </button>
         </div>
-        <div className="flex flex-wrap gap-3 mb-3">
-          {groupKelas.map((kelas) => (
-            <button
-              key={kelas}
-              onClick={() => {
-                setSelectedKelas(kelas === selectedKelas ? null : kelas);
-                setSelectedJurusan(null);
-              }}
-              className={`px-4 py-2 rounded-lg font-semibold ${
-                selectedKelas === kelas
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
+
+        <div className="grid sm:grid-cols-2 gap-4">
+  
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1 text-gray-700">
+              Pilih Kelas:
+            </label>
+            <select
+              value={selectedKelas}
+              onChange={(e) => setSelectedKelas(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
             >
-              Kelas {kelas}
-            </button>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-3">
-          {jurusanList.map((jurusan) => (
-            <button
-              key={jurusan}
-              onClick={() =>
-                setSelectedJurusan(
-                  jurusan === selectedJurusan ? null : jurusan
-                )
-              }
-              className={`px-4 py-2 rounded-lg font-semibold ${
-                selectedJurusan === jurusan
-                  ? "bg-green-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
+              <option value="">Semua Kelas</option>
+              {groupKelas.map((kelas) => (
+                <option key={kelas} value={kelas}>
+                  Kelas {kelas}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1 text-gray-700">
+              Pilih Jurusan:
+            </label>
+            <select
+              value={selectedJurusan}
+              onChange={(e) => setSelectedJurusan(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
             >
-              {jurusan}
-            </button>
-          ))}
+              <option value="">Semua Jurusan</option>
+              {jurusanList.map((jurusan) => (
+                <option key={jurusan} value={jurusan}>
+                  {jurusan}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
-      <div className="overflow-x-auto bg-white shadow-md rounded-2xl p-6">
-        <h2 className="text-lg font-bold mb-4">
+
+      <div className="bg-white/90 backdrop-blur-xl shadow-lg rounded-2xl overflow-hidden border border-gray-200 transition-all hover:shadow-2xl">
+        <h2 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6">
           Daftar Siswa{" "}
           {selectedKelas || selectedJurusan
             ? `(${selectedKelas || ""} ${selectedJurusan || ""})`
@@ -114,8 +127,8 @@ function Kelas() {
         </h2>
 
         {filteredData.length > 0 ? (
-          <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden shadow">
-            <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
+          <table className="min-w-full text-left border-collapse">
+            <thead className="bg-blue-700 text-white">
               <tr>
                 <th className="px-4 py-2">No</th>
                 <th className="px-4 py-2">Nama</th>
@@ -127,18 +140,24 @@ function Kelas() {
               {filteredData.map((siswa, index) => (
                 <tr
                   key={siswa.id || index}
-                  className="hover:bg-gray-50 transition"
+                  className="odd:bg-white even:bg-blue-50 transition-all duration-200"
                 >
-                  <td className="px-4 py-2 text-center">{index + 1}</td>
-                  <td className="px-4 py-2">{siswa.nama}</td>
-                  <td className="px-4 py-2 text-center">{siswa.kelas}</td>
-                  <td className="px-4 py-2 text-center">{siswa.jurusan}</td>
+                  <td className="px-4 py-2 text-center font-semibold text-gray-700">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-gray-800">{siswa.nama}</td>
+                  <td className="px-4 py-2 text-center font-medium text-blue-700">
+                    {siswa.kelas}
+                  </td>
+                  <td className="px-4 py-2 text-center font-medium text-indigo-700">
+                    {siswa.jurusan}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <p className="text-center text-gray-500 py-4">
+          <p className="text-center text-gray-500 py-6">
             Tidak ada data siswa yang cocok.
           </p>
         )}

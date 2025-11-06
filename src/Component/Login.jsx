@@ -33,7 +33,7 @@ function Login() {
         title: "Login Berhasil!",
         icon: "success",
       }).then(() => {
-        navigate("/KategoriData");
+        navigate("/Dashboard");
       });
     } else {
       Swal.fire({

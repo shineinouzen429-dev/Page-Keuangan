@@ -22,12 +22,21 @@ function Sidnav() {
       >
 
         <div className="text-2xl font-bold text-center bg-blue-900 py-4 shadow-5xl text-white">
-          <i class="ri-bar-chart-fill"></i> Statistik Data
+          <i class="ri-school-fill"></i> Binusa.S
         </div>
 
         <nav className="flex-1 space-y-2 px-3 mt-4">
 
-         
+         <Link
+            to="/Dashboard"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/Dashboard")
+                ? "bg-blue-900 shadow-inner"
+                : "hover:bg-blue-900 hover:translate-x-1"
+            }`}
+          >
+            <i class="ri-dashboard-fill"></i>Dashboard
+          </Link>
 
           <p className="text-white font-bold text-lg mt-4 border-b border-white">Database</p>
 

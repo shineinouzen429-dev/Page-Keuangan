@@ -87,11 +87,22 @@ function KategoriData({ onDataChange }) {
     e.preventDefault();
 
     if (!formData.nama.trim() || !formData.kategori) {
-      return Swal.fire("Perhatian", "Nama dan kategori harus diisi.", "warning");
+      return Swal.fire(
+        "Perhatian",
+        "Nama dan kategori harus diisi.",
+        "warning"
+      );
     }
 
-    if (formData.kategori === "siswa" && (!formData.kelas || !formData.jurusan)) {
-      return Swal.fire("Perhatian", "Kelas dan jurusan wajib diisi untuk siswa.", "warning");
+    if (
+      formData.kategori === "siswa" &&
+      (!formData.kelas || !formData.jurusan)
+    ) {
+      return Swal.fire(
+        "Perhatian",
+        "Kelas dan jurusan wajib diisi untuk siswa.",
+        "warning"
+      );
     }
 
     const payload = {
@@ -105,11 +116,19 @@ function KategoriData({ onDataChange }) {
 
     try {
       if (isEditing && currentId) {
-        await axios.put(`http://localhost:5000/kategoridata/${currentId}`, payload);
-        setData((prev) => prev.map((p) => (p.id === currentId ? { ...p, ...payload } : p)));
+        await axios.put(
+          `http://localhost:5000/kategoridata/${currentId}`,
+          payload
+        );
+        setData((prev) =>
+          prev.map((p) => (p.id === currentId ? { ...p, ...payload } : p))
+        );
         Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
       } else {
-        const res = await axios.post("http://localhost:5000/kategoridata", payload);
+        const res = await axios.post(
+          "http://localhost:5000/kategoridata",
+          payload
+        );
         const created = res.data || { id: Date.now(), ...payload };
         setData((prev) => [...prev, created]);
         Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
@@ -156,7 +175,9 @@ function KategoriData({ onDataChange }) {
   return (
     <div className="p-6 ml-3 min-h-screen">
       <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
-        <h1 className="text-2xl font-bold text-left w-full text-white">Kategori Data</h1>
+        <h1 className="text-2xl font-bold text-left w-full text-white">
+          Kategori Data
+        </h1>
         <div className="absolute right-10 flex items-center gap-3">
           <button
             onClick={openAddModal}
@@ -186,50 +207,74 @@ function KategoriData({ onDataChange }) {
         </select>
       </div>
       <div
-        className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
+        className={`transition-all duration-700 overflow-x-auto bg-white shadow-lg rounded-2xl ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
         }`}
       >
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-gradient-to-l from-blue-800 to-blue-600 text-white text-sm uppercase tracking-wider">
-              <th className="px-4 py-3 text-center w-[6%] rounded-tl-2xl">No</th>
+        <table className="min-w-full border-collapse text-sm">
+          <thead className="sticky top-0 z-10 shadow-sm">
+            <tr className="bg-gradient-to-l from-blue-700 to-blue-500 text-white uppercase text-xs tracking-wider">
+              <th className="px-4 py-3 text-center w-[6%] rounded-tl-2xl">
+                No
+              </th>
               <th className="px-4 py-3 text-left w-[34%]">Nama</th>
-              <th className="px-4 py-3 text-left w-[30%]">Jabatan / Kelas / Bagian</th>
+              <th className="px-4 py-3 text-left w-[30%]">
+                Mapel / Kelas / Bagian
+              </th>
               <th className="px-4 py-3 text-center w-[14%]">Kategori</th>
-              <th className="px-4 py-3 text-center w-[16%] rounded-tr-2xl">Aksi</th>
+              <th className="px-4 py-3 text-center w-[16%] rounded-tr-2xl">
+                Aksi
+              </th>
             </tr>
           </thead>
+
           <tbody className="text-gray-800">
             {filtered.length > 0 ? (
               filtered.map((item, idx) => (
                 <tr
                   key={item.id}
-                  className=" hover:bg-gray-50 transition duration-150 text-sm"
+                  className={`transition-colors duration-200 hover:bg-blue-50 ${
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                  }`}
                 >
-                  <td className="text-center px-4 py-3">{idx + 1}</td>
-                  <td className="text-left px-4 py-3">{item.nama}</td>
-                  <td className="text-left px-4 py-3">
+                  <td className="text-center px-4 py-3 border-b">{idx + 1}</td>
+                  <td className="text-left px-4 py-3 border-b font-medium">
+                    {item.nama}
+                  </td>
+                  <td className="text-left px-4 py-3 border-b">
                     {item.kategori === "siswa"
                       ? `${item.kelas || "-"} ${item.jurusan || ""}`
                       : item.kategori === "guru"
                       ? item.jabatan || "-"
                       : item.bagian || "-"}
                   </td>
-                  <td className="text-center px-4 py-3 capitalize">{item.kategori}</td>
-                  <td className="text-center px-4 py-3">
+                  <td className="text-center px-4 py-3 border-b">
+                    <span
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                        item.kategori === "guru"
+                          ? "bg-blue-100 text-blue-700"
+                          : item.kategori === "siswa"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {item.kategori.charAt(0).toUpperCase() +
+                        item.kategori.slice(1)}
+                    </span>
+                  </td>
+                  <td className="text-center px-4 py-3 border-b">
                     <div className="inline-flex gap-2">
                       <button
                         onClick={() => openEditModal(item)}
-                        className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition text-xs"
                       >
-                        Edit
+                        <i class="ri-pencil-fill"></i> <span>Edit</span>
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-xs"
                       >
-                        Hapus
+                        <i class="ri-delete-bin-6-fill"></i> <span>Hapus</span>
                       </button>
                     </div>
                   </td>
@@ -237,7 +282,10 @@ function KategoriData({ onDataChange }) {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-6 text-gray-500 italic">
+                <td
+                  colSpan="5"
+                  className="text-center py-8 text-gray-500 italic bg-gray-50 rounded-b-2xl"
+                >
                   Tidak ada data
                 </td>
               </tr>
@@ -258,11 +306,13 @@ function KategoriData({ onDataChange }) {
                 <label className="block text-sm font-bold mb-2">Nama</label>
                 <input
                   className="border rounded w-full py-2 px-3"
-                  name="nama"  
+                  name="nama"
                   type="text"
                   placeholder="Masukkan nama"
                   value={formData.nama}
-                  onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nama: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -295,7 +345,9 @@ function KategoriData({ onDataChange }) {
               {formData.kategori === "siswa" && (
                 <>
                   <div className="mb-3">
-                    <label className="block text-sm font-bold mb-2">Kelas</label>
+                    <label className="block text-sm font-bold mb-2">
+                      Kelas
+                    </label>
                     <select
                       className="border rounded w-full py-2 px-3"
                       name="kelas"
@@ -313,7 +365,9 @@ function KategoriData({ onDataChange }) {
                   </div>
 
                   <div className="mb-3">
-                    <label className="block text-sm font-bold mb-2">Jurusan</label>
+                    <label className="block text-sm font-bold mb-2">
+                      Jurusan
+                    </label>
                     <select
                       className="border rounded w-full py-2 px-3"
                       name="jurusan"
@@ -335,7 +389,9 @@ function KategoriData({ onDataChange }) {
 
               {formData.kategori === "guru" && (
                 <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">Jabatan</label>
+                  <label className="block text-sm font-bold mb-2">
+                    Jabatan
+                  </label>
                   <input
                     className="border rounded w-full py-2 px-3"
                     name="jabatan"
