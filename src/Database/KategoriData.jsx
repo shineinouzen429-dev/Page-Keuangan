@@ -87,22 +87,7 @@ function KategoriData({ onDataChange }) {
     e.preventDefault();
 
     if (!formData.nama.trim() || !formData.kategori) {
-      return Swal.fire(
-        "Perhatian",
-        "Nama dan kategori harus diisi.",
-        "warning"
-      );
-    }
-
-    if (
-      formData.kategori === "siswa" &&
-      (!formData.kelas || !formData.jurusan)
-    ) {
-      return Swal.fire(
-        "Perhatian",
-        "Kelas dan jurusan wajib diisi untuk siswa.",
-        "warning"
-      );
+      return Swal.fire("Perhatian", "Nama dan kategori harus diisi.", "warning");
     }
 
     const payload = {
@@ -116,19 +101,13 @@ function KategoriData({ onDataChange }) {
 
     try {
       if (isEditing && currentId) {
-        await axios.put(
-          `http://localhost:5000/kategoridata/${currentId}`,
-          payload
-        );
+        await axios.put(`http://localhost:5000/kategoridata/${currentId}`, payload);
         setData((prev) =>
           prev.map((p) => (p.id === currentId ? { ...p, ...payload } : p))
         );
         Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
       } else {
-        const res = await axios.post(
-          "http://localhost:5000/kategoridata",
-          payload
-        );
+        const res = await axios.post("http://localhost:5000/kategoridata", payload);
         const created = res.data || { id: Date.now(), ...payload };
         setData((prev) => [...prev, created]);
         Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
@@ -147,6 +126,8 @@ function KategoriData({ onDataChange }) {
       text: "Data akan dihapus permanen.",
       icon: "warning",
       showCancelButton: true,
+      confirmButtonColor: "#e11d48",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Ya, hapus!",
       cancelButtonText: "Batal",
     }).then(async (r) => {
@@ -155,7 +136,6 @@ function KategoriData({ onDataChange }) {
           await axios.delete(`http://localhost:5000/kategoridata/${id}`);
           setData((prev) => prev.filter((d) => d.id !== id));
           Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
-          if (onDataChange) onDataChange(data.filter((d) => d.id !== id));
         } catch (err) {
           console.error("Gagal menghapus:", err);
           Swal.fire("Error", "Gagal menghapus data.", "error");
@@ -170,33 +150,36 @@ function KategoriData({ onDataChange }) {
       (filterKategori === "" || d.kategori === filterKategori)
   );
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+      </div>
+    );
 
   return (
-    <div className="p-6 ml-3 min-h-screen">
-      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
-        <h1 className="text-2xl font-bold text-left w-full text-white">
+    <div className="p-8 bg-gradient-to-br from-blue-50 to-white min-h-screen">
+      <div className="flex justify-between items-center mb-6 bg-gradient-to-r from-blue-700 to-blue-500 text-white py-5 px-8 rounded-2xl shadow-lg">
+        <h1 className="text-2xl font-bold tracking-wide drop-shadow">
           Kategori Data
         </h1>
-        <div className="absolute right-10 flex items-center gap-3">
-          <button
-            onClick={openAddModal}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow"
-          >
-            + Tambah Data
-          </button>
-        </div>
+        <button
+          onClick={openAddModal}
+          className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg text-sm font-semibold hover:bg-white/30 transition flex items-center gap-2"
+        >
+          <i className="ri-add-line"></i> Tambah Data
+        </button>
       </div>
-      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 bg-white shadow-sm border border-blue-100 rounded-xl p-4 mb-6">
         <input
           type="text"
-          placeholder="Cari nama..."
-          className="p-2 pl-4 w-64 border-2 border-gray-300 rounded-md"
+          placeholder="🔍 Cari nama..."
+          className="p-2 pl-4 w-64 border-2 border-gray-200 rounded-md focus:ring-2 focus:ring-blue-400 outline-none transition"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
-          className="p-2 w-52 border-2 border-gray-300 rounded-md"
+          className="p-2 w-52 border-2 border-gray-200 rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
           value={filterKategori}
           onChange={(e) => setFilterKategori(e.target.value)}
         >
@@ -207,38 +190,33 @@ function KategoriData({ onDataChange }) {
         </select>
       </div>
       <div
-        className={`transition-all duration-700 overflow-x-auto bg-white shadow-lg rounded-2xl ${
+        className={`transition-all duration-700 bg-white shadow-lg rounded-2xl overflow-hidden ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
         }`}
       >
-        <table className="min-w-full border-collapse text-sm">
-          <thead className="sticky top-0 z-10 shadow-sm">
-            <tr className="bg-gradient-to-l from-blue-700 to-blue-500 text-white uppercase text-xs tracking-wider">
-              <th className="px-4 py-3 text-center w-[6%] rounded-tl-2xl">
-                No
-              </th>
+        <table className="min-w-full text-sm">
+          <thead>
+            <tr className="bg-gradient-to-r from-blue-700 to-blue-500 text-white uppercase text-xs tracking-wider">
+              <th className="px-4 py-3 text-center w-[6%]">No</th>
               <th className="px-4 py-3 text-left w-[34%]">Nama</th>
               <th className="px-4 py-3 text-left w-[30%]">
                 Mapel / Kelas / Bagian
               </th>
               <th className="px-4 py-3 text-center w-[14%]">Kategori</th>
-              <th className="px-4 py-3 text-center w-[16%] rounded-tr-2xl">
-                Aksi
-              </th>
+              <th className="px-4 py-3 text-center w-[16%]">Aksi</th>
             </tr>
           </thead>
-
-          <tbody className="text-gray-800">
+          <tbody>
             {filtered.length > 0 ? (
               filtered.map((item, idx) => (
                 <tr
                   key={item.id}
-                  className={`transition-colors duration-200 hover:bg-blue-50 ${
-                    idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                  className={`transition-all duration-300  ${
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-100"
                   }`}
                 >
                   <td className="text-center px-4 py-3 border-b">{idx + 1}</td>
-                  <td className="text-left px-4 py-3 border-b font-medium">
+                  <td className="text-left px-4 py-3 border-b font-medium text-gray-800">
                     {item.nama}
                   </td>
                   <td className="text-left px-4 py-3 border-b">
@@ -266,15 +244,15 @@ function KategoriData({ onDataChange }) {
                     <div className="inline-flex gap-2">
                       <button
                         onClick={() => openEditModal(item)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition text-xs"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 transition text-xs shadow-sm"
                       >
-                        <i class="ri-pencil-fill"></i> <span>Edit</span>
+                        <i className="ri-pencil-fill"></i> Edit
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-xs"
+                        className="flex items-center gap-1 px-3 py-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-xs shadow-sm"
                       >
-                        <i class="ri-delete-bin-6-fill"></i> <span>Hapus</span>
+                        <i className="ri-delete-bin-6-fill"></i> Hapus
                       </button>
                     </div>
                   </td>
@@ -284,7 +262,7 @@ function KategoriData({ onDataChange }) {
               <tr>
                 <td
                   colSpan="5"
-                  className="text-center py-8 text-gray-500 italic bg-gray-50 rounded-b-2xl"
+                  className="text-center py-8 text-gray-500 italic bg-gray-50"
                 >
                   Tidak ada data
                 </td>
@@ -295,145 +273,145 @@ function KategoriData({ onDataChange }) {
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6 relative animate-fadeIn">
-            <h2 className="text-xl font-bold mb-4 text-center">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 animate-fadeIn">
+          <div className="bg-white rounded-xl shadow-2xl w-[90%] max-w-md p-6 relative animate-slideUp">
+            <h2 className="text-xl font-bold mb-4 text-center text-blue-600">
               {isEditing ? "Edit Data" : "Tambah Data"}
             </h2>
 
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="block text-sm font-bold mb-2">Nama</label>
-                <input
-                  className="border rounded w-full py-2 px-3"
-                  name="nama"
-                  type="text"
-                  placeholder="Masukkan nama"
-                  value={formData.nama}
-                  onChange={(e) =>
-                    setFormData({ ...formData, nama: e.target.value })
-                  }
-                  required
-                />
-              </div>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Nama</label>
+                  <input
+                    className="border rounded w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 outline-none"
+                    type="text"
+                    placeholder="Masukkan nama"
+                    value={formData.nama}
+                    onChange={(e) =>
+                      setFormData({ ...formData, nama: e.target.value })
+                    }
+                    required
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label className="block text-sm font-bold mb-2">Kategori</label>
-                <select
-                  className="border rounded w-full py-2 px-3"
-                  name="kategori"
-                  value={formData.kategori}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      kategori: e.target.value,
-                      kelas: "",
-                      jurusan: "",
-                      jabatan: "",
-                      bagian: "",
-                    })
-                  }
-                  required
-                >
-                  <option value="">-- Pilih Kategori --</option>
-                  <option value="siswa">Siswa</option>
-                  <option value="guru">Guru</option>
-                  <option value="karyawan">Karyawan</option>
-                </select>
-              </div>
-
-              {formData.kategori === "siswa" && (
-                <>
-                  <div className="mb-3">
-                    <label className="block text-sm font-bold mb-2">
-                      Kelas
-                    </label>
-                    <select
-                      className="border rounded w-full py-2 px-3"
-                      name="kelas"
-                      value={formData.kelas}
-                      onChange={(e) =>
-                        setFormData({ ...formData, kelas: e.target.value })
-                      }
-                      required
-                    >
-                      <option value="">-- Pilih Kelas --</option>
-                      <option value="X">X</option>
-                      <option value="XI">XI</option>
-                      <option value="XII">XII</option>
-                    </select>
-                  </div>
-
-                  <div className="mb-3">
-                    <label className="block text-sm font-bold mb-2">
-                      Jurusan
-                    </label>
-                    <select
-                      className="border rounded w-full py-2 px-3"
-                      name="jurusan"
-                      value={formData.jurusan}
-                      onChange={(e) =>
-                        setFormData({ ...formData, jurusan: e.target.value })
-                      }
-                      required
-                    >
-                      <option value="">-- Pilih Jurusan --</option>
-                      <option value="TSM">TSM</option>
-                      <option value="AKT">AKT</option>
-                      <option value="TKJ">TKJ</option>
-                      <option value="TB">TB</option>
-                    </select>
-                  </div>
-                </>
-              )}
-
-              {formData.kategori === "guru" && (
-                <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">
-                    Jabatan
+                <div>
+                  <label className="block text-sm font-semibold mb-1">
+                    Kategori
                   </label>
-                  <input
-                    className="border rounded w-full py-2 px-3"
-                    name="jabatan"
-                    type="text"
-                    placeholder="Masukkan Data Guru"
-                    value={formData.jabatan}
+                  <select
+                    className="border rounded w-full py-2 px-3 focus:ring-2 focus:ring-blue-400"
+                    value={formData.kategori}
                     onChange={(e) =>
-                      setFormData({ ...formData, jabatan: e.target.value })
+                      setFormData({
+                        ...formData,
+                        kategori: e.target.value,
+                        kelas: "",
+                        jurusan: "",
+                        jabatan: "",
+                        bagian: "",
+                      })
                     }
                     required
-                  />
+                  >
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="siswa">Siswa</option>
+                    <option value="guru">Guru</option>
+                    <option value="karyawan">Karyawan</option>
+                  </select>
                 </div>
-              )}
 
-              {formData.kategori === "karyawan" && (
-                <div className="mb-3">
-                  <label className="block text-sm font-bold mb-2">Bagian</label>
-                  <input
-                    className="border rounded w-full py-2 px-3"
-                    name="bagian"
-                    type="text"
-                    placeholder="Masukkan Data Bagian"
-                    value={formData.bagian}
-                    onChange={(e) =>
-                      setFormData({ ...formData, bagian: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              )}
+                {formData.kategori === "siswa" && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">
+                        Kelas
+                      </label>
+                      <select
+                        className="border rounded w-full py-2 px-3"
+                        value={formData.kelas}
+                        onChange={(e) =>
+                          setFormData({ ...formData, kelas: e.target.value })
+                        }
+                        required
+                      >
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="X">X</option>
+                        <option value="XI">XI</option>
+                        <option value="XII">XII</option>
+                      </select>
+                    </div>
 
-              <div className="flex justify-end space-x-3 mt-4">
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">
+                        Jurusan
+                      </label>
+                      <select
+                        className="border rounded w-full py-2 px-3"
+                        value={formData.jurusan}
+                        onChange={(e) =>
+                          setFormData({ ...formData, jurusan: e.target.value })
+                        }
+                        required
+                      >
+                        <option value="">-- Pilih Jurusan --</option>
+                        <option value="TSM">TSM</option>
+                        <option value="AKT">AKT</option>
+                        <option value="TKJ">TKJ</option>
+                        <option value="TB">TB</option>
+                      </select>
+                    </div>
+                  </>
+                )}
+
+                {formData.kategori === "guru" && (
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">
+                      Jabatan
+                    </label>
+                    <input
+                      className="border rounded w-full py-2 px-3"
+                      type="text"
+                      placeholder="Masukkan jabatan guru"
+                      value={formData.jabatan}
+                      onChange={(e) =>
+                        setFormData({ ...formData, jabatan: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                )}
+
+                {formData.kategori === "karyawan" && (
+                  <div>
+                    <label className="block text-sm font-semibold mb-1">
+                      Bagian
+                    </label>
+                    <input
+                      className="border rounded w-full py-2 px-3"
+                      type="text"
+                      placeholder="Masukkan bagian karyawan"
+                      value={formData.bagian}
+                      onChange={(e) =>
+                        setFormData({ ...formData, bagian: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow-md"
                 >
                   {isEditing ? "Update" : "Simpan"}
                 </button>
@@ -442,6 +420,16 @@ function KategoriData({ onDataChange }) {
           </div>
         </div>
       )}
+
+       <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease forwards;
+        }
+      `}</style>
     </div>
   );
 }

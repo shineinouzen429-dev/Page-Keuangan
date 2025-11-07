@@ -24,22 +24,47 @@ function MasterData() {
     getData();
   }, []);
 
+  const totalGuru = data.filter((d) => d.kategori?.toLowerCase() === "guru").length;
+  const totalSiswa = data.filter((d) => d.kategori?.toLowerCase() === "siswa").length;
+  const totalKaryawan = data.filter((d) => d.kategori?.toLowerCase() === "karyawan").length;
+  const totalDatabase = data.length;
+
   const filteredData =
     filter === "Semua"
       ? data
-      : data.filter(
-          (d) =>
-            d.kategori?.toLowerCase() === filter.toLowerCase()
-        );
+      : data.filter((d) => d.kategori?.toLowerCase() === filter.toLowerCase());
 
   return (
     <div className="min-h-screen p-8 flex justify-center bg-gray-50">
-      
       <div className="w-full max-w-6xl space-y-8">
         <h1 className="text-2xl font-bold text-white flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md relative">
           Data Master (Gabungan)
         </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-600 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
+            <i className="ri-user-star-fill text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
+            <p className="text-sm font-semibold relative z-10">Total Guru</p>
+            <h2 className="text-2xl font-bold mt-1 relative z-10">{totalGuru}</h2>
+          </div>
 
+          <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-600 to-green-500 text-white rounded-lg shadow-lg p-4 text-center">
+            <i className="ri-team-fill text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
+            <p className="text-sm font-semibold relative z-10">Total Siswa</p>
+            <h2 className="text-2xl font-bold mt-1 relative z-10">{totalSiswa}</h2>
+          </div>
+
+          <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-yellow-600 to-amber-500 text-white rounded-lg shadow-lg p-4 text-center">
+            <i className="ri-user-2-fill text-yellow-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
+            <p className="text-sm font-semibold relative z-10">Total Karyawan</p>
+            <h2 className="text-2xl font-bold mt-1 relative z-10">{totalKaryawan}</h2>
+          </div>
+
+          <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-purple-600 to-violet-500 text-white rounded-lg shadow-lg p-4 text-center">
+            <i className="ri-database-2-fill text-purple-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
+            <p className="text-sm font-semibold relative z-10">Total Database</p>
+            <h2 className="text-2xl font-bold mt-1 relative z-10">{totalDatabase}</h2>
+          </div>
+        </div>
         <div className="bg-white p-6 rounded-2xl shadow border border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
             <div>
@@ -84,7 +109,7 @@ function MasterData() {
                         key={item.id}
                         className={`${
                           index % 2 === 0 ? "bg-white" : "bg-gray-100"
-                        }  transition`}
+                        } transition`}
                       >
                         <td className="p-3 text-center">{index + 1}</td>
                         <td className="p-3">{item.nama}</td>

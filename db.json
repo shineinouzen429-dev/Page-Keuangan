@@ -82,36 +82,7 @@
     }
   ],
   "login": [],
-  "daftar": [
-    {
-      "id": "a8cc",
-      "nama": "Dafa",
-      "kategori": "Siswa",
-      "jabatan": "Kelas 1"
-    },
-    {
-      "nama": "Fadhil",
-      "kategori": "Guru",
-      "jabatan": "Matematika",
-      "id": "d4fe"
-    },
-    {
-      "id": "a7c0",
-      "nama": "Moreno",
-      "kategori": "Karyawan",
-      "jabatan": "Satpam"
-    }
-  ],
-  "rekaptagihan": [
-    {
-      "jenis_tagihan": "SPP",
-      "jumlah_siswa": 300,
-      "nominal": 225000,
-      "lunas": 209,
-      "belum": 91,
-      "id": "06bd"
-    }
-  ],
+
   "kategoridata": [
     {
       "nama": "Andre",

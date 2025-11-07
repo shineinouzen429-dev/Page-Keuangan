@@ -204,7 +204,7 @@ function KategoriTagihan() {
       </div>
 
       {modal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 animate-fadeIn">
           <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-8 relative">
             <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">
               Tambah Data Tagihan

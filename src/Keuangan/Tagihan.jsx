@@ -13,6 +13,7 @@ function Tagihan() {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
+  const [animateModal, setAnimateModal] = useState(""); // animasi modal masuk/keluar
   const [formData, setFormData] = useState({
     name: "",
     jenis_tagihan: "",
@@ -43,7 +44,6 @@ function Tagihan() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     const fetchJenisTagihan = async () => {
       try {
@@ -67,6 +67,7 @@ function Tagihan() {
     });
     setIsEditing(false);
     setShowModal(true);
+    setAnimateModal("animate-slideUp");
   };
 
   const openEditModal = (item) => {
@@ -79,17 +80,21 @@ function Tagihan() {
     setIsEditing(true);
     setCurrentId(item.id);
     setShowModal(true);
+    setAnimateModal("animate-slideUp");
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
-    setIsEditing(false);
-    setFormData({
-      name: "",
-      jenis_tagihan: "",
-      jumlah: "",
-      status: "Belum lunas",
-    });
+    setAnimateModal("animate-slideDown");
+    setTimeout(() => {
+      setShowModal(false);
+      setIsEditing(false);
+      setFormData({
+        name: "",
+        jenis_tagihan: "",
+        jumlah: "",
+        status: "Belum lunas",
+      });
+    }, 350);
   };
 
   const handleChange = (e) => {
@@ -171,11 +176,7 @@ function Tagihan() {
           Swal.fire("Berhasil!", "Status diperbarui menjadi Lunas.", "success");
         } catch (err) {
           console.error(err);
-          Swal.fire(
-            "Gagal!",
-            "Terjadi kesalahan saat mengubah status.",
-            "error"
-          );
+          Swal.fire("Gagal!", "Terjadi kesalahan saat mengubah status.", "error");
         }
       }
     });
@@ -203,7 +204,7 @@ function Tagihan() {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="p-6 ml-3">
+    <div className="p-6 ml-3 relative">
       <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
         <h1 className="text-2xl text-white font-bold">Halaman Tagihan</h1>
         <button
@@ -213,6 +214,8 @@ function Tagihan() {
           + Tambah Data
         </button>
       </div>
+
+      {/* Filter */}
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
         <div className="flex flex-wrap gap-4">
           <input
@@ -245,6 +248,8 @@ function Tagihan() {
           </select>
         </div>
       </div>
+
+      {/* Table */}
       <div
         className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
@@ -267,8 +272,8 @@ function Tagihan() {
               filtered.map((t, i) => (
                 <tr key={t.id} className="hover:bg-gray-50">
                   <td className="text-center">{i + 1}</td>
-                  <td className="text-left px-3 py-2">{t.name}</td>
-                  <td className="text-left px-3 py-2">{t.jenis_tagihan}</td>
+                  <td className="px-3 py-2">{t.name}</td>
+                  <td className="px-3 py-2">{t.jenis_tagihan}</td>
                   <td className="text-right px-3 py-2">
                     {formatRupiah(t.jumlah)}
                   </td>
@@ -283,7 +288,6 @@ function Tagihan() {
                       {t.status}
                     </span>
                   </td>
-
                   <td className="text-center px-3 py-2">
                     {new Date(t.created_at).toLocaleDateString("id-ID")}
                   </td>
@@ -320,10 +324,7 @@ function Tagihan() {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="7"
-                  className="text-center py-6 text-gray-500 italic"
-                >
+                <td colSpan="7" className="text-center py-6 text-gray-500 italic">
                   Tidak ada data
                 </td>
               </tr>
@@ -332,10 +333,11 @@ function Tagihan() {
         </table>
       </div>
 
+      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl w-96 p-6 relative">
-            <h2 className="text-xl font-bold mb-4">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 animate-fadeIn">
+          <div className={`bg-white rounded-2xl w-96 p-6 relative shadow-xl ${animateModal}`}>
+            <h2 className="text-xl font-bold mb-4 text-center">
               {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
             </h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -399,7 +401,31 @@ function Tagihan() {
           </div>
         </div>
       )}
-      
+
+      {/* Animasi CSS */}
+      <style>{`
+        @keyframes slideUp {
+          from { transform: translateY(100px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideDown {
+          from { transform: translateY(0); opacity: 1; }
+          to { transform: translateY(100px); opacity: 0; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-slideUp {
+          animation: slideUp 0.4s ease-out forwards;
+        }
+        .animate-slideDown {
+          animation: slideDown 0.35s ease-in forwards;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-in forwards;
+        }
+      `}</style>
     </div>
   );
 }
