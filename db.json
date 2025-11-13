@@ -82,115 +82,44 @@
     }
   ],
   "login": [],
-
   "kategoridata": [
     {
-      "nama": "Andre",
-      "kategori": "siswa",
+      "id": "a5ca",
+      "kategori": "Guru",
+      "keterangan": "Pengajar siswa\n",
+      "status": true
+    },
+    {
+      "id": "f185",
+      "kategori": "Siswa",
+      "keterangan": "Murid didik",
+      "status": true
+    },
+    {
+      "id": "30ee",
+      "kategori": "Karyawan",
+      "keterangan": "Staf staf sekolah\n",
+      "status": true
+    }
+  ],
+  "kelasdata": [
+    {
+      "id": "8b88",
       "kelas": "X",
-      "jurusan": "TSM",
-      "jabatan": "",
-      "bagian": "",
-      "id": "b07a"
-    },
-    {
-      "id": "208b",
-      "nama": "Dafa",
-      "kategori": "siswa",
-      "kelas": "XII",
       "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": ""
+      "status": true
     },
     {
-      "id": "5cb0",
-      "nama": "Dafa",
-      "kategori": "siswa",
+      "id": "9650",
       "kelas": "XI",
       "jurusan": "AKT",
-      "jabatan": "",
-      "bagian": ""
+      "status": true
     },
     {
-      "nama": "Dafa x Ml 20214",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Bahasa thailand",
-      "bagian": "",
-      "id": "130b"
-    },
-    {
-      "id": "a432",
-      "nama": "Moreno",
-      "kategori": "karyawan",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "",
-      "bagian": "Satpam"
-    },
-    {
-      "id": "6515",
-      "nama": "Andre",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": ""
-    },
-    {
-      "id": "b9bb",
-      "nama": "Farel",
-      "kategori": "karyawan",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "",
-      "bagian": "Pembersih toilet"
-    },
-    {
-      "id": "a196",
-      "nama": "Darenn",
-      "kategori": "karyawan",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "",
-      "bagian": "Pengurus Kantin"
-    },
-    {
-      "id": "8888",
-      "nama": "Fadhil",
-      "kategori": "karyawan",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "",
-      "bagian": "Pembersih koridor"
-    },
-    {
-      "id": "8bc5",
-      "nama": "Sakti",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Jaringan Komputer",
-      "bagian": ""
-    },
-    {
-      "id": "0726",
-      "nama": "Ayyas",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Bahasa Indonsia",
-      "bagian": ""
-    },
-    {
-      "id": "c7d3",
-      "nama": "Dimas",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Pjok",
-      "bagian": ""
+      "id": "74a9",
+      "kelas": "XII",
+      "jurusan": "TSM",
+      "status": true
     }
   ]
 }

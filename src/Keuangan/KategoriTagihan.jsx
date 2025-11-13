@@ -112,23 +112,13 @@ function KategoriTagihan() {
 
   return (
     <div className="p-6 ml-3 min-h-screen">
-      <div className="relative flex justify-between items-center mb-8 rounded-3xl py-6 px-10 bg-gradient-to-r from-blue-700 to-blue-900 shadow-lg text-white font-semibold text-2xl tracking-wide select-none">
-        Kategori Tagihan
+      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
+        <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
         <button
           onClick={() => setModal(true)}
-          className="absolute right-10 bg-green-500 hover:bg-green-600 active:scale-95 transition-transform shadow-md rounded-lg px-5 py-2 font-bold flex items-center gap-2"
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          Tambah Data
+          + Tambah Data
         </button>
       </div>
       <div

@@ -214,8 +214,6 @@ function Tagihan() {
           + Tambah Data
         </button>
       </div>
-
-      {/* Filter */}
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
         <div className="flex flex-wrap gap-4">
           <input
@@ -248,8 +246,6 @@ function Tagihan() {
           </select>
         </div>
       </div>
-
-      {/* Table */}
       <div
         className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
@@ -333,7 +329,6 @@ function Tagihan() {
         </table>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 animate-fadeIn">
           <div className={`bg-white rounded-2xl w-96 p-6 relative shadow-xl ${animateModal}`}>
@@ -341,6 +336,7 @@ function Tagihan() {
               {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
             </h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <label className="block text-sm font-semibold mt-1">Nama</label>
               <input
                 type="text"
                 name="name"
@@ -350,6 +346,7 @@ function Tagihan() {
                 required
                 className="p-2 border rounded-md"
               />
+                <label className="block text-sm font-semibold mt-1">Jenis Tagihan</label>
               <select
                 name="jenis_tagihan"
                 value={formData.jenis_tagihan}
@@ -364,6 +361,7 @@ function Tagihan() {
                   </option>
                 ))}
               </select>
+                <label className="block text-sm font-semibold mt-1">Jumlah</label>
               <input
                 type="text"
                 name="jumlah"
@@ -373,6 +371,7 @@ function Tagihan() {
                 required
                 className="p-2 border rounded-md"
               />
+                <label className="block text-sm font-semibold mt-1">Status</label>
               <select
                 name="status"
                 value={formData.status}
@@ -402,7 +401,6 @@ function Tagihan() {
         </div>
       )}
 
-      {/* Animasi CSS */}
       <style>{`
         @keyframes slideUp {
           from { transform: translateY(100px); opacity: 0; }

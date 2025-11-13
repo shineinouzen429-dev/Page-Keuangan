@@ -1,167 +1,239 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Kelas() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedKelas, setSelectedKelas] = useState("");
-  const [selectedJurusan, setSelectedJurusan] = useState("");
-  const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    kelas: "",
+    jurusan: "",
+  });
 
+  const API_URL = "http://localhost:5000/kelasdata";
   const groupKelas = ["X", "XI", "XII"];
   const jurusanList = ["TSM", "AKT", "TKJ", "TB"];
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  // --- GET DATA ---
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/kategoridata");
+      const res = await axios.get(API_URL);
       setData(res.data || []);
     } catch (err) {
       console.error("Gagal ambil data kelas:", err);
+      Swal.fire("Gagal", "Tidak bisa mengambil data kelas", "error");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleResetFilter = () => {
-    setSelectedKelas("");
-    setSelectedJurusan("");
-    setSearch("");
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // --- TAMBAH DATA ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(API_URL, { ...formData, status: true });
+      Swal.fire("Berhasil", "Data kelas berhasil ditambahkan", "success");
+      setFormData({ kelas: "", jurusan: "" });
+      setShowModal(false);
+      fetchData();
+    } catch (err) {
+      Swal.fire("Gagal", "Tidak bisa menambah data kelas", "error");
+    }
   };
 
-  const filteredData = data.filter(
-    (d) =>
-      d.kategori === "siswa" &&
-      (!selectedKelas || d.kelas === selectedKelas) &&
-      (!selectedJurusan || d.jurusan === selectedJurusan) &&
-      d.nama.toLowerCase().includes(search.toLowerCase())
-  );
+  // --- HAPUS DATA ---
+  const handleDelete = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Hapus data ini?",
+      text: "Data yang dihapus tidak bisa dikembalikan.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#d33",
+    });
+    if (confirm.isConfirmed) {
+      try {
+        await axios.delete(`${API_URL}/${id}`);
+        setData(data.filter((d) => d.id !== id));
+        Swal.fire("Berhasil", "Data dihapus", "success");
+      } catch (err) {
+        Swal.fire("Gagal", "Tidak bisa menghapus data", "error");
+      }
+    }
+  };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-      </div>
-    );
-  }
+  // --- TOGGLE STATUS ---
+  const toggleStatus = async (id, status) => {
+    try {
+      const newStatus = !status;
+      await axios.patch(`${API_URL}/${id}`, { status: newStatus });
+      setData((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, status: newStatus } : item
+        )
+      );
+    } catch (err) {
+      Swal.fire("Gagal", "Tidak bisa ubah status", "error");
+    }
+  };
 
   return (
-    <div className="p-8 ml-3 bg-gradient-to-br from-slate-100 to-blue-100 min-h-screen rounded-3xl transition-all duration-300">
-
-      <div className="flex justify-between items-center mb-8 bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-2xl py-6 px-10 shadow-lg">
-        <h1 className="text-3xl font-extrabold tracking-wide drop-shadow">
-           Menu Kelas
-        </h1>
-        <span className="text-sm opacity-80 italic">
-          Manajemen Data Siswa
-        </span>
-      </div>
-
-      <div className="bg-white/80 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-8 border border-gray-200 hover:shadow-xl transition-all">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-5">
-          <input
-            type="text"
-            placeholder="🔍 Cari nama siswa..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:w-1/3 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-          />
+    <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
+      <div className="w-full max-w-6xl space-y-8">
+        {/* HEADER */}
+        <div className="flex justify-between items-center bg-blue-700 text-white px-8 py-4 rounded-2xl shadow">
+          <h1 className="text-2xl font-semibold">Data Kelas</h1>
           <button
-            onClick={handleResetFilter}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg transition-all shadow-sm"
+            onClick={() => setShowModal(true)}
+            className="bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow transition"
           >
-            Reset Filter
+            + Tambah Data
           </button>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
-  
-          <div className="flex flex-col">
-            <label className="font-semibold mb-1 text-gray-700">
-              Pilih Kelas:
-            </label>
-            <select
-              value={selectedKelas}
-              onChange={(e) => setSelectedKelas(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-            >
-              <option value="">Semua Kelas</option>
-              {groupKelas.map((kelas) => (
-                <option key={kelas} value={kelas}>
-                  Kelas {kelas}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col">
-            <label className="font-semibold mb-1 text-gray-700">
-              Pilih Jurusan:
-            </label>
-            <select
-              value={selectedJurusan}
-              onChange={(e) => setSelectedJurusan(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
-            >
-              <option value="">Semua Jurusan</option>
-              {jurusanList.map((jurusan) => (
-                <option key={jurusan} value={jurusan}>
-                  {jurusan}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* TABEL */}
+        <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
+          {loading ? (
+            <p className="text-center py-10 text-gray-500">Memuat data...</p>
+          ) : (
+            <table className="w-full text-sm text-left border-collapse">
+              <thead>
+                <tr className="bg-blue-100 text-gray-700">
+                  <th className="p-3 text-center">NO</th>
+                  <th className="p-3 text-center">KELAS</th>
+                  <th className="p-3 text-center">JURUSAN</th>
+                  <th className="p-3 text-center">STATUS</th>
+                  <th className="p-3 text-center">AKSI</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.length > 0 ? (
+                  data.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      } border-t`}
+                    >
+                      <td className="p-3 text-center">{index + 1}</td>
+                      <td className="p-3 text-center font-semibold text-blue-700">
+                        {item.kelas}
+                      </td>
+                      <td className="p-3 text-center font-semibold text-indigo-700">
+                        {item.jurusan}
+                      </td>
+                      <td className="p-3 text-center">
+                        <span
+                          onClick={() => toggleStatus(item.id, item.status)}
+                          className={`cursor-pointer px-3 py-1 rounded-full font-semibold text-xs ${
+                            item.status
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-500 text-white"
+                          }`}
+                        >
+                          {item.status ? "AKTIF" : "TIDAK AKTIF"}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-medium shadow-sm transition"
+                        >
+                          <i className="ri-delete-bin-6-line"></i> Hapus
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      className="text-center py-6 text-gray-500 italic"
+                    >
+                      Belum ada data kelas.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 
-      <div className="bg-white/90 backdrop-blur-xl shadow-lg rounded-2xl overflow-hidden border border-gray-200 transition-all hover:shadow-2xl">
-        <h2 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6">
-          Daftar Siswa{" "}
-          {selectedKelas || selectedJurusan
-            ? `(${selectedKelas || ""} ${selectedJurusan || ""})`
-            : ""}
-        </h2>
-
-        {filteredData.length > 0 ? (
-          <table className="min-w-full text-left border-collapse">
-            <thead className="bg-blue-700 text-white">
-              <tr>
-                <th className="px-4 py-2">No</th>
-                <th className="px-4 py-2">Nama</th>
-                <th className="px-4 py-2">Kelas</th>
-                <th className="px-4 py-2">Jurusan</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.map((siswa, index) => (
-                <tr
-                  key={siswa.id || index}
-                  className="odd:bg-white even:bg-blue-50 transition-all duration-200"
+      {/* MODAL TAMBAH DATA */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
+            <h2 className="text-xl font-semibold mb-4">Tambah Data Kelas</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Kelas
+                </label>
+                <select
+                  required
+                  value={formData.kelas}
+                  onChange={(e) =>
+                    setFormData({ ...formData, kelas: e.target.value })
+                  }
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                 >
-                  <td className="px-4 py-2 text-center font-semibold text-gray-700">
-                    {index + 1}
-                  </td>
-                  <td className="px-4 py-2 text-gray-800">{siswa.nama}</td>
-                  <td className="px-4 py-2 text-center font-medium text-blue-700">
-                    {siswa.kelas}
-                  </td>
-                  <td className="px-4 py-2 text-center font-medium text-indigo-700">
-                    {siswa.jurusan}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="text-center text-gray-500 py-6">
-            Tidak ada data siswa yang cocok.
-          </p>
-        )}
-      </div>
+                  <option value="">Pilih Kelas</option>
+                  {groupKelas.map((k) => (
+                    <option key={k} value={k}>
+                      {k}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Jurusan
+                </label>
+                <select
+                  required
+                  value={formData.jurusan}
+                  onChange={(e) =>
+                    setFormData({ ...formData, jurusan: e.target.value })
+                  }
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                >
+                  <option value="">Pilih Jurusan</option>
+                  {jurusanList.map((j) => (
+                    <option key={j} value={j}>
+                      {j}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
