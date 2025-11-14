@@ -1,52 +1,18 @@
 {
   "tagihan": [
     {
-      "name": "Andre Nugroho",
-      "jenis_tagihan": "SPP",
-      "jumlah": 225000,
-      "status": "Lunas",
-      "created_at": "2025-11-04T05:59:03.839Z",
-      "id": "4b2e"
-    },
-    {
+      "id": "5c8d",
+      "masterId": "d5a8",
       "name": "Dafa Husaeny",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "jenis_tagihan": "SPP",
+      "jumlah": 525000,
       "status": "Lunas",
-      "created_at": "2025-11-04T05:59:06.823Z",
-      "id": "f6d9"
-    },
-    {
-      "name": "Ayyas Assadullah Bilqis",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 520000,
-      "status": "Belum lunas",
-      "created_at": "2025-11-04T05:59:09.407Z",
-      "id": "7ab2"
-    },
-    {
-      "name": "Fadhil Nugraha",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
-      "status": "Belum lunas",
-      "created_at": "2025-11-04T05:59:22.767Z",
-      "id": "629b"
-    },
-    {
-      "id": "b37f",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 225000,
-      "status": "Lunas",
-      "created_at": "2025-11-04T05:58:00.551Z"
-    },
-    {
-      "id": "9cde",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "Uang Study Tour",
-      "jumlah": 200000,
-      "status": "Lunas",
-      "created_at": "2025-11-06T03:06:03.254Z"
+      "created_at": "2025-11-14T02:33:57.026Z"
     }
   ],
   "kategoritagihan": [
@@ -104,22 +70,80 @@
   ],
   "kelasdata": [
     {
-      "id": "8b88",
+      "id": "3f08",
       "kelas": "X",
-      "jurusan": "TKJ",
-      "status": true
+      "jurusan": "AKT"
     },
     {
-      "id": "9650",
+      "id": "829f",
+      "kelas": "X",
+      "jurusan": "TKJ"
+    },
+    {
+      "id": "b759",
+      "kelas": "X",
+      "jurusan": "TB"
+    },
+    {
+      "id": "5c59",
       "kelas": "XI",
-      "jurusan": "AKT",
-      "status": true
+      "jurusan": "TSM"
     },
     {
-      "id": "74a9",
+      "id": "18a5",
+      "kelas": "XI",
+      "jurusan": "AKT"
+    },
+    {
+      "id": "6566",
+      "kelas": "XI",
+      "jurusan": "TKJ"
+    },
+    {
+      "id": "0afb",
+      "kelas": "XI",
+      "jurusan": "TB"
+    },
+    {
+      "id": "156b",
       "kelas": "XII",
-      "jurusan": "TSM",
-      "status": true
+      "jurusan": "TSM"
+    },
+    {
+      "id": "d604",
+      "kelas": "XII",
+      "jurusan": "AKT"
+    },
+    {
+      "id": "bc5d",
+      "kelas": "XII",
+      "jurusan": "TKJ"
+    },
+    {
+      "id": "e50b",
+      "kelas": "XII",
+      "jurusan": "TB"
+    }
+  ],
+  "masterdata": [
+    {
+      "id": "d5a8",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TKJ"
+    },
+    {
+      "id": "cd66",
+      "nama": "Dimas Pradana",
+      "kategori": "guru",
+      "jabatan": "Bahasa Jawa"
+    },
+    {
+      "id": "7724",
+      "nama": "Andre Nugroho",
+      "kategori": "karyawan",
+      "bagian": "Satpam"
     }
   ]
 }

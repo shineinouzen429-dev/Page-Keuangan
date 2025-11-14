@@ -6,8 +6,8 @@ function MasterData() {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("Semua");
   const [loading, setLoading] = useState(true);
-  const [kelasAktif, setKelasAktif] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
   const [formData, setFormData] = useState({
     nama: "",
     kategori: "",
@@ -18,9 +18,7 @@ function MasterData() {
   });
 
   const API_URL = "http://localhost:5000/masterdata";
-  const KELAS_API = "http://localhost:5000/kelasdata";
 
-  // GET semua data master
   const getData = async () => {
     try {
       setLoading(true);
@@ -33,39 +31,26 @@ function MasterData() {
     }
   };
 
-  // GET data kelas aktif
- const getKelasAktif = async () => {
-  try {
-    const res = await axios.get(KELAS_API);
-    // Ambil hanya kelas yang aktif dan batasi jadi 4 saja
-    const aktif = res.data
-      .filter((d) => d.status === true)
-      .slice(0, 3); // <-- Batas 4 kelas aktif saja
-    setKelasAktif(aktif);
-  } catch (err) {
-    console.error("Gagal ambil kelas aktif:", err);
-  }
-};
-  ``
-
   useEffect(() => {
     getData();
-    getKelasAktif();
   }, []);
 
-  // Hitung total
-  const totalGuru = data.filter((d) => d.kategori?.toLowerCase() === "guru").length;
-  const totalSiswa = data.filter((d) => d.kategori?.toLowerCase() === "siswa").length;
-  const totalKaryawan = data.filter((d) => d.kategori?.toLowerCase() === "karyawan").length;
+  const totalGuru = data.filter(
+    (d) => d.kategori?.toLowerCase() === "guru"
+  ).length;
+  const totalSiswa = data.filter(
+    (d) => d.kategori?.toLowerCase() === "siswa"
+  ).length;
+  const totalKaryawan = data.filter(
+    (d) => d.kategori?.toLowerCase() === "karyawan"
+  ).length;
   const totalDatabase = data.length;
 
-  // Filter tampilan
   const filteredData =
     filter === "Semua"
       ? data
       : data.filter((d) => d.kategori?.toLowerCase() === filter.toLowerCase());
 
-  // --- Submit Data Baru ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,14 +61,17 @@ function MasterData() {
       };
 
       if (formData.kategori === "Guru") newData.jabatan = formData.jabatan;
+
       if (formData.kategori === "Siswa") {
         newData.kelas = formData.kelas;
         newData.jurusan = formData.jurusan;
       }
+
       if (formData.kategori === "Karyawan") newData.bagian = formData.bagian;
 
       await axios.post(API_URL, newData);
       Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+
       setFormData({
         nama: "",
         kategori: "",
@@ -92,6 +80,7 @@ function MasterData() {
         jabatan: "",
         bagian: "",
       });
+
       setShowModal(false);
       getData();
     } catch (err) {
@@ -103,28 +92,43 @@ function MasterData() {
   return (
     <div className="min-h-screen p-8 flex justify-center bg-gray-50">
       <div className="w-full max-w-6xl space-y-8">
-        {/* HEADER */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white flex justify-between items-center mb-6 rounded-2xl py-5 px-10 bg-gradient-to-l from-blue-800 to-blue-600 shadow-md">
-            Data Master (Gabungan)
-          </h1>
+        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
+          <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition"
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
           >
             + Tambah Data
           </button>
         </div>
 
-        {/* CARD TOTAL */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <Card title="Total Guru" count={totalGuru} color="blue" icon="ri-user-star-fill" />
-          <Card title="Total Siswa" count={totalSiswa} color="green" icon="ri-team-fill" />
-          <Card title="Total Karyawan" count={totalKaryawan} color="amber" icon="ri-user-2-fill" />
-          <Card title="Total Database" count={totalDatabase} color="purple" icon="ri-database-2-fill" />
+          <Card
+            title="Total Guru"
+            count={totalGuru}
+            color="blue"
+            icon="ri-user-star-fill"
+          />
+          <Card
+            title="Total Siswa"
+            count={totalSiswa}
+            color="green"
+            icon="ri-team-fill"
+          />
+          <Card
+            title="Total Karyawan"
+            count={totalKaryawan}
+            color="amber"
+            icon="ri-user-2-fill"
+          />
+          <Card
+            title="Total Database"
+            count={totalDatabase}
+            color="purple"
+            icon="ri-database-2-fill"
+          />
         </div>
 
-        {/* FILTER & TABLE */}
         <div className="bg-white p-6 rounded-2xl shadow border border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
             <div>
@@ -212,15 +216,16 @@ function MasterData() {
         </div>
       </div>
 
-      {/* MODAL TAMBAH DATA */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
             <h2 className="text-xl font-semibold mb-4">Tambah Data Master</h2>
+
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Nama */}
               <div>
-                <label className="text-sm font-medium text-gray-700">Nama</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Nama
+                </label>
                 <input
                   required
                   type="text"
@@ -232,9 +237,10 @@ function MasterData() {
                 />
               </div>
 
-              {/* Kategori */}
               <div>
-                <label className="text-sm font-medium text-gray-700">Kategori</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Kategori
+                </label>
                 <select
                   required
                   value={formData.kategori}
@@ -257,10 +263,11 @@ function MasterData() {
                 </select>
               </div>
 
-              {/* Field dinamis */}
               {formData.kategori === "Guru" && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Jabatan</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Jabatan
+                  </label>
                   <input
                     type="text"
                     value={formData.jabatan}
@@ -274,9 +281,11 @@ function MasterData() {
               )}
 
               {formData.kategori === "Siswa" && (
-                <>
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Kelas</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Kelas
+                    </label>
                     <select
                       required
                       value={formData.kelas}
@@ -286,16 +295,16 @@ function MasterData() {
                       className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                     >
                       <option value="">Pilih Kelas</option>
-                      {kelasAktif.map((k) => (
-                        <option key={k.id} value={k.kelas}>
-                          {k.kelas}
-                        </option>
-                      ))}
+                      <option value="X">X</option>
+                      <option value="XI">XI</option>
+                      <option value="XII">XII</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-700">Jurusan</label>
+                    <label className="text-sm font-medium text-gray-700">
+                      Jurusan
+                    </label>
                     <select
                       required
                       value={formData.jurusan}
@@ -305,19 +314,20 @@ function MasterData() {
                       className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                     >
                       <option value="">Pilih Jurusan</option>
-                      {[...new Set(kelasAktif.map((k) => k.jurusan))].map((j) => (
-                        <option key={j} value={j}>
-                          {j}
-                        </option>
-                      ))}
+                      <option value="TSM">TSM</option>
+                      <option value="TKJ">TKJ</option>
+                      <option value="AKT">AKT</option>
+                      <option value="TB">TB</option>
                     </select>
                   </div>
-                </>
+                </div>
               )}
 
               {formData.kategori === "Karyawan" && (
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Bagian</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Bagian
+                  </label>
                   <input
                     type="text"
                     value={formData.bagian}
@@ -353,7 +363,6 @@ function MasterData() {
   );
 }
 
-// Reusable Card component
 function Card({ title, count, color, icon }) {
   const colors = {
     blue: "from-blue-600 to-blue-500 text-blue-200",
@@ -366,7 +375,9 @@ function Card({ title, count, color, icon }) {
     <div
       className={`flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l ${colors[color]} text-white rounded-lg shadow-lg p-4 text-center`}
     >
-      <i className={`${icon} ${colors[color]} absolute right-2 bottom-2 text-[70px] opacity-40`}></i>
+      <i
+        className={`${icon} ${colors[color]} absolute right-2 bottom-2 text-[70px] opacity-40`}
+      ></i>
       <p className="text-sm font-semibold relative z-10">{title}</p>
       <h2 className="text-2xl font-bold mt-1 relative z-10">{count}</h2>
     </div>

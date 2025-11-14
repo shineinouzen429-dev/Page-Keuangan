@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 const Dashboard = () => {
-  const [kategoriData, setKategoriData] = useState([]);
+  const [masterData, setMasterData] = useState([]);
   const [tagihan, setTagihan] = useState([]);
   const [expandedTables, setExpandedTables] = useState({
     guru: false,
@@ -24,11 +24,12 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [resKategori, resTagihan] = await Promise.all([
-        axios.get("http://localhost:5000/kategoridata"),
+      const [resMaster, resTagihan] = await Promise.all([
+        axios.get("http://localhost:5000/masterdata"),
         axios.get("http://localhost:5000/tagihan"),
       ]);
-      setKategoriData(resKategori.data || []);
+
+      setMasterData(resMaster.data || []);
       setTagihan(resTagihan.data || []);
     } catch (err) {
       console.error("Gagal memuat data:", err);
@@ -42,13 +43,17 @@ const Dashboard = () => {
       minimumFractionDigits: 0,
     });
 
-  const totalGuru = kategoriData.filter((d) => d.kategori === "guru").length;
-  const totalSiswa = kategoriData.filter((d) => d.kategori === "siswa").length;
-  const totalKaryawan = kategoriData.filter((d) => d.kategori === "karyawan").length;
+  const totalGuru = masterData.filter((d) => d.kategori === "guru").length;
+  const totalSiswa = masterData.filter((d) => d.kategori === "siswa").length;
+  const totalKaryawan = masterData.filter(
+    (d) => d.kategori === "karyawan"
+  ).length;
   const totalDatabase = totalGuru + totalSiswa + totalKaryawan;
 
   const totalLunas = tagihan.filter((t) => t.status === "Lunas").length;
-  const totalBelumLunas = tagihan.filter((t) => t.status === "Belum lunas").length;
+  const totalBelumLunas = tagihan.filter(
+    (t) => t.status === "Belum lunas"
+  ).length;
   const totalDataTagihan = tagihan.length;
   const totalNominalLunas = tagihan
     .filter((t) => t.status === "Lunas")
@@ -83,12 +88,15 @@ const Dashboard = () => {
         <h2 className="text-xl font-bold mb-3 text-gray-700 border-l-4 border-blue-600 pl-2">
           {title}
         </h2>
-        <div className="overflow-x-auto rounded-lg shadow-md transition-all duration-500 ease-in-out">
+        <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="w-full border border-gray-300">
             <thead className="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
               <tr>
                 {columns.map((col, i) => (
-                  <th key={i} className="py-2 px-3 text-left border-b border-gray-200">
+                  <th
+                    key={i}
+                    className="py-2 px-3 text-left border-b border-gray-200"
+                  >
                     {col}
                   </th>
                 ))}
@@ -130,8 +138,8 @@ const Dashboard = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center uppercase">
         <i className="ri-dashboard-fill"></i> Dashboard
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-600 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-user-star-fill text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Total Guru</p>
@@ -141,54 +149,71 @@ const Dashboard = () => {
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-600 to-green-500 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-team-fill text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Total Siswa</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalSiswa}</h2>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalSiswa}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-yellow-600 to-amber-500 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-user-2-fill text-yellow-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Total Karyawan</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalKaryawan}</h2>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalKaryawan}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-purple-600 to-violet-500 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-database-2-fill text-purple-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Total Database</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalDatabase}</h2>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalDatabase}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-700 to-emerald-600 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-check-double-line text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Tagihan Lunas</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalLunas}</h2>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalLunas}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-red-600 to-rose-600 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-error-warning-fill text-red-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
           <p className="text-sm font-semibold relative z-10">Belum Lunas</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalBelumLunas}</h2>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalBelumLunas}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-indigo-600 to-cyan-600 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-file-list-3-line text-cyan-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Data Tagihan</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalDataTagihan}</h2>
+          <p className="text-sm font-semibold relative z-10">
+            Total Data Tagihan
+          </p>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {totalDataTagihan}
+          </h2>
         </div>
 
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-800 to-sky-600 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-money-dollar-circle-line text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Nominal Lunas</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{formatRupiah(totalNominalLunas)}</h2>
+          <p className="text-sm font-semibold relative z-10">
+            Total Nominal Lunas
+          </p>
+          <h2 className="text-2xl font-bold mt-1 relative z-10">
+            {formatRupiah(totalNominalLunas)}
+          </h2>
         </div>
-
       </div>
 
       <Table
         id="guru"
         title="Data Guru"
-        columns={["No", "Nama", "Mapel"]}
-        data={kategoriData.filter((d) => d.kategori === "guru")}
+        columns={["No", "Nama", "Mapel / Jabatan"]}
+        data={masterData.filter((d) => d.kategori === "guru")}
         renderRow={(guru, i) => (
-          <tr key={i} className="odd:bg-white even:bg-gray-100 ">
+          <tr key={i} className="odd:bg-white even:bg-gray-100">
             <td className="py-2 px-3 text-center">{i + 1}</td>
             <td className="py-2 px-3">{guru.nama}</td>
             <td className="py-2 px-3">{guru.jabatan || "-"}</td>
@@ -200,7 +225,7 @@ const Dashboard = () => {
         id="siswa"
         title="Data Siswa"
         columns={["No", "Nama", "Kelas", "Jurusan"]}
-        data={kategoriData.filter((d) => d.kategori === "siswa")}
+        data={masterData.filter((d) => d.kategori === "siswa")}
         renderRow={(siswa, i) => (
           <tr key={i} className="odd:bg-white even:bg-gray-100">
             <td className="py-2 px-3 text-center">{i + 1}</td>
@@ -215,7 +240,7 @@ const Dashboard = () => {
         id="karyawan"
         title="Data Karyawan"
         columns={["No", "Nama", "Bagian"]}
-        data={kategoriData.filter((d) => d.kategori === "karyawan")}
+        data={masterData.filter((d) => d.kategori === "karyawan")}
         renderRow={(kar, i) => (
           <tr key={i} className="odd:bg-white even:bg-gray-100">
             <td className="py-2 px-3 text-center">{i + 1}</td>
@@ -232,7 +257,7 @@ const Dashboard = () => {
         data={tagihan}
         renderRow={(t, i) => (
           <tr key={i} className="odd:bg-white even:bg-gray-100">
-            <td className="text-center py-2 px-3">{i + 1}</td>
+            <td className="py-2 px-3 text-center">{i + 1}</td>
             <td className="py-2 px-3">{t.name}</td>
             <td className="py-2 px-3">{t.jenis_tagihan}</td>
             <td className="py-2 px-3 text-right">{formatRupiah(t.jumlah)}</td>
