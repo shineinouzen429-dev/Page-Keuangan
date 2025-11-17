@@ -7,6 +7,9 @@ function KategoriTagihan() {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
   const [formData, setFormData] = useState({
     type_bill: "",
     keterangan: "",
@@ -31,20 +34,54 @@ function KategoriTagihan() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isEdit) return handleUpdate(); 
+
     try {
       await axios.post("http://localhost:5000/kategoritagihan", formData);
-      Swal.fire({
-        title: "Berhasil!",
-        text: "Data Berhasil Ditambahkan.",
-        icon: "success",
-      });
+      Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
+
       setModal(false);
-      setFormData({ type_bill: "", keterangan: "", masih: "" });
+      resetForm();
       fetchData();
     } catch (error) {
       console.error("Gagal menambah data:", error);
       Swal.fire("Error!", "Gagal menambah data.", "error");
     }
+  };
+
+  const handleEditClick = (item) => {
+    setIsEdit(true);
+    setEditingId(item.id);
+
+    setFormData({
+      type_bill: item.type_bill,
+      keterangan: item.keterangan,
+      masih: item.masih,
+    });
+
+    setModal(true);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:5000/kategoritagihan/${editingId}`, formData);
+
+      Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
+
+      setModal(false);
+      resetForm();
+      fetchData();
+    } catch (error) {
+      console.error("Gagal update:", error);
+      Swal.fire("Error!", "Gagal memperbarui data.", "error");
+    }
+  };
+
+  const resetForm = () => {
+    setIsEdit(false);
+    setEditingId(null);
+    setFormData({ type_bill: "", keterangan: "", masih: "" });
   };
 
   const handleDelete = async (id) => {
@@ -115,12 +152,17 @@ function KategoriTagihan() {
       <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
         <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
         <button
-          onClick={() => setModal(true)}
+          onClick={() => {
+            resetForm();
+            setModal(true);
+          }}
           className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
         >
           + Tambah Data
         </button>
       </div>
+
+
       <div
         className={`transition-all duration-700 overflow-x-auto bg-white/80 backdrop-blur-md shadow-lg rounded-3xl border border-blue-200 ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
@@ -138,6 +180,7 @@ function KategoriTagihan() {
               </th>
             </tr>
           </thead>
+
           <tbody>
             {tagihan.length > 0 ? (
               tagihan.map((item, index) => (
@@ -145,11 +188,18 @@ function KategoriTagihan() {
                   key={item.id}
                   className="border-b hover:bg-blue-50 transition duration-200 text-sm cursor-default"
                 >
-                  <td className="text-center px-5 py-4 font-semibold">{index + 1}</td>
-                  <td className="text-left px-5 py-4 font-medium">{item.type_bill}</td>
+                  <td className="text-center px-5 py-4 font-semibold">
+                    {index + 1}
+                  </td>
+
+                  <td className="text-left px-5 py-4 font-medium">
+                    {item.type_bill}
+                  </td>
+
                   <td className="text-left px-5 py-4 italic text-gray-600">
                     {item.keterangan || "-"}
                   </td>
+
                   <td className="text-center px-5 py-4">
                     <button
                       onClick={() => handleToggleStatus(item)}
@@ -158,23 +208,27 @@ function KategoriTagihan() {
                           ? "bg-green-500 hover:bg-green-600"
                           : "bg-gray-500 hover:bg-gray-600"
                       }`}
-                      aria-label={`Ubah status menjadi ${
-                        item.masih?.toLowerCase() === "aktif"
-                          ? "tidak aktif"
-                          : "aktif"
-                      }`}
                     >
-                      {item.masih?.toUpperCase() || "TIDAK DIKETAHUI"}
+                      {item.masih?.toUpperCase() || "UNKNOWN"}
                     </button>
                   </td>
-                  <td className="text-center px-5 py-4">
+
+                  <td className="text-center px-5 py-4 flex justify-center gap-2">
+
+              
+                    <button
+                      onClick={() => handleEditClick(item)}
+                      className="inline-flex items-center gap-2 px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:scale-95 rounded-lg text-white text-sm shadow-md transition select-none"
+                    >
+                      <i className="ri-edit-2-fill"></i> Edit
+                    </button>
+
+             
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="inline-flex items-center gap-2 px-4 py-1 bg-red-600 hover:bg-red-700 active:scale-95 rounded-lg text-white text-sm shadow-md transition select-none"
-                      aria-label="Hapus data tagihan"
                     >
-                     <i class="ri-delete-bin-6-fill"></i>
-                      Hapus
+                      <i className="ri-delete-bin-6-fill"></i> Hapus
                     </button>
                   </td>
                 </tr>
@@ -197,8 +251,9 @@ function KategoriTagihan() {
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 animate-fadeIn">
           <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-8 relative">
             <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">
-              Tambah Data Tagihan
+              {isEdit ? "Edit Data Tagihan" : "Tambah Data Tagihan"}
             </h2>
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block mb-2 font-semibold text-gray-700">
@@ -206,7 +261,6 @@ function KategoriTagihan() {
                 </label>
                 <input
                   type="text"
-                  name="type_bill"
                   placeholder="Masukkan Jenis Tagihan"
                   value={formData.type_bill}
                   onChange={(e) =>
@@ -223,7 +277,6 @@ function KategoriTagihan() {
                 </label>
                 <input
                   type="text"
-                  name="keterangan"
                   placeholder="Masukkan Keterangan"
                   value={formData.keterangan}
                   onChange={(e) =>
@@ -238,7 +291,6 @@ function KategoriTagihan() {
                   Status
                 </label>
                 <select
-                  name="masih"
                   value={formData.masih}
                   onChange={(e) =>
                     setFormData({ ...formData, masih: e.target.value })
@@ -255,16 +307,20 @@ function KategoriTagihan() {
               <div className="flex justify-end gap-4 mt-8">
                 <button
                   type="button"
-                  onClick={() => setModal(false)}
+                  onClick={() => {
+                    setModal(false);
+                    resetForm();
+                  }}
                   className="px-5 py-2 rounded-lg bg-gray-400 hover:bg-gray-500 text-white font-semibold transition active:scale-95"
                 >
                   Batal
                 </button>
+
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition active:scale-95"
                 >
-                  Simpan
+                  {isEdit ? "Perbarui" : "Simpan"}
                 </button>
               </div>
             </form>

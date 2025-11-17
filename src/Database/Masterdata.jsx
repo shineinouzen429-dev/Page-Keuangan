@@ -8,6 +8,9 @@ function MasterData() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
+
   const [formData, setFormData] = useState({
     nama: "",
     kategori: "",
@@ -61,16 +64,19 @@ function MasterData() {
       };
 
       if (formData.kategori === "Guru") newData.jabatan = formData.jabatan;
-
       if (formData.kategori === "Siswa") {
         newData.kelas = formData.kelas;
         newData.jurusan = formData.jurusan;
       }
-
       if (formData.kategori === "Karyawan") newData.bagian = formData.bagian;
 
-      await axios.post(API_URL, newData);
-      Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+      if (editMode) {
+        await axios.put(`${API_URL}/${editId}`, newData);
+        Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
+      } else {
+        await axios.post(API_URL, newData);
+        Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
+      }
 
       setFormData({
         nama: "",
@@ -81,11 +87,52 @@ function MasterData() {
         bagian: "",
       });
 
+      setEditMode(false);
+      setEditId(null);
       setShowModal(false);
       getData();
     } catch (err) {
       console.error("Gagal tambah data:", err);
-      Swal.fire("Gagal", "Tidak bisa menambah data", "error");
+      Swal.fire("Gagal", "Tidak bisa menyimpan data", "error");
+    }
+  };
+
+  const handleEdit = (item) => {
+    setEditMode(true);
+    setEditId(item.id);
+    setShowModal(true);
+
+    setFormData({
+      nama: item.nama || "",
+      kategori: item.kategori
+        ? item.kategori.charAt(0).toUpperCase() + item.kategori.slice(1)
+        : "",
+      kelas: item.kelas || "",
+      jurusan: item.jurusan || "",
+      jabatan: item.jabatan || "",
+      bagian: item.bagian || "",
+    });
+  };
+
+  const handleDelete = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Yakin ingin menghapus?",
+      text: "Data yang dihapus tidak bisa dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      Swal.fire("Berhasil", "Data berhasil dihapus", "success");
+      getData();
+    } catch (err) {
+      console.error("Gagal hapus:", err);
+      Swal.fire("Gagal", "Tidak bisa menghapus data", "error");
     }
   };
 
@@ -95,7 +142,18 @@ function MasterData() {
         <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
           <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setEditMode(false);
+              setFormData({
+                nama: "",
+                kategori: "",
+                kelas: "",
+                jurusan: "",
+                jabatan: "",
+                bagian: "",
+              });
+              setShowModal(true);
+            }}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
           >
             + Tambah Data
@@ -134,7 +192,7 @@ function MasterData() {
             <div>
               <h2 className="text-xl font-semibold">Daftar Data</h2>
               <p className="text-sm text-gray-500">
-                Menampilkan semua data kategori: Guru, Siswa, dan Karyawan.
+                Menampilkan semua data kategori.
               </p>
             </div>
 
@@ -161,8 +219,11 @@ function MasterData() {
                     <th className="p-3">Nama</th>
                     <th className="p-3">Mapel / Kelas / Bagian</th>
                     <th className="p-3">Kategori</th>
+
+                    <th className="p-3 text-center">Aksi</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {filteredData.length > 0 ? (
                     filteredData.map((item, index) => (
@@ -191,18 +252,32 @@ function MasterData() {
                                 : "bg-yellow-100 text-yellow-700"
                             }`}
                           >
-                            {item.kategori
-                              ? item.kategori.charAt(0).toUpperCase() +
-                                item.kategori.slice(1)
-                              : "-"}
+                            {item.kategori.charAt(0).toUpperCase() +
+                              item.kategori.slice(1)}
                           </span>
+                        </td>
+
+                        <td className="p-3 text-center space-x-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            onClick={() => handleDelete(item.id)}
+                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                          >
+                            Hapus
+                          </button>
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
-                        colSpan="4"
+                        colSpan="5"
                         className="text-center py-6 text-gray-500 italic"
                       >
                         Tidak ada data untuk kategori ini.
@@ -219,7 +294,9 @@ function MasterData() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Tambah Data Master</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {editMode ? "Edit Data" : "Tambah Data Master"}
+            </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -275,7 +352,6 @@ function MasterData() {
                       setFormData({ ...formData, jabatan: e.target.value })
                     }
                     className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                    placeholder="Contoh: Wali Kelas, Guru BK"
                   />
                 </div>
               )}
@@ -335,7 +411,6 @@ function MasterData() {
                       setFormData({ ...formData, bagian: e.target.value })
                     }
                     className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                    placeholder="Contoh: Administrasi, Keamanan"
                   />
                 </div>
               )}
@@ -343,7 +418,10 @@ function MasterData() {
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false);
+                    setEditMode(false);
+                  }}
                   className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
                 >
                   Batal
@@ -352,7 +430,7 @@ function MasterData() {
                   type="submit"
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Simpan
+                  {editMode ? "Perbarui" : "Simpan"}
                 </button>
               </div>
             </form>

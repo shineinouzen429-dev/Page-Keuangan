@@ -61,7 +61,7 @@ const Dashboard = () => {
 
   const Table = ({ id, title, columns, data, renderRow }) => {
     const isExpanded = expandedTables[id];
-    const displayData = isExpanded ? data : data.slice(0, 3);
+    const displayData = isExpanded ? data : data.slice(0, 5);
 
     const handleToggleExpand = () => {
       const currentScroll = window.scrollY;
@@ -119,7 +119,7 @@ const Dashboard = () => {
           </table>
         </div>
 
-        {data.length > 3 && (
+        {data.length > 5 && (
           <div className="flex justify-center mt-3">
             <button
               onClick={handleToggleExpand}
@@ -136,7 +136,7 @@ const Dashboard = () => {
   return (
     <div className="p-6 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center uppercase">
-        <i className="ri-dashboard-fill"></i> Dashboard
+        <i className="ri-dashboard-fill text-blue-500"></i> Dashboard
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

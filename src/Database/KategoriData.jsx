@@ -5,8 +5,19 @@ import Swal from "sweetalert2";
 function KategoriData() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [showModal, setShowModal] = useState(false);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+
   const [formData, setFormData] = useState({ kategori: "", keterangan: "" });
+
+  const [editData, setEditData] = useState({
+    id: "",
+    kategori: "",
+    keterangan: "",
+  });
+
   const API_URL = "http://localhost:5000/kategoridata";
 
   const getData = async () => {
@@ -78,10 +89,36 @@ function KategoriData() {
     }
   };
 
+  const openEdit = (item) => {
+    setEditData({
+      id: item.id,
+      kategori: item.kategori,
+      keterangan: item.keterangan,
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.patch(`${API_URL}/${editData.id}`, {
+        kategori: editData.kategori,
+        keterangan: editData.keterangan,
+      });
+
+      Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
+      setShowEditModal(false);
+      getData();
+    } catch (err) {
+      console.error("Gagal edit data:", err);
+      Swal.fire("Gagal", "Tidak bisa memperbarui data", "error");
+    }
+  };
+
   return (
     <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
       <div className="w-full max-w-6xl space-y-8">
-        {/* HEADER */}
         <div className="flex justify-between items-center bg-blue-700 text-white px-8 py-4 rounded-2xl shadow">
           <h1 className="text-2xl font-semibold">Kategori Data</h1>
           <button
@@ -91,8 +128,6 @@ function KategoriData() {
             + Tambah Data
           </button>
         </div>
-
-        {/* TABEL */}
         <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
           {loading ? (
             <p className="text-center py-10 text-gray-500">Memuat data...</p>
@@ -133,7 +168,14 @@ function KategoriData() {
                           {item.status ? "AKTIF" : "TIDAK AKTIF"}
                         </span>
                       </td>
-                      <td className="p-3 text-center">
+                      <td className="p-3 text-center space-x-2">
+                        <button
+                          onClick={() => openEdit(item)}
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium shadow-sm transition"
+                        >
+                          <i className="ri-edit-2-fill"></i> Edit
+                        </button>
+
                         <button
                           onClick={() => handleDelete(item.id)}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-medium shadow-sm transition"
@@ -159,7 +201,6 @@ function KategoriData() {
         </div>
       </div>
 
-      {/* MODAL TAMBAH DATA */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
@@ -204,6 +245,62 @@ function KategoriData() {
                 >
                   Batal
                 </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
+            <h2 className="text-xl font-semibold mb-4">Edit Kategori</h2>
+
+            <form onSubmit={handleEditSubmit} className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Nama Kategori
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editData.kategori}
+                  onChange={(e) =>
+                    setEditData({ ...editData, kategori: e.target.value })
+                  }
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Keterangan
+                </label>
+                <textarea
+                  rows="3"
+                  value={editData.keterangan}
+                  onChange={(e) =>
+                    setEditData({ ...editData, keterangan: e.target.value })
+                  }
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                >
+                  Batal
+                </button>
+
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"

@@ -4,11 +4,14 @@ import Swal from "sweetalert2";
 
 function Register() {
   const [formdata, setFormdata] = useState({
-    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,6 +20,14 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (formdata.password !== formdata.confirmPassword) {
+      return Swal.fire({
+        title: "Password Tidak Sama!",
+        text: "Password dan konfirmasi password harus cocok.",
+        icon: "error",
+      });
+    }
 
     localStorage.setItem(
       "user",
@@ -37,144 +48,103 @@ function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-300 via-blue-200 to-blue-100">
-      <div className="p-8 rounded-lg shadow-md w-full max-w-sm bg-gradient-to-br from-blue-300 to-blue-100">
-        <h1 className="text-2xl text-center mb-6 font-bold">Daftar</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="name"
-            >
-              Nama
-            </label>
-            <input
-              className="border rounded-2xl focus:border-black focus:outline-none bg-blue-50 focus:bg-white w-full py-2 px-3 text-gray-700 leading-tight"
-              id="name"
-              type="text"
-              name="name"
-              value={formdata.name}
-              onChange={handleChange}
-              placeholder="Massukkan Nama"
-            />
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200">
+      <div className="w-full max-w-sm p-8 rounded-3xl shadow-xl backdrop-blur-md bg-white/60 border border-white/40">
+        <h1 className="text-3xl font-extrabold text-center mb-6 text-gray-800 tracking-wide">
+          Daftar Akun
+        </h1>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="email"
-            >
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-gray-700 mb-1 font-semibold">
               Email
             </label>
             <input
-              className="border focus:border-black focus:outline-none bg-blue-50 focus:bg-white w-full py-2 px-2 rounded-2xl text-gray-700 leading-tight"
-              id="email"
+              className="w-full py-2.5 px-4 rounded-xl bg-white/70 border border-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition"
               type="email"
               name="email"
               value={formdata.email}
               onChange={handleChange}
-              placeholder="Massukan Email"
+              placeholder="Masukkan Email"
               required
             />
           </div>
-
-          <div className="mb-4 relative">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
+          <div className="relative">
+            <label className="block text-gray-700 mb-1 font-semibold">
               Password
             </label>
 
-            <div className="relative">
-              <input
-                className="border rounded-2xl focus:border-black focus:outline-none bg-blue-50 focus:bg-white w-full py-2 pl-3 pr-10 text-gray-700 leading-tight"
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formdata.password}
-                onChange={handleChange}
-                placeholder="Massukan Password"
-                required
-                aria-describedby="togglePassword"
-              />
+            <input
+              className="w-full py-2.5 px-4 pr-12 rounded-xl bg-white/70 border border-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formdata.password}
+              onChange={handleChange}
+              placeholder="Masukkan Password"
+              required
+            />
 
-              <button
-                type="button"
-                id="togglePassword"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-600 hover:text-gray-900 focus:outline-none"
-                aria-label={
-                  showPassword ? "Sembunyikan password" : "Tampilkan password"
-                }
-                aria-pressed={showPassword}
-                title={
-                  showPassword ? "Sembunyikan password" : "Tampilkan password"
-                }
-              >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9-3.5-10-7 1-2.8 4-5 8-6.1"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 3l18 18"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-10 text-gray-600 hover:text-gray-900"
+            >
+              {showPassword ? (
+                <i className="ri-eye-line text-xl"></i>
+              ) : (
+                <i className="ri-eye-off-line text-xl"></i>
+              )}
+            </button>
+          </div>
+          <div className="relative">
+            <label className="block text-gray-700 mb-1 font-semibold">
+              Konfirmasi Password
+            </label>
+
+            <input
+              className="w-full py-2.5 px-4 pr-12 rounded-xl bg-white/70 border border-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition"
+              type={showConfirm ? "text" : "password"}
+              name="confirmPassword"
+              value={formdata.confirmPassword}
+              onChange={handleChange}
+              placeholder="Konfirmasi Password"
+              required
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowConfirm((prev) => !prev)}
+              className="absolute right-4 top-10 text-gray-600 hover:text-gray-900"
+            >
+              {showConfirm ? (
+                <i className="ri-eye-line text-xl"></i>
+              ) : (
+                <i className="ri-eye-off-line text-xl"></i>
+              )}
+            </button>
           </div>
 
-          <div className="flex flex-col items-center gap-2 justify-between">
+          <div className="pt-2">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 p-30 rounded-full focus:outline-none focus:shadow-outline"
               type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-3 rounded-full shadow-md"
             >
               Daftar
             </button>
-
-            <p className="text-sm text-gray-700 font-semibold">
-              Sudah punya akun?{" "}
-              <Link
-                to="/Login"
-                className="text-blue-600 hover:text-blue-800 font-bold hover:underline"
-              >
-                Login
-              </Link>
-            </p>
           </div>
+
+          <p className="text-center text-sm text-gray-700 font-medium pt-2">
+            Sudah punya akun?{" "}
+            <Link
+              to="/Login"
+              className="text-blue-700 font-bold hover:underline"
+            >
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>

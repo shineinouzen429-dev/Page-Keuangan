@@ -38,7 +38,7 @@ function Tagihan() {
 
   const unformatRupiah = (val) => parseInt(val.replace(/[^0-9]/g, "")) || 0;
 
-  
+  // Fetch Tagihan
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,12 +53,14 @@ function Tagihan() {
     fetchData();
   }, []);
 
-
+  // Fetch Jenis Tagihan
   useEffect(() => {
     const fetchJenisTagihan = async () => {
       try {
         const res = await axios.get("http://localhost:5000/kategoritagihan");
-        setJenisTagihan(res.data.filter((j) => j.masih?.toLowerCase() === "aktif"));
+        setJenisTagihan(
+          res.data.filter((j) => j.masih?.toLowerCase() === "aktif")
+        );
       } catch (err) {
         console.error(err);
       }
@@ -66,7 +68,7 @@ function Tagihan() {
     fetchJenisTagihan();
   }, []);
 
-
+  // Fetch Master Data
   useEffect(() => {
     const fetchMaster = async () => {
       try {
@@ -78,7 +80,6 @@ function Tagihan() {
     };
     fetchMaster();
   }, []);
-
 
   const openAddModal = () => {
     setFormData({
@@ -137,7 +138,6 @@ function Tagihan() {
     }, 350);
   };
 
- 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -149,15 +149,16 @@ function Tagihan() {
     }
   };
 
-
+  // Filter suggestions hanya untuk siswa
   const handleNameInput = (e) => {
     const val = e.target.value;
     setFormData({ ...formData, name: val });
 
     if (val.length >= 1) {
-      const filtered = masterData.filter((m) =>
-        m.nama.toLowerCase().includes(val.toLowerCase())
-      );
+      const filtered = masterData
+        .filter((m) => m.kategori?.toLowerCase() === "siswa")
+        .filter((m) => m.nama.toLowerCase().includes(val.toLowerCase()));
+
       setSuggestions(filtered);
     } else {
       setSuggestions([]);
@@ -171,14 +172,13 @@ function Tagihan() {
       kategori: item.kategori?.toLowerCase() || "",
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
-      jabatan: item.jabatan || "",
-      bagian: item.bagian || "",
+      jabatan: "",
+      bagian: "",
     });
 
     setSuggestions([]);
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -212,7 +212,6 @@ function Tagihan() {
     }
   };
 
- 
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Yakin hapus?",
@@ -229,7 +228,6 @@ function Tagihan() {
     });
   };
 
- 
   const handleBayar = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
 
@@ -268,15 +266,16 @@ function Tagihan() {
     });
 
     setTagihan((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, status: "Belum lunas" } : t
-      )
+      prev.map((t) => (t.id === id ? { ...t, status: "Belum lunas" } : t))
     );
 
-    Swal.fire("Status Reset!", "Status kembali menjadi Belum Lunas.", "success");
+    Swal.fire(
+      "Status Reset!",
+      "Status kembali menjadi Belum Lunas.",
+      "success"
+    );
   };
 
-  
   const filtered = tagihan.filter(
     (t) =>
       t.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -334,7 +333,6 @@ function Tagihan() {
         </div>
       </div>
 
-    
       <div
         className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
@@ -346,6 +344,7 @@ function Tagihan() {
               <th className="px-3 py-2">No</th>
               <th className="px-3 py-2">Nama</th>
               <th className="px-3 py-2">Kelas</th>
+              <th className="px-3 py-2">Jurusan</th>
               <th className="px-3 py-2">Jenis Tagihan</th>
               <th className="px-3 py-2">Jumlah</th>
               <th className="px-3 py-2">Status</th>
@@ -360,12 +359,11 @@ function Tagihan() {
                   <td className="text-center">{i + 1}</td>
                   <td className="px-3 py-2">{t.name}</td>
                   <td className="px-3 py-2">{t.kelas || "-"}</td>
+                  <td className="px-3 py-2">{t.jurusan || "-"}</td>
                   <td className="px-3 py-2">{t.jenis_tagihan}</td>
-
                   <td className="text-right px-3 py-2">
                     {formatRupiah(t.jumlah)}
                   </td>
-
                   <td className="text-center px-3 py-2">
                     <span
                       className={`px-2 py-1 rounded-full font-semibold ${
@@ -377,7 +375,6 @@ function Tagihan() {
                       {t.status}
                     </span>
                   </td>
-
                   <td className="text-center px-3 py-2 flex gap-2 justify-center">
                     <button
                       onClick={() => openEditModal(t)}
@@ -414,7 +411,7 @@ function Tagihan() {
             ) : (
               <tr>
                 <td
-                  colSpan="7"
+                  colSpan="8"
                   className="text-center py-6 text-gray-500 italic"
                 >
                   Tidak ada data
@@ -435,11 +432,8 @@ function Tagihan() {
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          
               <div className="relative">
-                <label className="text-sm font-medium">
-                  Nama
-                </label>
+                <label className="text-sm font-medium">Nama</label>
                 <input
                   type="text"
                   name="name"
@@ -450,7 +444,6 @@ function Tagihan() {
                   className="p-2 border rounded-md w-full"
                 />
 
-           
                 {suggestions.length > 0 && (
                   <div className="border rounded-md bg-white shadow absolute z-50 w-full max-h-40 overflow-y-auto">
                     {suggestions.map((s) => (
@@ -467,7 +460,6 @@ function Tagihan() {
                 )}
               </div>
 
-             
               {formData.kategori && (
                 <div className="mt-3 p-4 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm space-y-4">
                   <div>
@@ -481,7 +473,6 @@ function Tagihan() {
                     />
                   </div>
 
-               
                   {formData.kategori === "siswa" && (
                     <>
                       <div>
@@ -507,34 +498,6 @@ function Tagihan() {
                       </div>
                     </>
                   )}
-
-                  
-                  {formData.kategori === "guru" && (
-                    <div>
-                      <label className="font-semibold text-gray-700">
-                        Jabatan
-                      </label>
-                      <input
-                        className="p-2 w-full rounded-md bg-gray-200 border"
-                        value={formData.jabatan}
-                        readOnly
-                      />
-                    </div>
-                  )}
-
-              
-                  {formData.kategori === "karyawan" && (
-                    <div>
-                      <label className="font-semibold text-gray-700">
-                        Bagian
-                      </label>
-                      <input
-                        className="p-2 w-full rounded-md bg-gray-200 border"
-                        value={formData.bagian}
-                        readOnly
-                      />
-                    </div>
-                  )}
                 </div>
               )}
 
@@ -557,7 +520,6 @@ function Tagihan() {
                 ))}
               </select>
 
-    
               <label className="block text-sm font-semibold mt-1">Jumlah</label>
               <input
                 type="text"
@@ -569,21 +531,20 @@ function Tagihan() {
                 className="p-2 border rounded-md"
               />
 
-   
               <div className="flex justify-end gap-2 mt-3">
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-4 py-2 bg-gray-400 rounded-md text-white hover:bg-gray-500"
+                  className="px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500"
                 >
                   Batal
                 </button>
 
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700"
+                  className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
                 >
-                  {isEditing ? "Update" : "Simpan"}
+                  {isEditing ? "Simpan" : "Tambah"}
                 </button>
               </div>
             </form>

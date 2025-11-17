@@ -7,6 +7,8 @@ function Kelas() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
+  const [editId, setEditId] = useState(null); 
+
   const [formData, setFormData] = useState({
     kelas: "",
     jurusan: "",
@@ -31,20 +33,37 @@ function Kelas() {
     fetchData();
   }, []);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post(API_URL, formData);
 
-      Swal.fire("Berhasil", "Data kelas berhasil ditambahkan", "success");
+    try {
+      if (editId) {
+        await axios.put(`${API_URL}/${editId}`, formData);
+        Swal.fire("Berhasil", "Data kelas berhasil diperbarui", "success");
+      } else {
+        await axios.post(API_URL, formData);
+        Swal.fire("Berhasil", "Data kelas berhasil ditambahkan", "success");
+      }
 
       setFormData({ kelas: "", jurusan: "" });
+      setEditId(null);
       setShowModal(false);
       fetchData();
     } catch (error) {
       console.error("Submit error:", error);
-      Swal.fire("Gagal", "Tidak bisa menambah data kelas", "error");
+      Swal.fire("Gagal", "Tidak bisa menyimpan data kelas", "error");
     }
+  };
+
+ 
+  const handleEdit = (item) => {
+    setFormData({
+      kelas: item.kelas,
+      jurusan: item.jurusan,
+    });
+    setEditId(item.id);
+    setShowModal(true);
   };
 
   const handleDelete = async (id) => {
@@ -74,17 +93,19 @@ function Kelas() {
   return (
     <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
       <div className="w-full max-w-6xl space-y-8">
-
         <div className="flex justify-between items-center bg-blue-700 text-white px-8 py-4 rounded-2xl shadow">
           <h1 className="text-2xl font-semibold">Data Kelas</h1>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setFormData({ kelas: "", jurusan: "" });
+              setEditId(null); 
+              setShowModal(true);
+            }}
             className="bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow transition"
           >
             + Tambah Data
           </button>
         </div>
-
         <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
           {loading ? (
             <p className="text-center py-10 text-gray-500">Memuat data...</p>
@@ -110,7 +131,14 @@ function Kelas() {
                         {item.jurusan}
                       </td>
 
-                      <td className="p-3 text-center">
+                      <td className="p-3 text-center space-x-2">
+                        <button
+                          onClick={() => handleEdit(item)}
+                          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg font-medium shadow-sm transition"
+                        >
+                          <i className="ri-edit-line"></i> Edit
+                        </button>
+
                         <button
                           onClick={() => handleDelete(item.id)}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-medium shadow-sm transition"
@@ -122,10 +150,7 @@ function Kelas() {
                   ))
                 ) : (
                   <tr>
-                    <td
-                      colSpan="3"
-                      className="text-center py-6 text-gray-500 italic"
-                    >
+                    <td colSpan="3" className="text-center py-6 text-gray-500 italic">
                       Belum ada data kelas.
                     </td>
                   </tr>
@@ -139,15 +164,18 @@ function Kelas() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Tambah Data Kelas</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {editId ? "Edit Data Kelas" : "Tambah Data Kelas"}
+            </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Kelas</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Kelas
+                </label>
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: X, XI, XII"
                   value={formData.kelas}
                   onChange={(e) =>
                     setFormData({ ...formData, kelas: e.target.value })
@@ -157,11 +185,12 @@ function Kelas() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Jurusan</label>
+                <label className="text-sm font-medium text-gray-700">
+                  Jurusan
+                </label>
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: TKJ, TSM, AKT"
                   value={formData.jurusan}
                   onChange={(e) =>
                     setFormData({ ...formData, jurusan: e.target.value })
@@ -173,7 +202,10 @@ function Kelas() {
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false);
+                    setEditId(null);
+                  }}
                   className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
                 >
                   Batal
@@ -183,11 +215,10 @@ function Kelas() {
                   type="submit"
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Simpan
+                  {editId ? "Update" : "Simpan"}
                 </button>
               </div>
             </form>
-
           </div>
         </div>
       )}
