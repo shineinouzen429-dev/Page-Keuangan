@@ -88,14 +88,15 @@ const Dashboard = () => {
         <h2 className="text-xl font-bold mb-3 text-gray-700 border-l-4 border-blue-600 pl-2">
           {title}
         </h2>
-        <div className="overflow-x-auto rounded-lg shadow-md">
-          <table className="w-full border border-gray-300">
-            <thead className="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
+
+        <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
+          <table className="w-full">
+            <thead className="bg-gray-100">
               <tr>
                 {columns.map((col, i) => (
                   <th
                     key={i}
-                    className="py-2 px-3 text-left border-b border-gray-200"
+                    className="py-3 px-4 text-left text-gray-700 font-semibold border-b"
                   >
                     {col}
                   </th>
@@ -109,7 +110,7 @@ const Dashboard = () => {
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="text-center py-3 text-gray-500 italic"
+                    className="text-center py-4 text-gray-500 italic"
                   >
                     Tidak ada data
                   </td>
@@ -123,7 +124,7 @@ const Dashboard = () => {
           <div className="flex justify-center mt-3">
             <button
               onClick={handleToggleExpand}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-semibold shadow-md transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-semibold shadow transition"
             >
               {isExpanded ? "Tampilkan Lebih Sedikit" : "Lihat Selengkapnya"}
             </button>
@@ -135,76 +136,60 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center uppercase">
-        <i className="ri-dashboard-fill text-blue-500"></i> Dashboard
+      <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center uppercase tracking-wide">
+        <i className="ri-dashboard-fill text-blue-600 mr-2"></i> Dashboard
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-600 to-blue-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-user-star-fill text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Guru</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">{totalGuru}</h2>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card
+          color="bg-blue-600"
+          icon="ri-user-star-fill"
+          title="Total Guru"
+          value={totalGuru}
+        />
+        <Card
+          color="bg-green-600"
+          icon="ri-team-fill"
+          title="Total Siswa"
+          value={totalSiswa}
+        />
+        <Card
+          color="bg-yellow-500"
+          icon="ri-user-2-fill"
+          title="Total Karyawan"
+          value={totalKaryawan}
+        />
+        <Card
+          color="bg-purple-600"
+          icon="ri-database-2-fill"
+          title="Total Database"
+          value={totalDatabase}
+        />
 
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-600 to-green-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-team-fill text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Siswa</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalSiswa}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-yellow-600 to-amber-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-user-2-fill text-yellow-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Karyawan</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalKaryawan}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-purple-600 to-violet-500 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-database-2-fill text-purple-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Total Database</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalDatabase}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-700 to-emerald-600 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-check-double-line text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Tagihan Lunas</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalLunas}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-red-600 to-rose-600 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-error-warning-fill text-red-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">Belum Lunas</p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalBelumLunas}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-indigo-600 to-cyan-600 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-file-list-3-line text-cyan-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">
-            Total Data Tagihan
-          </p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {totalDataTagihan}
-          </h2>
-        </div>
-
-        <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-blue-800 to-sky-600 text-white rounded-lg shadow-lg p-4 text-center">
-          <i className="ri-money-dollar-circle-line text-blue-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
-          <p className="text-sm font-semibold relative z-10">
-            Total Nominal Lunas
-          </p>
-          <h2 className="text-2xl font-bold mt-1 relative z-10">
-            {formatRupiah(totalNominalLunas)}
-          </h2>
-        </div>
+        <Card
+          color="bg-emerald-600"
+          icon="ri-check-double-line"
+          title="Tagihan Lunas"
+          value={totalLunas}
+        />
+        <Card
+          color="bg-red-600"
+          icon="ri-error-warning-fill"
+          title="Belum Lunas"
+          value={totalBelumLunas}
+        />
+        <Card
+          color="bg-cyan-600"
+          icon="ri-file-list-3-line"
+          title="Total Data Tagihan"
+          value={totalDataTagihan}
+        />
+        <Card
+          color="bg-blue-700"
+          icon="ri-money-dollar-circle-line"
+          title="Total Nominal Lunas"
+          value={formatRupiah(totalNominalLunas)}
+        />
       </div>
 
       <Table
@@ -213,10 +198,13 @@ const Dashboard = () => {
         columns={["No", "Nama", "Mapel / Jabatan"]}
         data={masterData.filter((d) => d.kategori === "guru")}
         renderRow={(guru, i) => (
-          <tr key={i} className="odd:bg-white even:bg-gray-100">
-            <td className="py-2 px-3 text-center">{i + 1}</td>
-            <td className="py-2 px-3">{guru.nama}</td>
-            <td className="py-2 px-3">{guru.jabatan || "-"}</td>
+          <tr
+            key={i}
+            className="odd:bg-white even:bg-gray-50  transition"
+          >
+            <td className="py-3 px-4 text-center">{i + 1}</td>
+            <td className="py-3 px-4">{guru.nama}</td>
+            <td className="py-3 px-4">{guru.jabatan || "-"}</td>
           </tr>
         )}
       />
@@ -227,11 +215,14 @@ const Dashboard = () => {
         columns={["No", "Nama", "Kelas", "Jurusan"]}
         data={masterData.filter((d) => d.kategori === "siswa")}
         renderRow={(siswa, i) => (
-          <tr key={i} className="odd:bg-white even:bg-gray-100">
-            <td className="py-2 px-3 text-center">{i + 1}</td>
-            <td className="py-2 px-3">{siswa.nama}</td>
-            <td className="py-2 px-3">{siswa.kelas || "-"}</td>
-            <td className="py-2 px-3">{siswa.jurusan || "-"}</td>
+          <tr
+            key={i}
+            className="odd:bg-white even:bg-gray-50  transition"
+          >
+            <td className="py-3 px-4 text-center">{i + 1}</td>
+            <td className="py-3 px-4">{siswa.nama}</td>
+            <td className="py-3 px-4">{siswa.kelas || "-"}</td>
+            <td className="py-3 px-4">{siswa.jurusan || "-"}</td>
           </tr>
         )}
       />
@@ -242,10 +233,13 @@ const Dashboard = () => {
         columns={["No", "Nama", "Bagian"]}
         data={masterData.filter((d) => d.kategori === "karyawan")}
         renderRow={(kar, i) => (
-          <tr key={i} className="odd:bg-white even:bg-gray-100">
-            <td className="py-2 px-3 text-center">{i + 1}</td>
-            <td className="py-2 px-3">{kar.nama}</td>
-            <td className="py-2 px-3">{kar.bagian || "-"}</td>
+          <tr
+            key={i}
+            className="odd:bg-white even:bg-gray-50  transition"
+          >
+            <td className="py-3 px-4 text-center">{i + 1}</td>
+            <td className="py-3 px-4">{kar.nama}</td>
+            <td className="py-3 px-4">{kar.bagian || "-"}</td>
           </tr>
         )}
       />
@@ -256,11 +250,14 @@ const Dashboard = () => {
         columns={["No", "Nama", "Jenis Tagihan", "Nominal", "Status"]}
         data={tagihan}
         renderRow={(t, i) => (
-          <tr key={i} className="odd:bg-white even:bg-gray-100">
-            <td className="py-2 px-3 text-center">{i + 1}</td>
-            <td className="py-2 px-3">{t.name}</td>
-            <td className="py-2 px-3">{t.jenis_tagihan}</td>
-            <td className="py-2 px-3 text-right">{formatRupiah(t.jumlah)}</td>
+          <tr
+            key={i}
+            className="odd:bg-white even:bg-gray-50  transition"
+          >
+            <td className="py-3 px-4 text-center">{i + 1}</td>
+            <td className="py-3 px-4">{t.name}</td>
+            <td className="py-3 px-4">{t.jenis_tagihan}</td>
+            <td className="py-3 px-4 text-right">{formatRupiah(t.jumlah)}</td>
             <td
               className={`text-center font-semibold ${
                 t.status === "Lunas" ? "text-green-600" : "text-red-600"
@@ -274,5 +271,17 @@ const Dashboard = () => {
     </div>
   );
 };
+
+const Card = ({ color, icon, title, value }) => (
+  <div
+    className={`${color} text-white rounded-xl shadow-lg p-6 relative overflow-hidden transform hover:scale-[1.03] transition`}
+  >
+    <i
+      className={`${icon} absolute right-3 bottom-3 text-[75px] opacity-25`}
+    ></i>
+    <p className="text-sm font-semibold relative z-10">{title}</p>
+    <h2 className="text-3xl font-bold mt-1 relative z-10">{value}</h2>
+  </div>
+);
 
 export default Dashboard;
