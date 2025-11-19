@@ -22,11 +22,8 @@ function Tagihan() {
     jenis_tagihan: "",
     jumlah: "",
     status: "Belum lunas",
-    kategori: "",
     kelas: "",
     jurusan: "",
-    jabatan: "",
-    bagian: "",
   });
 
   useEffect(() => {
@@ -38,7 +35,6 @@ function Tagihan() {
 
   const unformatRupiah = (val) => parseInt(val.replace(/[^0-9]/g, "")) || 0;
 
-  // Fetch Tagihan
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +49,6 @@ function Tagihan() {
     fetchData();
   }, []);
 
-  // Fetch Jenis Tagihan
   useEffect(() => {
     const fetchJenisTagihan = async () => {
       try {
@@ -68,7 +63,6 @@ function Tagihan() {
     fetchJenisTagihan();
   }, []);
 
-  // Fetch Master Data
   useEffect(() => {
     const fetchMaster = async () => {
       try {
@@ -87,11 +81,8 @@ function Tagihan() {
       jenis_tagihan: "",
       jumlah: "",
       status: "Belum lunas",
-      kategori: "",
       kelas: "",
       jurusan: "",
-      jabatan: "",
-      bagian: "",
     });
 
     setIsEditing(false);
@@ -105,11 +96,8 @@ function Tagihan() {
       jenis_tagihan: item.jenis_tagihan,
       jumlah: formatRupiah(item.jumlah),
       status: item.status,
-      kategori: item.kategori || "",
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
-      jabatan: item.jabatan || "",
-      bagian: item.bagian || "",
     });
 
     setIsEditing(true);
@@ -128,11 +116,8 @@ function Tagihan() {
         jenis_tagihan: "",
         jumlah: "",
         status: "Belum lunas",
-        kategori: "",
         kelas: "",
         jurusan: "",
-        jabatan: "",
-        bagian: "",
       });
       setSuggestions([]);
     }, 350);
@@ -168,11 +153,8 @@ function Tagihan() {
     setFormData({
       ...formData,
       name: item.nama,
-      kategori: item.kategori?.toLowerCase() || "",
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
-      jabatan: "",
-      bagian: "",
     });
 
     setSuggestions([]);
@@ -184,7 +166,6 @@ function Tagihan() {
     const payload = {
       ...formData,
       jumlah: unformatRupiah(formData.jumlah),
-      status: "Belum lunas",
       created_at: new Date().toISOString(),
     };
 
@@ -374,6 +355,7 @@ function Tagihan() {
                       {t.status}
                     </span>
                   </td>
+
                   <td className="text-center px-3 py-2 flex gap-2 justify-center">
                     <button
                       onClick={() => openEditModal(t)}
@@ -452,53 +434,34 @@ function Tagihan() {
                         className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
                       >
                         {s.nama} —{" "}
-                        <span className="text-blue-600">{s.kategori}</span>
+                        <span className="text-blue-600">
+                          {s.kelas} / {s.jurusan}
+                        </span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
 
-              {formData.kategori && (
-                <div className="mt-3 p-4 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm space-y-4">
-                  <div>
-                    <label className="font-semibold text-gray-700">
-                      Kategori
-                    </label>
-                    <input
-                      className="p-2 w-full rounded-md bg-gray-200 border"
-                      value={formData.kategori}
-                      readOnly
-                    />
-                  </div>
+              <label className="text-sm font-medium">Kelas</label>
+              <input
+                type="text"
+                name="kelas"
+                placeholder="Kelas"
+                value={formData.kelas}
+                onChange={handleChange}
+                className="p-2 border rounded-md w-full"
+              />
 
-                  {formData.kategori === "siswa" && (
-                    <>
-                      <div>
-                        <label className="font-semibold text-gray-700">
-                          Kelas
-                        </label>
-                        <input
-                          className="p-2 w-full rounded-md bg-gray-200 border"
-                          value={formData.kelas}
-                          readOnly
-                        />
-                      </div>
-
-                      <div>
-                        <label className="font-semibold text-gray-700">
-                          Jurusan
-                        </label>
-                        <input
-                          className="p-2 w-full rounded-md bg-gray-200 border"
-                          value={formData.jurusan}
-                          readOnly
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
+              <label className="text-sm font-medium">Jurusan</label>
+              <input
+                type="text"
+                name="jurusan"
+                placeholder="Jurusan"
+                value={formData.jurusan}
+                onChange={handleChange}
+                className="p-2 border rounded-md w-full"
+              />
 
               <label className="block text-sm font-semibold mt-1">
                 Jenis Tagihan
