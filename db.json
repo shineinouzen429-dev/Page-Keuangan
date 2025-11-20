@@ -91,6 +91,16 @@
       "jabatan": "",
       "bagian": "",
       "created_at": "2025-11-17T04:37:35.082Z"
+    },
+    {
+      "id": "b6c9",
+      "name": "Narendra Sakti",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Belum lunas",
+      "kelas": "X",
+      "jurusan": "TB",
+      "created_at": "2025-11-20T00:00:38.896Z"
     }
   ],
   "kategoritagihan": [
@@ -256,6 +266,19 @@
       "nama": "fiki",
       "kategori": "guru",
       "jabatan": "mtk"
+    },
+    {
+      "id": "a85e",
+      "nama": "Narendra Sakti",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TB"
+    },
+    {
+      "id": "eafa",
+      "nama": "Drean Julian",
+      "kategori": "guru",
+      "jabatan": "Bahasa Indonesia"
     }
   ]
 }
