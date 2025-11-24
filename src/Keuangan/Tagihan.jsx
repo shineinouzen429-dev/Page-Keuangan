@@ -3,6 +3,42 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 function Tagihan() {
+
+  // =======================
+  //  CSS ANIMASI INTERNAL
+  // =======================
+  const style = `
+    @keyframes slideUpFade {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-slideUpFade {
+      animation: slideUpFade .35s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(50px); }
+    }
+    .animate-slideUp { animation: slideUp .35s ease forwards; }
+    .animate-slideDown { animation: slideDown .35s ease forwards; }
+  `;
+
+  useEffect(() => {
+    const tag = document.createElement("style");
+    tag.innerHTML = style;
+    document.head.appendChild(tag);
+    return () => document.head.removeChild(tag);
+  }, []);
+
+  // =======================
+  //        STATE
+  // =======================
+
   const [tagihan, setTagihan] = useState([]);
   const [jenisTagihan, setJenisTagihan] = useState([]);
   const [masterData, setMasterData] = useState([]);
@@ -16,6 +52,7 @@ function Tagihan() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [animateModal, setAnimateModal] = useState("");
+  const [animatePay, setAnimatePay] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,14 +63,21 @@ function Tagihan() {
     jurusan: "",
   });
 
+  // UI visible effect
   useEffect(() => {
     setTimeout(() => setVisible(true), 100);
   }, []);
 
   const formatRupiah = (angka) =>
-    angka ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "";
+    angka
+      ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      : "";
 
-  const unformatRupiah = (val) => parseInt(val.replace(/[^0-9]/g, "")) || 0;
+  const unformatRupiah = (v) => parseInt(v.replace(/[^0-9]/g, "")) || 0;
+
+  // =======================
+  //      FETCH API
+  // =======================
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,17 +94,15 @@ function Tagihan() {
   }, []);
 
   useEffect(() => {
-    const fetchJenisTagihan = async () => {
+    const fetchJenis = async () => {
       try {
         const res = await axios.get("http://localhost:5000/kategoritagihan");
-        setJenisTagihan(
-          res.data.filter((j) => j.masih?.toLowerCase() === "aktif")
-        );
+        setJenisTagihan(res.data.filter((j) => j.masih?.toLowerCase() === "aktif"));
       } catch (err) {
         console.error(err);
       }
     };
-    fetchJenisTagihan();
+    fetchJenis();
   }, []);
 
   useEffect(() => {
@@ -69,11 +111,15 @@ function Tagihan() {
         const res = await axios.get("http://localhost:5000/masterdata");
         setMasterData(res.data);
       } catch (err) {
-        console.error("Gagal ambil masterdata:", err);
+        console.error(err);
       }
     };
     fetchMaster();
   }, []);
+
+  // =======================
+  //     MODAL HANDLER
+  // =======================
 
   const openAddModal = () => {
     setFormData({
@@ -84,7 +130,6 @@ function Tagihan() {
       kelas: "",
       jurusan: "",
     });
-
     setIsEditing(false);
     setShowModal(true);
     setAnimateModal("animate-slideUp");
@@ -94,7 +139,7 @@ function Tagihan() {
     setFormData({
       name: item.name,
       jenis_tagihan: item.jenis_tagihan,
-      jumlah: formatRupiah(item.jumlah),
+      jumlah: formatRupiah(String(item.jumlah).replace(/[^0-9]/g, "")),
       status: item.status,
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
@@ -111,6 +156,7 @@ function Tagihan() {
     setTimeout(() => {
       setShowModal(false);
       setIsEditing(false);
+      setSuggestions([]);
       setFormData({
         name: "",
         jenis_tagihan: "",
@@ -119,9 +165,12 @@ function Tagihan() {
         kelas: "",
         jurusan: "",
       });
-      setSuggestions([]);
     }, 350);
   };
+
+  // =======================
+  //    INPUT HANDLER
+  // =======================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -156,9 +205,12 @@ function Tagihan() {
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
     });
-
     setSuggestions([]);
   };
+
+  // =======================
+  //     SUBMIT FORM
+  // =======================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -181,39 +233,23 @@ function Tagihan() {
       } else {
         const res = await axios.post("http://localhost:5000/tagihan", payload);
         setTagihan((prev) => [...prev, res.data]);
-
         Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
       }
 
       handleCloseModal();
+
     } catch (err) {
       console.error(err);
       Swal.fire("Error!", "Gagal menyimpan data.", "error");
     }
   };
 
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Yakin hapus?",
-      text: "Data akan dihapus permanen.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya, hapus!",
-    }).then(async (r) => {
-      if (r.isConfirmed) {
-        await axios.delete(`http://localhost:5000/tagihan/${id}`);
-        setTagihan((prev) => prev.filter((t) => t.id !== id));
-        Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
-      }
-    });
-  };
+  // =======================
+  // BAYAR & RESET
+  // =======================
 
   const handleBayar = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
-
-    if (selected.status === "Lunas") {
-      return Swal.fire("Sudah Lunas!", "Tagihan ini sudah dibayar.", "info");
-    }
 
     Swal.fire({
       title: "Bayar Tagihan?",
@@ -223,16 +259,21 @@ function Tagihan() {
       confirmButtonText: "Ya, bayar!",
     }).then(async (res) => {
       if (res.isConfirmed) {
-        await axios.put(`http://localhost:5000/tagihan/${id}`, {
-          ...selected,
-          status: "Lunas",
-        });
+        setAnimatePay(id);
 
-        setTagihan((prev) =>
-          prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
-        );
+        setTimeout(async () => {
+          await axios.put(`http://localhost:5000/tagihan/${id}`, {
+            ...selected,
+            status: "Lunas",
+          });
 
-        Swal.fire("Berhasil!", "Tagihan sudah dibayar.", "success");
+          setTagihan((prev) =>
+            prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
+          );
+
+          setAnimatePay(null);
+          Swal.fire("Berhasil!", "Tagihan sudah dibayar.", "success");
+        }, 350);
       }
     });
   };
@@ -240,21 +281,53 @@ function Tagihan() {
   const handleReset = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
 
-    await axios.put(`http://localhost:5000/tagihan/${id}`, {
-      ...selected,
-      status: "Belum lunas",
-    });
+    setAnimatePay(id);
 
-    setTagihan((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status: "Belum lunas" } : t))
-    );
+    setTimeout(async () => {
+      await axios.put(`http://localhost:5000/tagihan/${id}`, {
+        ...selected,
+        status: "Belum lunas",
+      });
 
-    Swal.fire(
-      "Status Reset!",
-      "Status kembali menjadi Belum Lunas.",
-      "success"
-    );
+      setTagihan((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, status: "Belum lunas" } : t))
+      );
+
+      setAnimatePay(null);
+      Swal.fire("Direset!", "Status kembali menjadi Belum Lunas.", "success");
+    }, 350);
   };
+
+  // =======================
+  //     DELETE DATA
+  // =======================
+
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Hapus Data?",
+      text: "Data tidak bisa dikembalikan setelah dihapus.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:5000/tagihan/${id}`);
+
+          setTagihan((prev) => prev.filter((t) => t.id !== id));
+
+          Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
+        } catch (err) {
+          console.error(err);
+          Swal.fire("Gagal!", "Tidak dapat menghapus data.", "error");
+        }
+      }
+    });
+  };
+
+  // =======================
+  //   FILTER LIST
+  // =======================
 
   const filtered = tagihan.filter(
     (t) =>
@@ -265,44 +338,49 @@ function Tagihan() {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
+  // =======================
+  //         UI PAGE
+  // =======================
+
   return (
     <div className="p-6 ml-3">
-      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
-        <h1 className="text-2xl text-white font-bold">Halaman Tagihan</h1>
+
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-blue-600 shadow-md">
+        <h1 className="text-2xl text-white font-bold">Manajemen Tagihan Siswa</h1>
 
         <button
           onClick={openAddModal}
-          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
+          className="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg shadow text-white font-semibold"
         >
           + Tambah Data
         </button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 shadow-sm">
+      {/* FILTER */}
+      <div className="bg-white border border-blue-100 rounded-2xl p-5 mb-6 shadow-sm">
         <div className="flex flex-wrap gap-4">
           <input
             type="text"
             placeholder="Cari nama..."
-            className="p-2 pl-4 w-64 border-2 border-gray-300 rounded-md"
+            className="p-2 pl-4 w-64 border border-gray-300 rounded-lg shadow-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           <select
-            className="p-2 w-52 border-2 border-gray-300 rounded-md"
+            className="p-2 w-52 border border-gray-300 rounded-lg shadow-sm"
             value={selectedJenis}
             onChange={(e) => setSelectedJenis(e.target.value)}
           >
             <option value="">Semua Jenis Tagihan</option>
             {jenisTagihan.map((j) => (
-              <option key={j.id} value={j.type_bill}>
-                {j.type_bill}
-              </option>
+              <option key={j.id} value={j.type_bill}>{j.type_bill}</option>
             ))}
           </select>
 
           <select
-            className="p-2 w-44 border-2 border-gray-300 rounded-md"
+            className="p-2 w-44 border border-gray-300 rounded-lg shadow-sm"
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
@@ -313,88 +391,88 @@ function Tagihan() {
         </div>
       </div>
 
+      {/* TABLE */}
       <div
-        className={`transition-all duration-700 overflow-x-auto bg-white shadow-md rounded-2xl ${
+        className={`transition-all duration-700 overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-200 ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
         }`}
       >
-        <table className="table-auto w-full border-gray-300">
-          <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
+        <table className="table-auto w-full text-sm">
+          <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="px-3 py-2">No</th>
-              <th className="px-3 py-2">Nama</th>
-              <th className="px-3 py-2">Kelas</th>
-              <th className="px-3 py-2">Jurusan</th>
-              <th className="px-3 py-2">Jenis Tagihan</th>
-              <th className="px-3 py-2">Jumlah</th>
-              <th className="px-3 py-2">Status</th>
-              <th className="px-3 py-2">Aksi</th>
+              <th className="px-4 py-2">No</th>
+              <th className="px-4 py-2">Nama</th>
+              <th className="px-4 py-2">Kelas</th>
+              <th className="px-4 py-2">Jurusan</th>
+              <th className="px-4 py-2">Jenis Tagihan</th>
+              <th className="px-4 py-2">Jumlah</th>
+              <th className="px-4 py-2">Status</th>
+              <th className="px-4 py-2">Aksi</th>
             </tr>
           </thead>
 
           <tbody>
-            {filtered.length > 0 ? (
-              filtered.map((t, i) => (
-                <tr key={t.id} className="hover:bg-gray-50">
-                  <td className="text-center">{i + 1}</td>
-                  <td className="px-3 py-2">{t.name}</td>
-                  <td className="px-3 py-2">{t.kelas || "-"}</td>
-                  <td className="px-3 py-2">{t.jurusan || "-"}</td>
-                  <td className="px-3 py-2">{t.jenis_tagihan}</td>
-                  <td className="text-right px-3 py-2">
-                    {formatRupiah(t.jumlah)}
-                  </td>
-                  <td className="text-center px-3 py-2">
-                    <span
-                      className={`px-2 py-1 rounded-full font-semibold ${
-                        t.status === "Lunas"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-red-100 text-red-600"
-                      }`}
-                    >
-                      {t.status}
-                    </span>
-                  </td>
+            {filtered.length > 0 ? filtered.map((t, i) => (
+              <tr
+                key={t.id}
+                className={`border-b hover:bg-blue-50 ${
+                  animatePay === t.id ? "animate-slideUpFade" : ""
+                }`}
+              >
+                <td className="text-center py-3">{i + 1}</td>
+                <td className="px-4 py-3">{t.name}</td>
+                <td className="px-4 py-3">{t.kelas || "-"}</td>
+                <td className="px-4 py-3">{t.jurusan || "-"}</td>
+                <td className="px-4 py-3">{t.jenis_tagihan}</td>
+                <td className="px-4 py-3 text-right">{formatRupiah(t.jumlah)}</td>
 
-                  <td className="text-center px-3 py-2 flex gap-2 justify-center">
+                <td className="px-4 py-3 text-center">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      t.status === "Lunas"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-red-100 text-red-600"
+                    }`}
+                  >
+                    {t.status}
+                  </span>
+                </td>
+
+                <td className="px-4 py-3 text-center flex gap-2 justify-center">
+                  <button
+                    onClick={() => openEditModal(t)}
+                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(t.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                  >
+                    Hapus
+                  </button>
+
+                  {t.status === "Belum lunas" ? (
                     <button
-                      onClick={() => openEditModal(t)}
-                      className="bg-yellow-400 hover:bg-yellow-500 px-2 py-1 rounded text-white text-sm"
+                      onClick={() => handleBayar(t.id)}
+                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow"
                     >
-                      Edit
+                      Bayar
                     </button>
-
+                  ) : (
                     <button
-                      onClick={() => handleDelete(t.id)}
-                      className="bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white text-sm"
+                      onClick={() => handleReset(t.id)}
+                      className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded shadow"
                     >
-                      Hapus
+                      Reset
                     </button>
-
-                    {t.status === "Belum lunas" ? (
-                      <button
-                        onClick={() => handleBayar(t.id)}
-                        className="bg-green-500 hover:bg-green-600 px-2 py-1 rounded text-white text-sm"
-                      >
-                        Bayar
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleReset(t.id)}
-                        className="bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded text-white text-sm"
-                      >
-                        Reset
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))
-            ) : (
+                  )}
+                </td>
+              </tr>
+            )) : (
               <tr>
-                <td
-                  colSpan="8"
-                  className="text-center py-6 text-gray-500 italic"
-                >
+                <td colSpan="8" className="text-center py-6 text-gray-500 italic">
                   Tidak ada data
                 </td>
               </tr>
@@ -403,69 +481,62 @@ function Tagihan() {
         </table>
       </div>
 
+      {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 animate-fadeIn">
-          <div
-            className={`bg-white rounded-2xl w-96 p-6 shadow-xl ${animateModal}`}
-          >
-            <h2 className="text-xl font-bold mb-4 text-center">
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+          <div className={`bg-white w-96 p-6 rounded-2xl shadow-xl ${animateModal}`}>
+            
+            <h2 className="text-xl font-bold text-center mb-4 text-blue-700">
               {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
               <div className="relative">
-                <label className="text-sm font-medium">Nama</label>
+                <label className="text-sm font-semibold">Nama</label>
                 <input
                   type="text"
                   name="name"
-                  placeholder="Nama"
                   value={formData.name}
                   onChange={handleNameInput}
+                  className="p-2 w-full border rounded-md"
                   required
-                  className="p-2 border rounded-md w-full"
                 />
 
                 {suggestions.length > 0 && (
-                  <div className="border rounded-md bg-white shadow absolute z-50 w-full max-h-40 overflow-y-auto">
+                  <div className="absolute w-full bg-white border rounded-md shadow max-h-40 overflow-y-auto z-50">
                     {suggestions.map((s) => (
                       <div
                         key={s.id}
                         onClick={() => selectSuggestion(s)}
-                        className="px-3 py-2 hover:bg-gray-200 cursor-pointer"
+                        className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
                       >
-                        {s.nama} —{" "}
-                        <span className="text-blue-600">
-                          {s.kelas} / {s.jurusan}
-                        </span>
+                        {s.nama} — <span className="text-blue-600">{s.kelas}/{s.jurusan}</span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
 
-              <label className="text-sm font-medium">Kelas</label>
+              <label className="text-sm font-semibold">Kelas</label>
               <input
                 type="text"
                 name="kelas"
-                placeholder="Kelas"
                 value={formData.kelas}
                 onChange={handleChange}
-                className="p-2 border rounded-md w-full"
+                className="p-2 w-full border rounded-md"
               />
 
-              <label className="text-sm font-medium">Jurusan</label>
+              <label className="text-sm font-semibold">Jurusan</label>
               <input
                 type="text"
                 name="jurusan"
-                placeholder="Jurusan"
                 value={formData.jurusan}
                 onChange={handleChange}
-                className="p-2 border rounded-md w-full"
+                className="p-2 w-full border rounded-md"
               />
 
-              <label className="block text-sm font-semibold mt-1">
-                Jenis Tagihan
-              </label>
+              <label className="text-sm font-semibold">Jenis Tagihan</label>
               <select
                 name="jenis_tagihan"
                 value={formData.jenis_tagihan}
@@ -474,45 +545,43 @@ function Tagihan() {
                 className="p-2 border rounded-md"
               >
                 <option value="">Pilih Jenis Tagihan</option>
-
                 {jenisTagihan.map((j) => (
-                  <option key={j.id} value={j.type_bill}>
-                    {j.type_bill}
-                  </option>
+                  <option key={j.id} value={j.type_bill}>{j.type_bill}</option>
                 ))}
               </select>
 
-              <label className="block text-sm font-semibold mt-1">Jumlah</label>
+              <label className="text-sm font-semibold">Jumlah</label>
               <input
                 type="text"
                 name="jumlah"
-                placeholder="Jumlah"
                 value={formData.jumlah}
                 onChange={handleChange}
                 required
                 className="p-2 border rounded-md"
               />
 
-              <div className="flex justify-end gap-2 mt-3">
+              <div className="flex justify-end gap-2 mt-4">
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-4 py-2 rounded-md bg-gray-400 text-white hover:bg-gray-500"
+                  className="px-4 py-2 bg-gray-400 hover:bg-gray-600 text-white rounded-md"
                 >
                   Batal
                 </button>
-
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
                 >
                   {isEditing ? "Simpan" : "Tambah"}
                 </button>
               </div>
+
             </form>
+
           </div>
         </div>
       )}
+
     </div>
   );
 }

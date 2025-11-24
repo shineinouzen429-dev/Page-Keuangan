@@ -28,17 +28,14 @@
       "created_at": "2025-11-17T00:06:13.746Z"
     },
     {
-      "id": "ecb6",
-      "name": "Ayyas assadullah bilqis",
+      "name": "Ayyas Assadullah Bilqis",
       "jenis_tagihan": "SPP",
       "jumlah": 525000,
       "status": "Lunas",
-      "kategori": "siswa",
       "kelas": "X",
       "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T00:06:28.169Z"
+      "created_at": "2025-11-24T00:14:23.380Z",
+      "id": "ecb6"
     },
     {
       "id": "03b6",
@@ -54,17 +51,14 @@
       "created_at": "2025-11-17T03:26:27.325Z"
     },
     {
-      "id": "78b4",
-      "name": "Fadhil Nugroho",
+      "name": "Fadhil Nugraha",
       "jenis_tagihan": "Seragam",
       "jumlah": 500000,
       "status": "Belum lunas",
-      "kategori": "siswa",
       "kelas": "XII",
       "jurusan": "TB",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T03:27:35.630Z"
+      "created_at": "2025-11-24T00:17:54.012Z",
+      "id": "78b4"
     },
     {
       "id": "9a16",
@@ -101,6 +95,16 @@
       "kelas": "X",
       "jurusan": "TB",
       "created_at": "2025-11-20T00:00:38.896Z"
+    },
+    {
+      "id": "3ef9",
+      "name": "Dafa Husaeny",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Lunas",
+      "kelas": "X",
+      "jurusan": "TKJ",
+      "created_at": "2025-11-24T01:36:31.935Z"
     }
   ],
   "kategoritagihan": [
@@ -140,19 +144,19 @@
     {
       "id": "a5ca",
       "kategori": "Guru",
-      "keterangan": "Pengajar siswa\n",
+      "keterangan": "Guru adalah tenaga pendidik yang bertugas mengajar, membimbing, dan menilai siswa\n",
       "status": true
     },
     {
       "id": "f185",
       "kategori": "Siswa",
-      "keterangan": "Murid didik",
+      "keterangan": "Siswa adalah peserta didik yang mengikuti proses pembelajaran di sekolah.",
       "status": true
     },
     {
-      "id": "3cf2",
+      "id": "6c78",
       "kategori": "Karyawan",
-      "keterangan": "Staf Karyawan Sekolah",
+      "keterangan": "Karyawan adalah pegawai non-guru yang membantu operasional sekolah.\n",
       "status": true
     }
   ],
@@ -222,16 +226,16 @@
       "jurusan": "TKJ"
     },
     {
-      "id": "cd66",
-      "nama": "Dimas Pradana",
+      "nama": "Zhongli",
       "kategori": "guru",
-      "jabatan": "Bahasa Jawa"
+      "jabatan": "Bahasa Jawa",
+      "id": "cd66"
     },
     {
-      "id": "7724",
-      "nama": "Andre Nugroho",
+      "nama": "Hanabi",
       "kategori": "karyawan",
-      "bagian": "Satpam"
+      "bagian": "Satpam",
+      "id": "7724"
     },
     {
       "id": "5276",
@@ -262,10 +266,10 @@
       "jurusan": "TB"
     },
     {
-      "id": "0117",
-      "nama": "fiki",
+      "nama": "Neuvillate",
       "kategori": "guru",
-      "jabatan": "mtk"
+      "jabatan": "Matematika",
+      "id": "0117"
     },
     {
       "id": "a85e",
@@ -275,10 +279,58 @@
       "jurusan": "TB"
     },
     {
-      "id": "eafa",
-      "nama": "Drean Julian",
+      "nama": "Childe",
       "kategori": "guru",
-      "jabatan": "Bahasa Indonesia"
+      "jabatan": "Bahasa Indonesia",
+      "id": "eafa"
+    },
+    {
+      "nama": "Yve",
+      "kategori": "karyawan",
+      "bagian": "Pembersih Taman",
+      "id": "0012"
+    },
+    {
+      "nama": "Zhask",
+      "kategori": "karyawan",
+      "bagian": "Petugas Kebersihan",
+      "id": "7611"
+    },
+    {
+      "nama": "Yu-Zhong",
+      "kategori": "karyawan",
+      "bagian": "Tata Usaha(TU)",
+      "id": "b5a1"
+    },
+    {
+      "nama": "Lapu-Lapu",
+      "kategori": "karyawan",
+      "bagian": "Petugas Perpustakaan",
+      "id": "b6b2"
+    },
+    {
+      "nama": "Zilong",
+      "kategori": "karyawan",
+      "bagian": "Driver",
+      "id": "9063"
+    },
+    {
+      "nama": "Capitano",
+      "kategori": "guru",
+      "jabatan": "Bahasa Inggris",
+      "id": "b6f8"
+    },
+    {
+      "nama": "Diluc",
+      "kategori": "guru",
+      "jabatan": "Bahasa Jepang",
+      "id": "6d66"
+    },
+    {
+      "id": "b382",
+      "nama": "Alhaitam",
+      "kategori": "guru",
+      "jabatan": "Olahraga"
     }
   ]
 }

@@ -45,15 +45,12 @@ const Dashboard = () => {
 
   const totalGuru = masterData.filter((d) => d.kategori === "guru").length;
   const totalSiswa = masterData.filter((d) => d.kategori === "siswa").length;
-  const totalKaryawan = masterData.filter(
-    (d) => d.kategori === "karyawan"
-  ).length;
+  const totalKaryawan = masterData.filter((d) => d.kategori === "karyawan")
+    .length;
   const totalDatabase = totalGuru + totalSiswa + totalKaryawan;
 
   const totalLunas = tagihan.filter((t) => t.status === "Lunas").length;
-  const totalBelumLunas = tagihan.filter(
-    (t) => t.status === "Belum lunas"
-  ).length;
+  const totalBelumLunas = tagihan.filter((t) => t.status === "Belum lunas").length;
   const totalDataTagihan = tagihan.length;
   const totalNominalLunas = tagihan
     .filter((t) => t.status === "Lunas")
@@ -96,7 +93,13 @@ const Dashboard = () => {
                 {columns.map((col, i) => (
                   <th
                     key={i}
-                    className="py-3 px-4 text-left text-gray-700 font-semibold border-b"
+                    className={`py-3 px-4 font-semibold border-b text-gray-700 ${
+                      col === "Status"
+                        ? "text-center"
+                        : col === "Nominal"
+                        ? "text-right"
+                        : "text-left"
+                    }`}
                   >
                     {col}
                   </th>
@@ -141,55 +144,14 @@ const Dashboard = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card
-          color="bg-blue-600"
-          icon="ri-user-star-fill"
-          title="Total Guru"
-          value={totalGuru}
-        />
-        <Card
-          color="bg-green-600"
-          icon="ri-team-fill"
-          title="Total Siswa"
-          value={totalSiswa}
-        />
-        <Card
-          color="bg-yellow-500"
-          icon="ri-user-2-fill"
-          title="Total Karyawan"
-          value={totalKaryawan}
-        />
-        <Card
-          color="bg-purple-600"
-          icon="ri-database-2-fill"
-          title="Total Database"
-          value={totalDatabase}
-        />
-
-        <Card
-          color="bg-emerald-600"
-          icon="ri-check-double-line"
-          title="Tagihan Lunas"
-          value={totalLunas}
-        />
-        <Card
-          color="bg-red-600"
-          icon="ri-error-warning-fill"
-          title="Belum Lunas"
-          value={totalBelumLunas}
-        />
-        <Card
-          color="bg-cyan-600"
-          icon="ri-file-list-3-line"
-          title="Total Data Tagihan"
-          value={totalDataTagihan}
-        />
-        <Card
-          color="bg-blue-700"
-          icon="ri-money-dollar-circle-line"
-          title="Total Nominal Lunas"
-          value={formatRupiah(totalNominalLunas)}
-        />
+        <Card color="bg-blue-600" icon="ri-user-star-fill" title="Total Guru" value={totalGuru} />
+        <Card color="bg-green-600" icon="ri-team-fill" title="Total Siswa" value={totalSiswa} />
+        <Card color="bg-yellow-500" icon="ri-user-2-fill" title="Total Karyawan" value={totalKaryawan} />
+        <Card color="bg-purple-600" icon="ri-database-2-fill" title="Total Database" value={totalDatabase} />
+        <Card color="bg-emerald-600" icon="ri-check-double-line" title="Tagihan Lunas" value={totalLunas} />
+        <Card color="bg-red-600" icon="ri-error-warning-fill" title="Belum Lunas" value={totalBelumLunas} />
+        <Card color="bg-cyan-600" icon="ri-file-list-3-line" title="Total Data Tagihan" value={totalDataTagihan} />
+        <Card color="bg-blue-700" icon="ri-money-dollar-circle-line" title="Total Nominal Lunas" value={formatRupiah(totalNominalLunas)} />
       </div>
 
       <Table
@@ -198,10 +160,7 @@ const Dashboard = () => {
         columns={["No", "Nama", "Mapel / Jabatan"]}
         data={masterData.filter((d) => d.kategori === "guru")}
         renderRow={(guru, i) => (
-          <tr
-            key={i}
-            className="odd:bg-white even:bg-gray-50  transition"
-          >
+          <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
             <td className="py-3 px-4 text-center">{i + 1}</td>
             <td className="py-3 px-4">{guru.nama}</td>
             <td className="py-3 px-4">{guru.jabatan || "-"}</td>
@@ -215,10 +174,7 @@ const Dashboard = () => {
         columns={["No", "Nama", "Kelas", "Jurusan"]}
         data={masterData.filter((d) => d.kategori === "siswa")}
         renderRow={(siswa, i) => (
-          <tr
-            key={i}
-            className="odd:bg-white even:bg-gray-50  transition"
-          >
+          <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
             <td className="py-3 px-4 text-center">{i + 1}</td>
             <td className="py-3 px-4">{siswa.nama}</td>
             <td className="py-3 px-4">{siswa.kelas || "-"}</td>
@@ -233,10 +189,7 @@ const Dashboard = () => {
         columns={["No", "Nama", "Bagian"]}
         data={masterData.filter((d) => d.kategori === "karyawan")}
         renderRow={(kar, i) => (
-          <tr
-            key={i}
-            className="odd:bg-white even:bg-gray-50  transition"
-          >
+          <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
             <td className="py-3 px-4 text-center">{i + 1}</td>
             <td className="py-3 px-4">{kar.nama}</td>
             <td className="py-3 px-4">{kar.bagian || "-"}</td>
@@ -250,19 +203,12 @@ const Dashboard = () => {
         columns={["No", "Nama", "Jenis Tagihan", "Nominal", "Status"]}
         data={tagihan}
         renderRow={(t, i) => (
-          <tr
-            key={i}
-            className="odd:bg-white even:bg-gray-50  transition"
-          >
+          <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
             <td className="py-3 px-4 text-center">{i + 1}</td>
             <td className="py-3 px-4">{t.name}</td>
             <td className="py-3 px-4">{t.jenis_tagihan}</td>
             <td className="py-3 px-4 text-right">{formatRupiah(t.jumlah)}</td>
-            <td
-              className={`text-center font-semibold ${
-                t.status === "Lunas" ? "text-green-600" : "text-red-600"
-              }`}
-            >
+            <td className={`py-3 px-4 text-center font-semibold ${t.status === "Lunas" ? "text-green-600" : "text-red-600"}`}>
               {t.status}
             </td>
           </tr>
@@ -273,16 +219,11 @@ const Dashboard = () => {
 };
 
 const Card = ({ color, icon, title, value }) => (
-  <div
-    className={`${color} text-white rounded-xl shadow-lg p-6 relative overflow-hidden transform hover:scale-[1.03] transition`}
-  >
-    <i
-      className={`${icon} absolute right-3 bottom-3 text-[75px] opacity-25`}
-    ></i>
+  <div className={`${color} text-white rounded-xl shadow-lg p-6 relative overflow-hidden transform hover:scale-[1.03] transition`}>
+    <i className={`${icon} absolute right-3 bottom-3 text-[75px] opacity-25`}></i>
     <p className="text-sm font-semibold relative z-10">{title}</p>
     <h2 className="text-3xl font-bold mt-1 relative z-10">{value}</h2>
   </div>
 );
 
 export default Dashboard;
-

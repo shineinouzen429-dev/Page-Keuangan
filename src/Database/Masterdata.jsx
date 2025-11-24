@@ -343,7 +343,7 @@ function MasterData() {
               {formData.kategori === "Guru" && (
                 <div>
                   <label className="text-sm font-medium text-gray-700">
-                    Jabatan
+                    Mapel
                   </label>
                   <input
                     type="text"
