@@ -114,7 +114,7 @@ function Login() {
             </button>
 
             <p className="text-center text-sm text-gray-700 font-medium pt-2">
-              Belum punya akun?{" "}
+              Belum Punya Akun?{" "}
               <Link
                 to="/"
                 className="text-blue-700 font-bold hover:underline"
