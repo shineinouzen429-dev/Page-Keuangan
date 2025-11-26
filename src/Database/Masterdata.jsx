@@ -139,8 +139,22 @@ function MasterData() {
   return (
     <div className="min-h-screen p-8 flex justify-center bg-gray-50">
       <div className="w-full max-w-6xl space-y-8">
-        <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
-          <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
+        <div className="flex justify-between items-center bg-white shadow-md rounded-2xl px-8 py-5 border border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+              <i className="ri-database-line text-white text-2xl"></i>
+            </div>
+
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800 leading-tight">
+                Master Data
+              </h1>
+              <p className="text-gray-500 text-sm -mt-1">
+                Kelola semua data seperti siswa, guru, karyawan & lainnya
+              </p>
+            </div>
+          </div>
+
           <button
             onClick={() => {
               setEditMode(false);
@@ -154,9 +168,10 @@ function MasterData() {
               });
               setShowModal(true);
             }}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow transition-all duration-300 hover:scale-[1.03]"
           >
-            + Tambah Data
+            <i className="ri-add-circle-line text-xl"></i>
+            Tambah Data
           </button>
         </div>
 

@@ -119,15 +119,36 @@ function KategoriData() {
   return (
     <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
       <div className="w-full max-w-6xl space-y-8">
-        <div className="flex justify-between items-center bg-blue-700 text-white px-8 py-4 rounded-2xl shadow">
-          <h1 className="text-2xl font-semibold">Kategori Data</h1>
+        <div
+          className="flex justify-between items-center 
+    bg-white shadow-md rounded-2xl px-8 py-5 border border-gray-200"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+              <i className="ri-folder-user-line text-white text-2xl"></i>
+            </div>
+
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800 leading-tight">
+                Kategori Data
+              </h1>
+              <p className="text-gray-500 text-sm -mt-1">
+                Kelola seluruh kategori data dengan mudah
+              </p>
+            </div>
+          </div>
+
           <button
             onClick={() => setShowModal(true)}
-            className="bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-lg shadow transition"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 
+    text-white px-5 py-2.5 rounded-xl font-semibold shadow 
+    transition-all duration-300 hover:scale-[1.03]"
           >
-            + Tambah Data
+            <i className="ri-add-circle-line text-xl"></i>
+            Tambah Data
           </button>
         </div>
+
         <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
           {loading ? (
             <p className="text-center py-10 text-gray-500">Memuat data...</p>

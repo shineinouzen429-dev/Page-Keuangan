@@ -35,7 +35,7 @@ function KategoriTagihan() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isEdit) return handleUpdate(); 
+    if (isEdit) return handleUpdate();
 
     try {
       await axios.post("http://localhost:5000/kategoritagihan", formData);
@@ -65,7 +65,10 @@ function KategoriTagihan() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/kategoritagihan/${editingId}`, formData);
+      await axios.put(
+        `http://localhost:5000/kategoritagihan/${editingId}`,
+        formData
+      );
 
       Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
 
@@ -132,7 +135,11 @@ function KategoriTagihan() {
           )
         );
 
-        Swal.fire("Berhasil!", `Status diubah menjadi ${newStatus}.`, "success");
+        Swal.fire(
+          "Berhasil!",
+          `Status diubah menjadi ${newStatus}.`,
+          "success"
+        );
       } catch (error) {
         console.error("Gagal ubah status:", error);
         Swal.fire("Error!", "Gagal mengubah status.", "error");
@@ -149,29 +156,47 @@ function KategoriTagihan() {
 
   return (
     <div className="p-6 ml-3 min-h-screen">
-      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-gradient-to-l from-blue-800 to-blue-600">
-        <h1 className="text-2xl text-white font-bold">Kategori Tagihan</h1>
+      <div className="flex justify-between items-center bg-white shadow-md rounded-2xl px-8 mb-5 py-5 border border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+            <i className="ri-list-check-3 text-white text-2xl"></i>
+          </div>
+
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800 leading-tight">
+              Kategori Tagihan
+            </h1>
+            <p className="text-gray-500 text-sm -mt-1">
+              Mengatur jenis tagihan & informasi terkait
+            </p>
+          </div>
+        </div>
+
         <button
           onClick={() => {
             resetForm();
             setModal(true);
           }}
-          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 
+               text-white px-5 py-2.5 rounded-xl font-semibold shadow 
+               transition-all duration-300 hover:scale-[1.03]"
         >
-          + Tambah Data
+          <i className="ri-add-circle-line text-xl"></i>
+          Tambah Data
         </button>
       </div>
 
-
       <div
-        className={`transition-all duration-700 overflow-x-auto bg-white/80 backdrop-blur-md shadow-lg rounded-3xl border border-blue-200 ${
+        className={`transition-all duration-700 overflow-x-auto backdrop-blur-md shadow-lg rounded-3xl ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
         }`}
       >
-        <table className="min-w-full border-collapse text-gray-800">
+        <table className="min-w-full border-collapse text-gray-800 text-sm">
           <thead>
-            <tr className="bg-gradient-to-r from-blue-700 to-blue-900 text-white text-sm uppercase tracking-wider select-none rounded-t-3xl">
-              <th className="px-5 py-4 text-center w-[8%] rounded-tl-3xl">No</th>
+            <tr className="bg-blue-100 text-gray-700 uppercase tracking-wide select-none">
+              <th className="px-5 py-4 text-center w-[8%] rounded-tl-3xl">
+                No
+              </th>
               <th className="px-5 py-4 text-left w-[25%]">Jenis Tagihan</th>
               <th className="px-5 py-4 text-left w-[35%]">Keterangan</th>
               <th className="px-5 py-4 text-center w-[15%]">Status</th>
@@ -186,13 +211,15 @@ function KategoriTagihan() {
               tagihan.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="border-b hover:bg-blue-50 transition duration-200 text-sm cursor-default"
+                  className={`${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  } border-t transition cursor-default`}
                 >
                   <td className="text-center px-5 py-4 font-semibold">
                     {index + 1}
                   </td>
 
-                  <td className="text-left px-5 py-4 font-medium">
+                  <td className="text-left px-5 py-4 font-medium text-gray-800">
                     {item.type_bill}
                   </td>
 
@@ -201,34 +228,40 @@ function KategoriTagihan() {
                   </td>
 
                   <td className="text-center px-5 py-4">
-                    <button
+                    <span
                       onClick={() => handleToggleStatus(item)}
-                      className={`px-4 py-1 rounded-full text-white text-xs font-semibold transition shadow-sm select-none ${
-                        item.masih?.toLowerCase() === "aktif"
-                          ? "bg-green-500 hover:bg-green-600"
-                          : "bg-gray-500 hover:bg-gray-600"
-                      }`}
+                      className={`cursor-pointer px-4 py-1 rounded-full text-white text-xs font-semibold transition shadow-sm inline-flex items-center gap-1 select-none
+                  ${
+                    item.masih?.toLowerCase() === "aktif"
+                      ? "bg-green-500 hover:bg-green-600"
+                      : "bg-gray-500 hover:bg-gray-600"
+                  }
+                `}
                     >
-                      {item.masih?.toUpperCase() || "UNKNOWN"}
-                    </button>
+                      <i
+                        className={
+                          item.masih?.toLowerCase() === "aktif"
+                            ? "ri-check-line"
+                            : "ri-close-line"
+                        }
+                      ></i>
+                      {item.masih?.toUpperCase() ?? "UNKNOWN"}
+                    </span>
                   </td>
 
                   <td className="text-center px-5 py-4 flex justify-center gap-2">
-
-              
                     <button
                       onClick={() => handleEditClick(item)}
-                      className="inline-flex items-center gap-2 px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:scale-95 rounded-lg text-white text-sm shadow-md transition select-none"
+                      className="inline-flex items-center gap-1 px-4 py-1 bg-yellow-500 hover:bg-yellow-600 active:scale-95 rounded-lg text-white text-sm shadow-sm transition select-none"
                     >
-                      <i className="ri-edit-2-fill"></i> Edit
+                      <i className="ri-edit-2-fill text-md"></i> Edit
                     </button>
 
-             
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="inline-flex items-center gap-2 px-4 py-1 bg-red-600 hover:bg-red-700 active:scale-95 rounded-lg text-white text-sm shadow-md transition select-none"
+                      className="inline-flex items-center gap-1 px-4 py-1 bg-red-600 hover:bg-red-700 active:scale-95 rounded-lg text-white text-sm shadow-sm transition select-none"
                     >
-                      <i className="ri-delete-bin-6-fill"></i> Hapus
+                      <i className="ri-delete-bin-6-fill text-md"></i> Hapus
                     </button>
                   </td>
                 </tr>
@@ -236,7 +269,7 @@ function KategoriTagihan() {
             ) : (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan={5}
                   className="text-center py-8 text-gray-400 italic select-none"
                 >
                   Belum ada data

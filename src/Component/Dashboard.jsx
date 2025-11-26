@@ -45,8 +45,7 @@ const Dashboard = () => {
 
   const totalGuru = masterData.filter((d) => d.kategori === "guru").length;
   const totalSiswa = masterData.filter((d) => d.kategori === "siswa").length;
-  const totalKaryawan = masterData.filter((d) => d.kategori === "karyawan")
-    .length;
+  const totalKaryawan = masterData.filter((d) => d.kategori === "karyawan").length;
   const totalDatabase = totalGuru + totalSiswa + totalKaryawan;
 
   const totalLunas = tagihan.filter((t) => t.status === "Lunas").length;
@@ -139,11 +138,19 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center uppercase tracking-wide">
-        <i className="ri-dashboard-fill text-blue-600 mr-2"></i> Dashboard
-      </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold tracking-wide text-gray-800">
+          <i className="ri-dashboard-fill text-blue-600 mr-3"></i>
+          Smart Monitoring Panel
+        </h1>
+
+        <p className="text-gray-500 mt-2 text-lg tracking-wide">
+          Ringkasan Data Akademik & Keuangan — real-time, cepat, dan informatif
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <Card color="bg-blue-600" icon="ri-user-star-fill" title="Total Guru" value={totalGuru} />
         <Card color="bg-green-600" icon="ri-team-fill" title="Total Siswa" value={totalSiswa} />
         <Card color="bg-yellow-500" icon="ri-user-2-fill" title="Total Karyawan" value={totalKaryawan} />
@@ -208,7 +215,11 @@ const Dashboard = () => {
             <td className="py-3 px-4">{t.name}</td>
             <td className="py-3 px-4">{t.jenis_tagihan}</td>
             <td className="py-3 px-4 text-right">{formatRupiah(t.jumlah)}</td>
-            <td className={`py-3 px-4 text-center font-semibold ${t.status === "Lunas" ? "text-green-600" : "text-red-600"}`}>
+            <td
+              className={`py-3 px-4 text-center font-semibold ${
+                t.status === "Lunas" ? "text-green-600" : "text-red-600"
+              }`}
+            >
               {t.status}
             </td>
           </tr>
@@ -219,7 +230,7 @@ const Dashboard = () => {
 };
 
 const Card = ({ color, icon, title, value }) => (
-  <div className={`${color} text-white rounded-xl shadow-lg p-6 relative overflow-hidden transform hover:scale-[1.03] transition`}>
+ <div className={`${color} text-white rounded-xl shadow-lg p-6 relative overflow-hidden`}>
     <i className={`${icon} absolute right-3 bottom-3 text-[75px] opacity-25`}></i>
     <p className="text-sm font-semibold relative z-10">{title}</p>
     <h2 className="text-3xl font-bold mt-1 relative z-10">{value}</h2>

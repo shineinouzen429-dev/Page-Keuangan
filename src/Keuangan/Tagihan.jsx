@@ -3,10 +3,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 function Tagihan() {
-
-  // =======================
-  //  CSS ANIMASI INTERNAL
-  // =======================
   const style = `
     @keyframes slideUpFade {
       0% { opacity: 0; transform: translateY(10px); }
@@ -35,10 +31,6 @@ function Tagihan() {
     return () => document.head.removeChild(tag);
   }, []);
 
-  // =======================
-  //        STATE
-  // =======================
-
   const [tagihan, setTagihan] = useState([]);
   const [jenisTagihan, setJenisTagihan] = useState([]);
   const [masterData, setMasterData] = useState([]);
@@ -63,21 +55,14 @@ function Tagihan() {
     jurusan: "",
   });
 
-  // UI visible effect
   useEffect(() => {
     setTimeout(() => setVisible(true), 100);
   }, []);
 
   const formatRupiah = (angka) =>
-    angka
-      ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-      : "";
+    angka ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "";
 
   const unformatRupiah = (v) => parseInt(v.replace(/[^0-9]/g, "")) || 0;
-
-  // =======================
-  //      FETCH API
-  // =======================
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +82,9 @@ function Tagihan() {
     const fetchJenis = async () => {
       try {
         const res = await axios.get("http://localhost:5000/kategoritagihan");
-        setJenisTagihan(res.data.filter((j) => j.masih?.toLowerCase() === "aktif"));
+        setJenisTagihan(
+          res.data.filter((j) => j.masih?.toLowerCase() === "aktif")
+        );
       } catch (err) {
         console.error(err);
       }
@@ -116,10 +103,6 @@ function Tagihan() {
     };
     fetchMaster();
   }, []);
-
-  // =======================
-  //     MODAL HANDLER
-  // =======================
 
   const openAddModal = () => {
     setFormData({
@@ -168,10 +151,6 @@ function Tagihan() {
     }, 350);
   };
 
-  // =======================
-  //    INPUT HANDLER
-  // =======================
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -208,10 +187,6 @@ function Tagihan() {
     setSuggestions([]);
   };
 
-  // =======================
-  //     SUBMIT FORM
-  // =======================
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -237,16 +212,11 @@ function Tagihan() {
       }
 
       handleCloseModal();
-
     } catch (err) {
       console.error(err);
       Swal.fire("Error!", "Gagal menyimpan data.", "error");
     }
   };
-
-  // =======================
-  // BAYAR & RESET
-  // =======================
 
   const handleBayar = async (id) => {
     const selected = tagihan.find((t) => t.id === id);
@@ -298,10 +268,6 @@ function Tagihan() {
     }, 350);
   };
 
-  // =======================
-  //     DELETE DATA
-  // =======================
-
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Hapus Data?",
@@ -325,10 +291,6 @@ function Tagihan() {
     });
   };
 
-  // =======================
-  //   FILTER LIST
-  // =======================
-
   const filtered = tagihan.filter(
     (t) =>
       t.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -338,26 +300,33 @@ function Tagihan() {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
-  // =======================
-  //         UI PAGE
-  // =======================
-
   return (
     <div className="p-6 ml-3">
-
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6 rounded-2xl py-5 px-6 bg-blue-600 shadow-md">
-        <h1 className="text-2xl text-white font-bold">Manajemen Tagihan Siswa</h1>
-
+      <div className="flex justify-between items-center bg-white shadow-md rounded-2xl px-8 mb-5 py-5 border border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+            <i className="ri-bill-line text-white text-2xl"></i>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800 leading-tight">
+              Manajemen Tagihan Siswa
+            </h1>
+            <p className="text-gray-500 text-sm -mt-1">
+              Kelola data tagihan, pembayaran, dan rincian siswa
+            </p>
+          </div>
+        </div>
         <button
           onClick={openAddModal}
-          className="bg-green-500 hover:bg-green-600 transition px-4 py-2 rounded-lg shadow text-white font-semibold"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 
+               text-white px-5 py-2.5 rounded-xl font-semibold shadow 
+               transition-all duration-300 hover:scale-[1.03]"
         >
-          + Tambah Data
+          <i className="ri-add-circle-line text-xl"></i>
+          Tambah Data
         </button>
       </div>
 
-      {/* FILTER */}
       <div className="bg-white border border-blue-100 rounded-2xl p-5 mb-6 shadow-sm">
         <div className="flex flex-wrap gap-4">
           <input
@@ -375,7 +344,9 @@ function Tagihan() {
           >
             <option value="">Semua Jenis Tagihan</option>
             {jenisTagihan.map((j) => (
-              <option key={j.id} value={j.type_bill}>{j.type_bill}</option>
+              <option key={j.id} value={j.type_bill}>
+                {j.type_bill}
+              </option>
             ))}
           </select>
 
@@ -391,14 +362,13 @@ function Tagihan() {
         </div>
       </div>
 
-      {/* TABLE */}
       <div
         className={`transition-all duration-700 overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-200 ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
         }`}
       >
         <table className="table-auto w-full text-sm">
-          <thead className="bg-blue-600 text-white">
+          <thead className="bg-blue-100 text-gray-700 uppercase tracking-wide select-none">
             <tr>
               <th className="px-4 py-2">No</th>
               <th className="px-4 py-2">Nama</th>
@@ -412,67 +382,75 @@ function Tagihan() {
           </thead>
 
           <tbody>
-            {filtered.length > 0 ? filtered.map((t, i) => (
-              <tr
-                key={t.id}
-                className={`border-b hover:bg-blue-50 ${
-                  animatePay === t.id ? "animate-slideUpFade" : ""
-                }`}
-              >
-                <td className="text-center py-3">{i + 1}</td>
-                <td className="px-4 py-3">{t.name}</td>
-                <td className="px-4 py-3">{t.kelas || "-"}</td>
-                <td className="px-4 py-3">{t.jurusan || "-"}</td>
-                <td className="px-4 py-3">{t.jenis_tagihan}</td>
-                <td className="px-4 py-3 text-right">{formatRupiah(t.jumlah)}</td>
+            {filtered.length > 0 ? (
+              filtered.map((t, i) => (
+                <tr
+                  className={`${
+                    i % 2 === 0 ? "bg-white" : "bg-gray-50"
+                  } border-t transition ${
+                    animatePay === t.id ? "animate-slideUpFade" : ""
+                  }`}
+                >
+                  <td className="text-center py-3">{i + 1}</td>
+                  <td className="px-4 py-3">{t.name}</td>
+                  <td className="px-4 py-3">{t.kelas || "-"}</td>
+                  <td className="px-4 py-3">{t.jurusan || "-"}</td>
+                  <td className="px-4 py-3">{t.jenis_tagihan}</td>
+                  <td className="px-4 py-3 text-right">
+                    {formatRupiah(t.jumlah)}
+                  </td>
 
-                <td className="px-4 py-3 text-center">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      t.status === "Lunas"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {t.status}
-                  </span>
-                </td>
-
-                <td className="px-4 py-3 text-center flex gap-2 justify-center">
-                  <button
-                    onClick={() => openEditModal(t)}
-                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(t.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
-                  >
-                    Hapus
-                  </button>
-
-                  {t.status === "Belum lunas" ? (
-                    <button
-                      onClick={() => handleBayar(t.id)}
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow"
+                  <td className="px-4 py-3 text-center">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        t.status === "Lunas"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
                     >
-                      Bayar
-                    </button>
-                  ) : (
+                      {t.status}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-3 text-center flex gap-2 justify-center">
                     <button
-                      onClick={() => handleReset(t.id)}
-                      className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded shadow"
+                      onClick={() => openEditModal(t)}
+                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow"
                     >
-                      Reset
+                      Edit
                     </button>
-                  )}
-                </td>
-              </tr>
-            )) : (
+
+                    <button
+                      onClick={() => handleDelete(t.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                    >
+                      Hapus
+                    </button>
+
+                    {t.status === "Belum lunas" ? (
+                      <button
+                        onClick={() => handleBayar(t.id)}
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow"
+                      >
+                        Bayar
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleReset(t.id)}
+                        className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded shadow"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td colSpan="8" className="text-center py-6 text-gray-500 italic">
+                <td
+                  colSpan="8"
+                  className="text-center py-6 text-gray-500 italic"
+                >
                   Tidak ada data
                 </td>
               </tr>
@@ -481,17 +459,16 @@ function Tagihan() {
         </table>
       </div>
 
-      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className={`bg-white w-96 p-6 rounded-2xl shadow-xl ${animateModal}`}>
-            
+          <div
+            className={`bg-white w-96 p-6 rounded-2xl shadow-xl ${animateModal}`}
+          >
             <h2 className="text-xl font-bold text-center mb-4 text-blue-700">
               {isEditing ? "Edit Tagihan" : "Tambah Tagihan"}
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-
               <div className="relative">
                 <label className="text-sm font-semibold">Nama</label>
                 <input
@@ -511,7 +488,10 @@ function Tagihan() {
                         onClick={() => selectSuggestion(s)}
                         className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
                       >
-                        {s.nama} — <span className="text-blue-600">{s.kelas}/{s.jurusan}</span>
+                        {s.nama} —{" "}
+                        <span className="text-blue-600">
+                          {s.kelas}/{s.jurusan}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -546,7 +526,9 @@ function Tagihan() {
               >
                 <option value="">Pilih Jenis Tagihan</option>
                 {jenisTagihan.map((j) => (
-                  <option key={j.id} value={j.type_bill}>{j.type_bill}</option>
+                  <option key={j.id} value={j.type_bill}>
+                    {j.type_bill}
+                  </option>
                 ))}
               </select>
 
@@ -575,13 +557,10 @@ function Tagihan() {
                   {isEditing ? "Simpan" : "Tambah"}
                 </button>
               </div>
-
             </form>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }

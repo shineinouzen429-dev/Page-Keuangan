@@ -17,10 +17,10 @@ function Sidnav() {
       </button>
 
       <div
-        className={`fixed top-0 left-0 h-screen w-64 bg-blue-950 text-white z-40 shadow-2xl border-r border-slate-700 flex flex-col justify-between transform transition-transform duration-300 ease-in-out
+        className={`fixed top-0 left-0 h-screen w-64 bg-gray-950 text-white z-40 shadow-2xl border-r border-slate-700 flex flex-col justify-between transform transition-transform duration-300 ease-in-out
           ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        <div className="flex flex-col items-center bg-blue-950 py-2 shadow-5xl text-white">
+        <div className="flex flex-col items-center bg-gray-950 py-2 shadow-5xl text-white">
           <div className="w-16 h-16 rounded-full bg-blue-700 flex items-center justify-center shadow-lg">
             <i className="ri-school-fill text-3xl text-blue-200"></i>
           </div>
@@ -35,8 +35,8 @@ function Sidnav() {
             to="/Dashboard"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/Dashboard")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-dashboard-fill"></i>Dashboard
@@ -50,8 +50,8 @@ function Sidnav() {
             to="/KategoriData"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/KategoriData")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-folder-user-fill"></i>Kategori Data
@@ -61,8 +61,8 @@ function Sidnav() {
             to="/Kelas"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/Kelas")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-team-fill"></i>Kelas
@@ -72,8 +72,8 @@ function Sidnav() {
             to="/MasterData"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/MasterData")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-database-fill"></i>Master Data
@@ -87,8 +87,8 @@ function Sidnav() {
             to="/KategoriTagihan"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/KategoriTagihan")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-list-check-3"></i>Kategori Tagihan
@@ -98,8 +98,8 @@ function Sidnav() {
             to="/Tagihan"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/Tagihan")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-bill-fill"></i>Tagihan
@@ -109,8 +109,8 @@ function Sidnav() {
             to="/RekapTagihan"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
               isActive("/RekapTagihan")
-                ? "bg-blue-900 shadow-inner"
-                : "hover:bg-blue-900 hover:translate-x-1"
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
             }`}
           >
             <i class="ri-bar-chart-fill"></i>Rekap Tagihan
