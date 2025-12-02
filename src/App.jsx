@@ -18,6 +18,8 @@ import Kelas from './Database/Kelas';
 import MasterData from './Database/Masterdata';
 
 import MainLayout from './Component/MainLayout';
+import Presensi from './Projectbaru/Presensi';
+import RekapPresensi from './Projectbaru/RekapPresensi';
 
 function App() {
   return (
@@ -37,6 +39,9 @@ function App() {
           <Route path="KategoriData" element={<KategoriData />} />
           <Route path="Kelas" element={<Kelas />} />
           <Route path="MasterData" element={<MasterData />} />
+
+          <Route path="Presensi" element={<Presensi />} />
+          <Route path="RekapPresensi" element={<RekapPresensi />} />
         </Route>
       </Routes>
     </BrowserRouter>
