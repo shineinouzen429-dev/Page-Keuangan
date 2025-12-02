@@ -387,7 +387,7 @@ function Tagihan() {
                 <tr
                   className={`${
                     i % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  } border-t transition ${
+                  } border-t hover:bg-blue-50 transition ${
                     animatePay === t.id ? "animate-slideUpFade" : ""
                   }`}
                 >
@@ -412,33 +412,37 @@ function Tagihan() {
                     </span>
                   </td>
 
-                  <td className="px-4 py-3 text-center flex gap-2 justify-center">
+                  <td className="px-2 py-2 text-center flex gap-2 justify-center">
                     <button
                       onClick={() => openEditModal(t)}
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow"
+                      className="flex items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded shadow"
                     >
+                      <i className="ri-edit-2-line text-lg"></i>
                       Edit
                     </button>
 
                     <button
                       onClick={() => handleDelete(t.id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                      className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded shadow"
                     >
+                      <i className="ri-delete-bin-6-line text-lg"></i>
                       Hapus
                     </button>
 
                     {t.status === "Belum lunas" ? (
                       <button
                         onClick={() => handleBayar(t.id)}
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow"
+                        className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow"
                       >
+                        <i className="ri-money-dollar-circle-line text-lg"></i>
                         Bayar
                       </button>
                     ) : (
                       <button
                         onClick={() => handleReset(t.id)}
-                        className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded shadow"
+                        className="flex items-center gap-1 bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded shadow"
                       >
+                        <i className="ri-refresh-line text-lg"></i>
                         Reset
                       </button>
                     )}

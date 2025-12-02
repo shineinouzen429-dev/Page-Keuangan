@@ -137,7 +137,7 @@ function MasterData() {
   };
 
   return (
-    <div className="min-h-screen p-8 flex justify-center bg-gray-50">
+    <div className="min-h-screen p-8 flex justify-center">
       <div className="w-full max-w-6xl space-y-8">
         <div className="flex justify-between items-center bg-white shadow-md rounded-2xl px-8 py-5 border border-gray-200">
           <div className="flex items-center gap-3">

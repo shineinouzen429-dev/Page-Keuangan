@@ -89,7 +89,7 @@ function Kelas() {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50 flex justify-center">
+    <div className="min-h-screen p-8 flex justify-center">
       <div className="w-full max-w-6xl space-y-8">
         <div
           className="flex justify-between items-center 
