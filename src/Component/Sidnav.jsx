@@ -58,6 +58,17 @@ function Sidnav() {
             <i className="ri-dashboard-fill mr-2"></i>Dashboard
           </Link>
 
+           <Link
+            to="/Presensi"
+            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
+              isActive("/Presensi")
+                ? "bg-gray-900 shadow-inner"
+                : "hover:bg-gray-900 hover:translate-x-1"
+            }`}
+          >
+            <i class="ri-id-card-fill mr-2"></i>Presensi
+          </Link>
+
           <p className="text-white font-bold text-lg mt-4 border-b border-white">
             Database
           </p>
@@ -130,30 +141,6 @@ function Sidnav() {
             }`}
           >
             <i className="ri-bar-chart-fill mr-2"></i>Rekap Tagihan
-          </Link>
-
-          <p className="text-white font-bold text-lg mt-4 border-b border-white">
-            Presensi
-          </p>
-          <Link
-            to="/Presensi"
-            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
-              isActive("/RekapTagihan")
-                ? "bg-gray-900 shadow-inner"
-                : "hover:bg-gray-900 hover:translate-x-1"
-            }`}
-          >
-            <i class="ri-id-card-fill mr-2"></i>Presensi
-          </Link>
-          <Link
-          to="/RekapPresensi"
-          className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
-            isActive("/RekapPresensi")
-            ? "bg-gray-900 shadow-inner"
-            : "hover:bg-gray-900 hover:translate-x-1"
-          }`}
-          >
-            <i class="ri-file-list-3-fill mr-2"></i>Rekap Presensi
           </Link>
         </nav>
 

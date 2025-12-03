@@ -1,130 +1,84 @@
 {
   "tagihan": [
     {
-      "id": "5c8d",
-      "masterId": "d5a8",
-      "name": "Dafa Husaeny",
-      "kategori": "siswa",
+      "id": "254a",
+      "name": "Ayyas Assadullah Bilqis",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Lunas",
       "kelas": "X",
       "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": "",
-      "jenis_tagihan": "SPP",
-      "jumlah": 525000,
-      "status": "Lunas",
-      "created_at": "2025-11-14T02:33:57.026Z"
+      "created_at": "2025-12-03T02:35:04.237Z"
     },
     {
-      "id": "5efa",
-      "name": "Darren Jacobson",
+      "id": "b957",
+      "name": "Fadhil Nugraha",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Lunas",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "created_at": "2025-12-03T02:35:14.716Z"
+    },
+    {
+      "id": "c746",
+      "name": "Andre Nugroho",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Belum lunas",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "created_at": "2025-12-03T02:35:36.084Z"
+    },
+    {
+      "id": "3e23",
+      "name": "Moreno Hadi PraseTyo",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Lunas",
+      "kelas": "XII",
+      "jurusan": "TB",
+      "created_at": "2025-12-03T02:35:54.516Z"
+    },
+    {
+      "id": "ca87",
+      "name": "Darren Sefiros Jacobson",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Belum lunas",
+      "kelas": "XI",
+      "jurusan": "AKT",
+      "created_at": "2025-12-03T02:36:09.196Z"
+    },
+    {
+      "id": "2296",
+      "name": "Dafa Husaeny",
+      "jenis_tagihan": "Uang gedung",
+      "jumlah": 1150000,
+      "status": "Lunas",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "created_at": "2025-12-03T02:36:17.036Z"
+    },
+    {
+      "id": "8a4c",
+      "name": "Ayyas Assadullah Bilqis",
+      "jenis_tagihan": "Seragam",
+      "jumlah": 525000,
+      "status": "Belum lunas",
+      "kelas": "X",
+      "jurusan": "TKJ",
+      "created_at": "2025-12-03T02:36:26.996Z"
+    },
+    {
+      "id": "55f3",
+      "name": "Andre Nugroho",
       "jenis_tagihan": "Kegiatan sekolah",
       "jumlah": 100000,
       "status": "Belum lunas",
-      "kategori": "siswa",
       "kelas": "X",
-      "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T00:06:13.746Z"
-    },
-    {
-      "name": "Ayyas Assadullah Bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": 525000,
-      "status": "Lunas",
-      "kelas": "X",
-      "jurusan": "TKJ",
-      "created_at": "2025-11-24T00:14:23.380Z",
-      "id": "ecb6"
-    },
-    {
-      "id": "03b6",
-      "name": "Moreno Hadi Prasetyo",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1225000,
-      "status": "Belum lunas",
-      "kategori": "siswa",
-      "kelas": "XI",
-      "jurusan": "AKT",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T03:26:27.325Z"
-    },
-    {
-      "name": "Fadhil Nugraha",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 500000,
-      "status": "Belum lunas",
-      "kelas": "XII",
-      "jurusan": "TB",
-      "created_at": "2025-11-24T00:17:54.012Z",
-      "id": "78b4"
-    },
-    {
-      "id": "9a16",
-      "name": "Ayyas assadullah bilqis",
-      "jenis_tagihan": "SPP",
-      "jumlah": 500000,
-      "status": "Lunas",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "TKJ",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T04:37:55.009Z"
-    },
-    {
-      "id": "1bcf",
-      "name": "Moreno Hadi Prasetyo",
-      "jenis_tagihan": "Uang gedung",
-      "jumlah": 1020000,
-      "status": "Belum lunas",
-      "kategori": "siswa",
-      "kelas": "XI",
-      "jurusan": "AKT",
-      "jabatan": "",
-      "bagian": "",
-      "created_at": "2025-11-17T04:37:35.082Z"
-    },
-    {
-      "id": "b6c9",
-      "name": "Narendra Sakti",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Belum lunas",
-      "kelas": "X",
-      "jurusan": "TB",
-      "created_at": "2025-11-20T00:00:38.896Z"
-    },
-    {
-      "id": "3ef9",
-      "name": "Dafa Husaeny",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 525000,
-      "status": "Lunas",
-      "kelas": "X",
-      "jurusan": "TKJ",
-      "created_at": "2025-11-24T01:36:31.935Z"
-    },
-    {
-      "id": "2823",
-      "name": "Darren Jacobson",
-      "jenis_tagihan": "Seragam",
-      "jumlah": 552000,
-      "status": "Belum lunas",
-      "kelas": "X",
-      "jurusan": "TKJ",
-      "created_at": "2025-12-01T03:58:16.513Z"
-    },
-    {
-      "id": "4c36",
-      "name": "Fadhil Nugroho",
-      "jenis_tagihan": "SPP",
-      "jumlah": 1350000,
-      "status": "Belum lunas",
-      "kelas": "XII",
-      "jurusan": "TB",
-      "created_at": "2025-12-01T04:00:37.593Z"
+      "jurusan": "TSM",
+      "created_at": "2025-12-03T02:36:44.692Z"
     }
   ],
   "kategoritagihan": [
@@ -239,118 +193,234 @@
   ],
   "masterdata": [
     {
-      "id": "d5a8",
-      "nama": "Dafa Husaeny",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "TKJ"
-    },
-    {
       "nama": "Zhongli",
       "kategori": "guru",
-      "jabatan": "Bahasa Jawa",
-      "id": "cd66"
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Guru Bahasa Jawa",
+      "bagian": "",
+      "nomor_unik": "G-8299",
+      "id": "7491"
     },
     {
-      "nama": "Hanabi",
-      "kategori": "karyawan",
-      "bagian": "Satpam",
-      "id": "7724"
-    },
-    {
-      "id": "5276",
-      "nama": "Ayyas assadullah bilqis",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "TKJ"
-    },
-    {
-      "id": "f5a6",
-      "nama": "Darren Jacobson",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "TKJ"
-    },
-    {
-      "id": "4847",
-      "nama": "Moreno Hadi Prasetyo",
-      "kategori": "siswa",
-      "kelas": "XI",
-      "jurusan": "AKT"
-    },
-    {
-      "id": "4735",
-      "nama": "Fadhil Nugroho",
-      "kategori": "siswa",
-      "kelas": "XII",
-      "jurusan": "TB"
-    },
-    {
+      "id": "ae85",
       "nama": "Neuvillate",
       "kategori": "guru",
-      "jabatan": "Matematika",
-      "id": "0117"
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Indonesia",
+      "bagian": "",
+      "nomor_unik": "G-6718"
     },
     {
-      "id": "a85e",
-      "nama": "Narendra Sakti",
+      "id": "eec3",
+      "nama": "Alhaitam",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Olahraga",
+      "bagian": "",
+      "nomor_unik": "G-2883"
+    },
+    {
+      "id": "c5c9",
+      "nama": "Lisa",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "IPA",
+      "bagian": "",
+      "nomor_unik": "G-7602"
+    },
+    {
+      "id": "847d",
+      "nama": "Jean ",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "BK",
+      "bagian": "",
+      "nomor_unik": "G-5648"
+    },
+    {
+      "id": "7677",
+      "nama": "Ayyas Assadullah Bilqis",
       "kategori": "siswa",
       "kelas": "X",
-      "jurusan": "TB"
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-4257"
     },
     {
-      "nama": "Childe",
-      "kategori": "guru",
-      "jabatan": "Bahasa Indonesia",
-      "id": "eafa"
+      "id": "308e",
+      "nama": "Fadhil Nugraha",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-7805"
     },
     {
-      "nama": "Yve",
-      "kategori": "karyawan",
-      "bagian": "Pembersih Taman",
-      "id": "0012"
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-7536",
+      "id": "563e"
     },
     {
-      "nama": "Zhask",
-      "kategori": "karyawan",
-      "bagian": "Petugas Kebersihan",
-      "id": "7611"
+      "nama": "Moreno Hadi Prasetyo",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TB",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-3862",
+      "id": "28c6"
     },
     {
-      "nama": "Yu-Zhong",
-      "kategori": "karyawan",
-      "bagian": "Tata Usaha(TU)",
-      "id": "b5a1"
-    },
-    {
-      "nama": "Lapu-Lapu",
-      "kategori": "karyawan",
-      "bagian": "Petugas Perpustakaan",
-      "id": "b6b2"
-    },
-    {
-      "nama": "Zilong",
-      "kategori": "karyawan",
-      "bagian": "Driver",
-      "id": "9063"
-    },
-    {
-      "nama": "Capitano",
-      "kategori": "guru",
-      "jabatan": "Bahasa Inggris",
-      "id": "b6f8"
+      "id": "81f0",
+      "nama": "Darren Sefiros Jacobson",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "AKT",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-4441"
     },
     {
       "nama": "Diluc",
       "kategori": "guru",
-      "jabatan": "Bahasa Jepang",
-      "id": "6d66"
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Inggris",
+      "bagian": "",
+      "nomor_unik": "G-1980",
+      "id": "9d25"
     },
     {
-      "id": "b382",
-      "nama": "Alhaitam",
-      "kategori": "guru",
-      "jabatan": "Olahraga"
+      "id": "6bd5",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "S-9809"
+    },
+    {
+      "id": "653d",
+      "nama": "Yve",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Tata Usaha(TU)",
+      "nomor_unik": "K-6539"
+    },
+    {
+      "id": "e947",
+      "nama": "Aamon",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Staf Perpustakaan",
+      "nomor_unik": "K-2859"
+    },
+    {
+      "id": "fe3c",
+      "nama": "Silvana",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Bendahara",
+      "nomor_unik": "K-9832"
+    },
+    {
+      "id": "9c55",
+      "nama": "Arlot",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Petugas Kebersihan",
+      "nomor_unik": "K-5156"
+    },
+    {
+      "id": "7539",
+      "nama": "Ruby",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Petugas Kebersihan",
+      "nomor_unik": "K-5711"
+    },
+    {
+      "id": "4d2c",
+      "nama": "Fredinn",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Satpam",
+      "nomor_unik": "K-2750"
+    }
+  ],
+  "presensi": [
+    {
+      "id": "c8b2",
+      "nomor_unik": "S-9809",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-03",
+      "jam_masuk": "2025-12-03T03:31:30.888Z"
+    },
+    {
+      "id": "7afa",
+      "nomor_unik": "S-9809",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-03",
+      "jam_pulang": "2025-12-03T03:40:48.031Z"
+    },
+    {
+      "id": "ba69",
+      "nomor_unik": "S-7805",
+      "nama": "Fadhil Nugraha",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-03",
+      "jam_masuk": "2025-12-03T03:45:17.359Z"
+    },
+    {
+      "id": "d49b",
+      "nomor_unik": "K-5156",
+      "nama": "Arlot",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Petugas Kebersihan",
+      "tanggal": "2025-12-03",
+      "jam_masuk": "2025-12-03T03:45:28.422Z"
     }
   ]
 }

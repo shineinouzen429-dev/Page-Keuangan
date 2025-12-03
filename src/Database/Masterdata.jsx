@@ -18,9 +18,23 @@ function MasterData() {
     jurusan: "",
     jabatan: "",
     bagian: "",
+    nomor_unik: "",
   });
 
   const API_URL = "http://localhost:5000/masterdata";
+
+  const generateUniqueCode = (kategori) => {
+    const prefix =
+      kategori === "Siswa"
+        ? "S"
+        : kategori === "Guru"
+        ? "G"
+        : kategori === "Karyawan"
+        ? "K"
+        : "X";
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    return `${prefix}-${rand}`;
+  };
 
   const getData = async () => {
     try {
@@ -58,22 +72,34 @@ function MasterData() {
     e.preventDefault();
 
     try {
+      if (!formData.nama || !formData.kategori) {
+        Swal.fire("Lengkapi form", "Nama & Kategori wajib diisi", "warning");
+        return;
+      }
+
+      if (!editMode && !formData.nomor_unik) {
+        setFormData((prev) => ({
+          ...prev,
+          nomor_unik: generateUniqueCode(prev.kategori),
+        }));
+      }
+
       let newData = {
         nama: formData.nama,
         kategori: formData.kategori.toLowerCase(),
+        kelas: formData.kelas || "",
+        jurusan: formData.jurusan || "",
+        jabatan: formData.jabatan || "",
+        bagian: formData.bagian || "",
       };
 
-      if (formData.kategori === "Guru") newData.jabatan = formData.jabatan;
-      if (formData.kategori === "Siswa") {
-        newData.kelas = formData.kelas;
-        newData.jurusan = formData.jurusan;
-      }
-      if (formData.kategori === "Karyawan") newData.bagian = formData.bagian;
-
       if (editMode) {
+        newData.nomor_unik = formData.nomor_unik || "";
         await axios.put(`${API_URL}/${editId}`, newData);
         Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
       } else {
+        newData.nomor_unik =
+          formData.nomor_unik || generateUniqueCode(formData.kategori);
         await axios.post(API_URL, newData);
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
       }
@@ -85,6 +111,7 @@ function MasterData() {
         jurusan: "",
         jabatan: "",
         bagian: "",
+        nomor_unik: "",
       });
 
       setEditMode(false);
@@ -111,6 +138,7 @@ function MasterData() {
       jurusan: item.jurusan || "",
       jabatan: item.jabatan || "",
       bagian: item.bagian || "",
+      nomor_unik: item.nomor_unik || "",
     });
   };
 
@@ -134,6 +162,15 @@ function MasterData() {
       console.error("Gagal hapus:", err);
       Swal.fire("Gagal", "Tidak bisa menghapus data", "error");
     }
+  };
+
+  const handleGenerateAgain = () => {
+    if (!formData.kategori) {
+      Swal.fire("Pilih kategori dulu", "Pilih kategori untuk generate kode", "info");
+      return;
+    }
+    const newCode = generateUniqueCode(formData.kategori);
+    setFormData((prev) => ({ ...prev, nomor_unik: newCode }));
   };
 
   return (
@@ -165,6 +202,7 @@ function MasterData() {
                 jurusan: "",
                 jabatan: "",
                 bagian: "",
+                nomor_unik: "",
               });
               setShowModal(true);
             }}
@@ -231,10 +269,10 @@ function MasterData() {
                 <thead>
                   <tr className="bg-blue-100 text-sm text-left">
                     <th className="p-3">No</th>
+                    <th className="p-3">Nomor Unik</th>
                     <th className="p-3">Nama</th>
                     <th className="p-3">Mapel / Kelas / Bagian</th>
                     <th className="p-3">Kategori</th>
-
                     <th className="p-3 text-center">Aksi</th>
                   </tr>
                 </thead>
@@ -249,6 +287,9 @@ function MasterData() {
                         } transition`}
                       >
                         <td className="p-3 text-center">{index + 1}</td>
+
+                        <td className="p-3 font-semibold">{item.nomor_unik || "-"}</td>
+
                         <td className="p-3">{item.nama}</td>
                         <td className="p-3">
                           {item.kategori === "siswa"
@@ -267,8 +308,10 @@ function MasterData() {
                                 : "bg-yellow-100 text-yellow-700"
                             }`}
                           >
-                            {item.kategori.charAt(0).toUpperCase() +
-                              item.kategori.slice(1)}
+                            {item.kategori
+                              ? item.kategori.charAt(0).toUpperCase() +
+                                item.kategori.slice(1)
+                              : "-"}
                           </span>
                         </td>
 
@@ -292,7 +335,7 @@ function MasterData() {
                   ) : (
                     <tr>
                       <td
-                        colSpan="5"
+                        colSpan="6"
                         className="text-center py-6 text-gray-500 italic"
                       >
                         Tidak ada data untuk kategori ini.
@@ -336,16 +379,18 @@ function MasterData() {
                 <select
                   required
                   value={formData.kategori}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      kategori: e.target.value,
+                  onChange={(e) => {
+                    const selected = e.target.value;
+                    setFormData((prev) => ({
+                      ...prev,
+                      kategori: selected,
                       kelas: "",
                       jurusan: "",
                       jabatan: "",
                       bagian: "",
-                    })
-                  }
+                      nomor_unik: !editMode && selected ? generateUniqueCode(selected) : prev.nomor_unik,
+                    }));
+                  }}
                   className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                 >
                   <option value="">Pilih Kategori</option>
@@ -353,6 +398,31 @@ function MasterData() {
                   <option value="Siswa">Siswa</option>
                   <option value="Karyawan">Karyawan</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Nomor Unik
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={formData.nomor_unik}
+                    readOnly
+                    placeholder={editMode ? "Nomor Unik (tidak bisa diubah)" : "Akan ter-generate setelah pilih kategori"}
+                    className="w-full mt-1 p-2 border rounded-lg bg-gray-100 text-gray-700"
+                  />
+                  {!editMode && (
+                    <button
+                      type="button"
+                      onClick={handleGenerateAgain}
+                      className="px-3 py-2 bg-white border rounded-lg hover:bg-gray-50"
+                      title="Generate ulang nomor unik"
+                    >
+                      <i className="ri-refresh-line text-blue-600"></i>
+                    </button>
+                  )}
+                </div>
               </div>
 
               {formData.kategori === "Guru" && (
