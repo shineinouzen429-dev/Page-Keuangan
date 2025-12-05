@@ -1,4 +1,3 @@
-// Presensi.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -19,18 +18,28 @@ const Presensi = () => {
   });
 
   const [rekap, setRekap] = useState([]);
+  const [rekapFiltered, setRekapFiltered] = useState([]);
   const [loadingRekap, setLoadingRekap] = useState(false);
 
+  const [filterNama, setFilterNama] = useState("");
+  const [filterKategori, setFilterKategori] = useState("Semua");
+
   const showMessage = (text, type = "info") => {
-    const icon = type === "error" ? "error" : type === "success" ? "success" : "info";
+    const icon =
+      type === "error" ? "error" : type === "success" ? "success" : "info";
     Swal.fire({ text, icon, timer: 2000, showConfirmButton: false });
   };
 
   const getDetailInfo = (item) => {
     if (!item) return { label: "Detail", value: "-" };
     const k = item.kategori?.toLowerCase();
-    if (k === "guru") return { label: "Mapel", value: item.jabatan || item.mapel || "-" };
-    if (k === "siswa") return { label: "Kelas", value: `${item.kelas || "-"} - ${item.jurusan || "-"}` };
+    if (k === "guru")
+      return { label: "Mapel", value: item.jabatan || item.mapel || "-" };
+    if (k === "siswa")
+      return {
+        label: "Kelas",
+        value: `${item.kelas || "-"} - ${item.jurusan || "-"}`,
+      };
     if (k === "karyawan") return { label: "Bagian", value: item.bagian || "-" };
     return { label: "Detail", value: "-" };
   };
@@ -54,8 +63,12 @@ const Presensi = () => {
   const lookupNomorUnik = async (nomor) => {
     setLoadingLookup(true);
     try {
-      const res = await axios.get(`${API_BASE}/masterdata`, { params: { nomor_unik: nomor } });
-      const data = Array.isArray(res.data) ? res.data : res.data?.masterdata || [];
+      const res = await axios.get(`${API_BASE}/masterdata`, {
+        params: { nomor_unik: nomor },
+      });
+      const data = Array.isArray(res.data)
+        ? res.data
+        : res.data?.masterdata || [];
 
       if (!data || data.length === 0) {
         setDataOrang(null);
@@ -82,16 +95,35 @@ const Presensi = () => {
     setLoadingRekap(true);
     try {
       const res = await axios.get(`${API_BASE}/presensi`, { params: { date } });
-      const list = Array.isArray(res.data) ? res.data : res.data?.presensi || [];
+      const list = Array.isArray(res.data)
+        ? res.data
+        : res.data?.presensi || [];
 
-      // Split menjadi baris Masuk & Pulang
-      const newList = [];
-      list.forEach((r) => {
-        if (r.jam_masuk) newList.push({ ...r, waktu: `Masuk: ${fmtTime(r.jam_masuk)}`, key: r.id + "_masuk" });
-        if (r.jam_pulang) newList.push({ ...r, waktu: `Pulang: ${fmtTime(r.jam_pulang)}`, key: r.id + "_pulang" });
+      const merged = {};
+      list.forEach((row) => {
+        const key = row.nomor_unik;
+
+        if (!merged[key]) {
+          merged[key] = {
+            ...row,
+            jam_masuk: row.jam_masuk || null,
+            jam_pulang: row.jam_pulang || null,
+          };
+        } else {
+          if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
+          if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
+        }
       });
 
+      const newList = Object.values(merged).map((r) => ({
+        ...r,
+        jamMasukFormatted: fmtTime(r.jam_masuk),
+        jamPulangFormatted: fmtTime(r.jam_pulang),
+        key: r.id,
+      }));
+
       setRekap(newList);
+      setRekapFiltered(newList);
     } catch (err) {
       console.error(err);
       showMessage("Gagal load rekap presensi", "error");
@@ -99,6 +131,24 @@ const Presensi = () => {
       setLoadingRekap(false);
     }
   };
+
+  useEffect(() => {
+    let filtered = [...rekap];
+
+    if (filterNama.trim() !== "") {
+      filtered = filtered.filter((r) =>
+        r.nama.toLowerCase().includes(filterNama.toLowerCase())
+      );
+    }
+
+    if (filterKategori !== "Semua") {
+      filtered = filtered.filter(
+        (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
+      );
+    }
+
+    setRekapFiltered(filtered);
+  }, [filterNama, filterKategori, rekap]);
 
   const handleDeletePresensi = async (id) => {
     if (!id) return;
@@ -148,8 +198,12 @@ const Presensi = () => {
       if (status === "Masuk") payload.jam_masuk = now.toISOString();
       else payload.jam_pulang = now.toISOString();
 
-      const todayRes = await axios.get(`${API_BASE}/presensi`, { params: { date: tanggal, nomor_unik: nomorUnik } });
-      const todayList = Array.isArray(todayRes.data) ? todayRes.data : todayRes.data?.presensi || [];
+      const todayRes = await axios.get(`${API_BASE}/presensi`, {
+        params: { date: tanggal, nomor_unik: nomorUnik },
+      });
+      const todayList = Array.isArray(todayRes.data)
+        ? todayRes.data
+        : todayRes.data?.presensi || [];
       const today = todayList[0];
 
       if (status === "Masuk") {
@@ -172,7 +226,10 @@ const Presensi = () => {
       }
 
       await axios.post(`${API_BASE}/presensi`, payload);
-      showMessage(`Presensi ${status} tersimpan: ${dataOrang.nama} - ${jam}`, "success");
+      showMessage(
+        `Presensi ${status} tersimpan: ${dataOrang.nama} - ${jam}`,
+        "success"
+      );
       await fetchRekap(tanggal);
 
       setNomorUnik("");
@@ -196,98 +253,197 @@ const Presensi = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Presensi Manual</h2>
+    <div className="p-6 max-w-6xl mx-auto">
+     <div className="flex items-center gap-4 mb-8 justify-center">
+      <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-md">
+        <i className="ri-id-card-fill text-white text-3xl"></i>
+      </div>
 
-      <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow mb-6 max-w-xl">
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Nomor Unik</label>
-          <input
-            type="text"
-            value={nomorUnik}
-            onChange={(e) => setNomorUnik(e.target.value.trim())}
-            placeholder="contoh: S-00123"
-            className="w-full border rounded px-3 py-2"
-            disabled={saving}
-            autoFocus
-          />
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Nama</label>
-          <select className="w-full border rounded px-3 py-2 bg-slate-50" disabled>
-            <option>{loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Kategori</label>
-          <select className="w-full border rounded px-3 py-2 bg-slate-50" disabled>
-            <option>{dataOrang?.kategori || "-"}</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">{getDetailInfo(dataOrang).label}</label>
-          <select className="w-full border rounded px-3 py-2 bg-slate-50" disabled>
-            <option>{getDetailInfo(dataOrang).value}</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium mb-1">Status</label>
-          <div className="flex gap-4">
-            <label className="flex items-center gap-2">
-              <input type="radio" checked={status === "Masuk"} onChange={() => setStatus("Masuk")} /> Masuk
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold text-gray-800 leading-tight">
+          Presensi Sekolah
+        </h2>
+        <p className="text-gray-800 text-sm -mt-1">
+          Halaman untuk mengelola data presensi harian
+        </p>
+      </div>
+     </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-2xl shadow-lg border mb-10"
+      >
+        <h3 className="text-xl font-semibold mb-5 text-gray-700">
+          Input Presensi
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Nomor Unik</label>
+            <input
+              type="text"
+              value={nomorUnik}
+              onChange={(e) => setNomorUnik(e.target.value.trim())}
+              placeholder="Massukan Nomer Unik"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none"
+              disabled={saving}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Nama</label>
+            <input
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
+              disabled
+              value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Kategori</label>
+            <input
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
+              disabled
+              value={dataOrang?.kategori || "-"}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {getDetailInfo(dataOrang).label}
             </label>
-            <label className="flex items-center gap-2">
-              <input type="radio" checked={status === "Pulang"} onChange={() => setStatus("Pulang")} /> Pulang
+            <input
+              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
+              disabled
+              value={getDetailInfo(dataOrang).value}
+            />
+          </div>
+        </div>
+        <div className="mt-5 mb-4">
+          <label className="block text-sm font-medium mb-2">
+            Status Presensi
+          </label>
+          <div className="flex gap-6">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                checked={status === "Masuk"}
+                onChange={() => setStatus("Masuk")}
+              />
+              Masuk
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                checked={status === "Pulang"}
+                onChange={() => setStatus("Pulang")}
+              />
+              Pulang
             </label>
           </div>
         </div>
 
-        <div className="flex gap-3">
-          <button type="submit" disabled={saving} className={`px-4 py-2 rounded text-white ${saving ? "bg-slate-400" : "bg-blue-600 hover:bg-blue-700"}`}>
-            {saving ? "Menyimpan..." : "Simpan Presensi"}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={saving}
+          className={`w-full md:w-auto px-5 py-2 rounded-xl text-white shadow-md transition
+            ${saving ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"}
+          `}
+        >
+          {saving ? "Menyimpan..." : "Simpan Presensi"}
+        </button>
       </form>
-      <div className="bg-white p-4 rounded shadow">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Rekap Presensi</h3>
-          <div className="flex gap-2 items-center">
-            <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} className="border rounded px-2 py-1" />
-            <button onClick={() => fetchRekap(filterDate)}>
-              {loadingRekap ? "Memuat..." : ""}
+      <div className="bg-white p-6 rounded-2xl shadow-lg border">
+        <div className="flex flex-wrap items-end justify-between mb-4 gap-3">
+          <h3 className="text-xl font-semibold text-gray-700">
+            Rekap Presensi
+          </h3>
+
+          <div className="flex flex-wrap gap-2 items-center">
+            <input
+              type="date"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="border px-3 py-1 rounded-lg"
+            />
+
+            <button
+              onClick={() => fetchRekap(filterDate)}
+              className="bg-blue-500 text-white px-4 py-1 rounded-lg shadow hover:bg-blue-600"
+            >
+              {loadingRekap ? "Memuat..." : "Tampilkan"}
             </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto bg-white shadow-lg rounded-2xl border border-gray-200">
-          <table className="table-auto w-full text-sm">
-            <thead className="bg-blue-100 text-gray-700">
-              <tr>
-                <th className="px-4 py-2">No</th>
-                <th className="px-4 py-2">Nomor Unik</th>
-                <th className="px-4 py-2">Nama</th>
-                <th className="px-4 py-2">Kategori</th>
-                <th className="px-4 py-2">Detail</th>
-                <th className="px-4 py-2">Waktu</th>
-                <th className="px-4 py-2 text-center">Aksi</th>
+        <div className="flex flex-wrap gap-3 mb-4">
+          <input
+            type="text"
+            placeholder="Cari nama..."
+            value={filterNama}
+            onChange={(e) => setFilterNama(e.target.value)}
+            className="border px-3 py-2 rounded-lg w-60"
+          />
+
+          <select
+            value={filterKategori}
+            onChange={(e) => setFilterKategori(e.target.value)}
+            className="border px-3 py-2 rounded-lg"
+          >
+            <option>Semua</option>
+            <option>Siswa</option>
+            <option>Guru</option>
+            <option>Karyawan</option>
+          </select>
+        </div>
+
+        <div className="overflow-x-auto bg-white rounded-xl border border-gray-200">
+          <table className="min-w-full text-sm">
+            <thead>
+              <tr className="bg-blue-100">
+                <th className="px-4 py-3 border-b">No</th>
+                <th className="px-4 py-3 border-b">Nomor Unik</th>
+                <th className="px-4 py-3 border-b">Nama</th>
+                <th className="px-4 py-3 border-b">Kategori</th>
+                <th className="px-4 py-3 border-b">Detail</th>
+                <th className="px-4 py-3 border-b">Jam Masuk</th>
+                <th className="px-4 py-3 border-b">Jam Pulang</th>
+                <th className="px-4 py-3 text-center border-b">Aksi</th>
               </tr>
             </thead>
+
             <tbody>
-              {rekap.length === 0 ? (
-                <tr><td colSpan="7" className="text-center py-6 text-gray-500 italic">Belum ada data</td></tr>
+              {rekapFiltered.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="8"
+                    className="text-center py-6 text-gray-500 italic"
+                  >
+                    Tidak ada data
+                  </td>
+                </tr>
               ) : (
-                rekap.map((r, idx) => {
+                rekapFiltered.map((r, idx) => {
                   const detail = getDetailInfo(r);
                   return (
-                    <tr key={r.key} className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} border-t`}>
-                      <td className="text-center py-3">{idx + 1}</td>
-                      <td className="px-4 py-3">{r.nomor_unik || "-"}</td>
-                      <td className="px-4 py-3">{r.nama || "-"}</td>
-                      <td className="px-4 py-3">{r.kategori || "-"}</td>
-                      <td className="px-4 py-3"><span className="font-semibold">{detail.label}:</span> {detail.value}</td>
-                      <td className="px-4 py-3">{r.waktu}</td>
+                    <tr key={r.key} className="border-b">
+                      <td className="px-4 py-3 text-center">{idx + 1}</td>
+                      <td className="px-4 py-3">{r.nomor_unik}</td>
+                      <td className="px-4 py-3">{r.nama}</td>
+                      <td className="px-4 py-3 capitalize">{r.kategori}</td>
+                      <td className="px-4 py-3">
+                        <b>{detail.label}:</b> {detail.value}
+                      </td>
+                      <td className="px-4 py-3">{r.jamMasukFormatted}</td>
+                      <td className="px-4 py-3">{r.jamPulangFormatted}</td>
+
                       <td className="px-4 py-3 text-center">
-                        <button onClick={() => handleDeletePresensi(r.id)} className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">Hapus</button>
+                        <button
+                          onClick={() => handleDeletePresensi(r.id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 text-xs"
+                        >
+                          Hapus
+                        </button>
                       </td>
                     </tr>
                   );

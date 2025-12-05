@@ -91,7 +91,7 @@ const Dashboard = () => {
 
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
           <table className="w-full">
-            <thead className="bg-gray-100">
+            <thead className="bg-blue-100">
               <tr>
                 {columns.map((col, i) => (
                   <th
@@ -142,13 +142,26 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold tracking-wide text-gray-800">
-          <i className="ri-dashboard-fill text-blue-600 mr-3"></i>
-          Smart Monitoring Panel
+      <div className="text-center mb-12">
+        <h1
+          className="
+      text-4xl font-extrabold tracking-wide text-gray-800 
+      flex items-center justify-center gap-3
+    "
+        >
+          <span
+            className="
+        w-14 h-14 bg-blue-600 text-white rounded-2xl 
+        flex items-center justify-center shadow-lg 
+        shadow-blue-300/40
+      "
+          >
+            <i className="ri-dashboard-fill text-3xl"></i>
+          </span>
+          <span>Smart Monitoring Panel</span>
         </h1>
 
-        <p className="text-gray-500 mt-2 text-lg tracking-wide">
+        <p className="text-gray-500 mt-3 text-lg tracking-wide">
           Ringkasan Data Akademik & Keuangan — real-time, cepat, dan informatif
         </p>
       </div>

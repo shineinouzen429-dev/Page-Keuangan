@@ -387,7 +387,7 @@ function Tagihan() {
                 <tr
                   className={`${
                     i % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  } border-t hover:bg-blue-50 transition ${
+                  } border-t transition ${
                     animatePay === t.id ? "animate-slideUpFade" : ""
                   }`}
                 >
