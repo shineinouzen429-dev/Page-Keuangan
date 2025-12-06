@@ -162,7 +162,7 @@ const Dashboard = () => {
         </h1>
 
         <p className="text-gray-500 mt-3 text-lg tracking-wide">
-          Ringkasan Data Akademik & Keuangan — real-time, cepat, dan informatif
+          Menampilkan Data Akademik & Keuangan — real-time, cepat, dan informatif
         </p>
       </div>
 
@@ -187,7 +187,7 @@ const Dashboard = () => {
         />
         <Card
           color="bg-purple-600"
-          icon="ri-database-2-fill"
+          icon="ri-server-fill"
           title="Total Database"
           value={totalDatabase}
         />

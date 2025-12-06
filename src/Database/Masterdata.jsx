@@ -10,6 +10,7 @@ function MasterData() {
 
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [search, setSeacrh] = useState("");
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -166,7 +167,11 @@ function MasterData() {
 
   const handleGenerateAgain = () => {
     if (!formData.kategori) {
-      Swal.fire("Pilih kategori dulu", "Pilih kategori untuk generate kode", "info");
+      Swal.fire(
+        "Pilih kategori dulu",
+        "Pilih kategori untuk generate kode",
+        "info"
+      );
       return;
     }
     const newCode = generateUniqueCode(formData.kategori);
@@ -236,7 +241,7 @@ function MasterData() {
             title="Total Database"
             count={totalDatabase}
             color="purple"
-            icon="ri-database-2-fill"
+            icon="ri-server-fill"
           />
         </div>
 
@@ -248,17 +253,26 @@ function MasterData() {
                 Menampilkan semua data kategori.
               </p>
             </div>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                placeholder="Cari nama..."
+                value={search}
+                onChange={(e) => setSeacrh(e.targer.value)}
+                className="border py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              />
 
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="border py-2 px-3 rounded-lg text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-            >
-              <option value="Semua">Semua</option>
-              <option value="Guru">Guru</option>
-              <option value="Siswa">Siswa</option>
-              <option value="Karyawan">Karyawan</option>
-            </select>
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="border py-2 px-3 rounded-lg text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+              >
+                <option value="Semua">Semua</option>
+                <option value="Guru">Guru</option>
+                <option value="Siswa">Siswa</option>
+                <option value="Karyawan">Karyawan</option>
+              </select>
+            </div>
           </div>
 
           {loading ? (
@@ -288,7 +302,9 @@ function MasterData() {
                       >
                         <td className="p-3 text-center">{index + 1}</td>
 
-                        <td className="p-3 font-semibold">{item.nomor_unik || "-"}</td>
+                        <td className="p-3 font-semibold">
+                          {item.nomor_unik || "-"}
+                        </td>
 
                         <td className="p-3">{item.nama}</td>
                         <td className="p-3">
@@ -388,7 +404,10 @@ function MasterData() {
                       jurusan: "",
                       jabatan: "",
                       bagian: "",
-                      nomor_unik: !editMode && selected ? generateUniqueCode(selected) : prev.nomor_unik,
+                      nomor_unik:
+                        !editMode && selected
+                          ? generateUniqueCode(selected)
+                          : prev.nomor_unik,
                     }));
                   }}
                   className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
@@ -409,7 +428,11 @@ function MasterData() {
                     type="text"
                     value={formData.nomor_unik}
                     readOnly
-                    placeholder={editMode ? "Nomor Unik (tidak bisa diubah)" : "Akan ter-generate setelah pilih kategori"}
+                    placeholder={
+                      editMode
+                        ? "Nomor Unik (tidak bisa diubah)"
+                        : "Akan ter-generate setelah pilih kategori"
+                    }
                     className="w-full mt-1 p-2 border rounded-lg bg-gray-100 text-gray-700"
                   />
                   {!editMode && (
