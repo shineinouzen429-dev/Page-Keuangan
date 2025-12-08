@@ -114,19 +114,48 @@ const Presensi = () => {
 
       if (status === "Masuk") {
         if (today && today.jam_masuk) {
-          showMessage("Sudah presensi masuk hari ini!", "error");
           setSaving(false);
+
+          Swal.fire({
+            title: "Sudah Presensi Masuk!",
+            text: "Anda sudah melakukan presensi masuk hari ini.",
+            icon: "error",
+            showCancelButton: true,
+            confirmButtonText: "Lihat Data",
+            cancelButtonText: "Tutup",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/RekapPresensi";
+            }
+          });
+
           return;
         }
-      } else {
+      }
+
+      if (status === "Pulang") {
         if (!today || !today.jam_masuk) {
           showMessage("Belum presensi masuk!", "error");
           setSaving(false);
           return;
         }
+
         if (today.jam_pulang) {
-          showMessage("Sudah presensi pulang hari ini!", "error");
           setSaving(false);
+
+          Swal.fire({
+            title: "Sudah Presensi Pulang!",
+            text: "Anda sudah melakukan presensi pulang hari ini.",
+            icon: "error",
+            showCancelButton: true,
+            confirmButtonText: "Lihat Data",
+            cancelButtonText: "Tutup",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/RekapPresensi";
+            }
+          });
+
           return;
         }
       }
@@ -152,7 +181,6 @@ const Presensi = () => {
       <a
         href="/MasukPresensi"
         className="fixed top-4 left-4 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow-md text-xl flex items-center justify-center"
-        title="Keluar"
       >
         <i className="ri-login-box-line"></i>
       </a>
