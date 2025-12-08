@@ -4,11 +4,14 @@ import axios from "axios";
 const Dashboard = () => {
   const [masterData, setMasterData] = useState([]);
   const [tagihan, setTagihan] = useState([]);
+  const [rekapPresensi, setRekapPresensi] = useState([]);
+
   const [expandedTables, setExpandedTables] = useState({
     guru: false,
     siswa: false,
     karyawan: false,
     tagihan: false,
+    presensi: false,
   });
 
   const tableRefs = {
@@ -16,10 +19,12 @@ const Dashboard = () => {
     siswa: useRef(null),
     karyawan: useRef(null),
     tagihan: useRef(null),
+    presensi: useRef(null),
   };
 
   useEffect(() => {
     fetchData();
+    fetchRekapPresensi();
   }, []);
 
   const fetchData = async () => {
@@ -33,6 +38,48 @@ const Dashboard = () => {
       setTagihan(resTagihan.data || []);
     } catch (err) {
       console.error("Gagal memuat data:", err);
+    }
+  };
+
+  const fetchRekapPresensi = async () => {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+
+      const res = await axios.get("http://localhost:5000/presensi", {
+        params: { tanggal: today },
+      });
+
+      const list = Array.isArray(res.data) ? res.data : res.data.presensi || [];
+
+      const merged = {};
+
+      list.forEach((row) => {
+        const key = row.nomor_unik;
+
+        if (!merged[key]) {
+          merged[key] = {
+            nomor_unik: row.nomor_unik,
+            nama: row.nama,
+            kategori: row.kategori,
+            kelas: row.kelas,
+            jurusan: row.jurusan,
+            jabatan: row.jabatan,
+            bagian: row.bagian,
+            tanggal: row.tanggal,
+            jam_masuk: row.jam_masuk || null,
+            jam_pulang: row.jam_pulang || null,
+          };
+        } else {
+          if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
+          if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
+        }
+      });
+
+      const finalList = Object.values(merged);
+
+      setRekapPresensi(finalList);
+    } catch (err) {
+      console.error("Gagal memuat presensi:", err);
     }
   };
 
@@ -78,6 +125,7 @@ const Dashboard = () => {
             top: currentScroll,
             behavior: "instant",
           });
+
           tableElement?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
@@ -143,26 +191,16 @@ const Dashboard = () => {
   return (
     <div className="p-6 min-h-screen">
       <div className="text-center mb-12">
-        <h1
-          className="
-      text-4xl font-extrabold tracking-wide text-gray-800 
-      flex items-center justify-center gap-3
-    "
-        >
-          <span
-            className="
-        w-14 h-14 bg-blue-600 text-white rounded-2xl 
-        flex items-center justify-center shadow-lg 
-        shadow-blue-300/40
-      "
-          >
+        <h1 className="text-4xl font-extrabold tracking-wide text-gray-800 flex items-center justify-center gap-3">
+          <span className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-300/40">
             <i className="ri-dashboard-fill text-3xl"></i>
           </span>
           <span>Smart Monitoring Panel</span>
         </h1>
 
         <p className="text-gray-500 mt-3 text-lg tracking-wide">
-          Menampilkan Data Akademik & Keuangan — real-time, cepat, dan informatif
+          Menampilkan Data Akademik, Keuangan & Presensi — real-time dan
+          informatif
         </p>
       </div>
 
@@ -230,6 +268,7 @@ const Dashboard = () => {
           </tr>
         )}
       />
+
       <Table
         id="siswa"
         title="Data Siswa"
@@ -276,6 +315,44 @@ const Dashboard = () => {
               }`}
             >
               {t.status}
+            </td>
+          </tr>
+        )}
+      />
+
+      <Table
+        id="presensi"
+        title="Rekap Presensi Hari Ini"
+        columns={[
+          "No",
+          "Nomor Unik",
+          "Nama",
+          "Kategori",
+          "Jam Masuk",
+          "Jam Pulang",
+        ]}
+        data={rekapPresensi}
+        renderRow={(p, i) => (
+          <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
+            <td className="py-2 px-3 text-center">{i + 1}</td>
+            <td className="py-2 px-3">{p.nomor_unik}</td>
+            <td className="py-2 px-3">{p.nama}</td>
+            <td className="py-2 px-3 capitalize">{p.kategori}</td>
+            <td className="py-2 px-3">
+              {p.jam_masuk
+                ? new Date(p.jam_masuk).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "-"}
+            </td>
+            <td className="py-2 px-3">
+              {p.jam_pulang
+                ? new Date(p.jam_pulang).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "-"}
             </td>
           </tr>
         )}

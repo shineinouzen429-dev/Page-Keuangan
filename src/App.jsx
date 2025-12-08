@@ -18,7 +18,9 @@ import Kelas from './Database/Kelas';
 import MasterData from './Database/Masterdata';
 
 import MainLayout from './Component/MainLayout';
-import Presensi from './Component/Presensi';
+import Presensi from './Presensi/Presensi';
+import RekapPresensi from './Presensi/RekapPresensi';
+import MasukPresensi from './Presensi/MasukPresensi';
 
 function App() {
   return (
@@ -26,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/Login" element={<Login />} />
-
+        <Route path="Presensi" element={<Presensi />} />
     
         <Route path="/" element={<MainLayout />}>
           <Route path="Dashboard" element={<Dashboard />} />
@@ -39,7 +41,8 @@ function App() {
           <Route path="Kelas" element={<Kelas />} />
           <Route path="MasterData" element={<MasterData />} />
 
-          <Route path="Presensi" element={<Presensi />} />
+          <Route path="RekapPresensi" element={<RekapPresensi />} />
+          <Route path="MasukPresensi" element={<MasukPresensi />} />
         </Route>
       </Routes>
     </BrowserRouter>
