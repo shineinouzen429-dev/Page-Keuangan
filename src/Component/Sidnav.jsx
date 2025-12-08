@@ -150,7 +150,7 @@ function Sidnav() {
                 : "hover:bg-blue-700 hover:translate-x-1"
             }`}
           >
-            <i className="ri-instance-line mr-2"></i>Rekap Presensi
+            <i className="ri-bar-chart-grouped-line mr-2"></i>Rekap Presensi
           </Link>
         </nav>
 

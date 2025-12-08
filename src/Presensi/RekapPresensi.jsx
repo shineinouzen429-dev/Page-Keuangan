@@ -99,9 +99,18 @@ const RekapPresensi = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
-        Rekap Presensi
-      </h2>
+      <div className="bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow">
+          <i className="ri-list-check-3 text-white text-2xl"></i>
+        </div>
+
+        <div>
+          <h2 className="text-xl font-bold text-gray-800">Rekap Presensi</h2>
+          <p className="text-gray-500 text-sm -mt-1">
+            Kelola dan lihat seluruh data presensi dengan mudah
+          </p>
+        </div>
+      </div>
 
       <div className="bg-white p-6 rounded-2xl shadow-lg border mb-6">
         <div className="flex flex-wrap items-end justify-between mb-4 gap-3">
