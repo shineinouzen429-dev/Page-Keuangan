@@ -140,7 +140,7 @@ function Sidnav() {
                 : "hover:bg-blue-700 hover:translate-x-1"
             }`}
           >
-            <i className="ri-login-box-fill mr-2"></i>Masuk Presensi
+            <i className="ri-login-circle-fill mr-2"></i>Masuk Presensi
           </Link>
            <Link
             to="/RekapPresensi"

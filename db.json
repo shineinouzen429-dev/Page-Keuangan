@@ -199,68 +199,75 @@
       "jurusan": "",
       "jabatan": "Bahasa Jawa",
       "bagian": "",
+      "foto": "https://i.pinimg.com/736x/8c/09/1b/8c091bc541eafec6b852752c1f340f03.jpg",
       "nomor_unik": "G-8299",
       "id": "7491"
     },
     {
-      "id": "ae85",
-      "nama": "Neuvillate",
+      "nama": "Lumine",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "Bahasa Indonesia",
       "bagian": "",
-      "nomor_unik": "G-6718"
+      "foto": "https://i.pinimg.com/736x/68/cd/0a/68cd0a75e42b8b0693a4de7d91de1988.jpg",
+      "nomor_unik": "G-6718",
+      "id": "ae85"
     },
     {
-      "id": "eec3",
-      "nama": "Alhaitam",
+      "nama": "Childe",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "Olahraga",
       "bagian": "",
-      "nomor_unik": "G-2883"
+      "foto": "https://i.pinimg.com/736x/ea/5a/4c/ea5a4c6f7782b2b1a58cef71d83cf4d1.jpg",
+      "nomor_unik": "G-2883",
+      "id": "eec3"
     },
     {
-      "id": "c5c9",
-      "nama": "Lisa",
+      "nama": "Ningguang",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "IPA",
       "bagian": "",
-      "nomor_unik": "G-7602"
+      "foto": "https://i.pinimg.com/736x/95/a6/8c/95a68c41587835da229fdc19b4618cad.jpg",
+      "nomor_unik": "G-7602",
+      "id": "c5c9"
     },
     {
-      "id": "847d",
       "nama": "Jean ",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "BK",
       "bagian": "",
-      "nomor_unik": "G-5648"
+      "foto": "https://i.pinimg.com/736x/93/66/fa/9366fa465c4138a47b286de88eddf045.jpg",
+      "nomor_unik": "G-5648",
+      "id": "847d"
     },
     {
-      "id": "7677",
       "nama": "Ayyas Assadullah Bilqis",
       "kategori": "siswa",
       "kelas": "X",
       "jurusan": "TKJ",
       "jabatan": "",
       "bagian": "",
-      "nomor_unik": "S-4257"
+      "foto": "https://i.pinimg.com/736x/6d/c4/13/6dc413872f5a06637d028729202d33b1.jpg",
+      "nomor_unik": "S-4257",
+      "id": "7677"
     },
     {
-      "id": "308e",
       "nama": "Fadhil Nugraha",
       "kategori": "siswa",
       "kelas": "X",
       "jurusan": "TSM",
       "jabatan": "",
       "bagian": "",
-      "nomor_unik": "S-7805"
+      "foto": "https://i.pinimg.com/736x/cf/7f/6d/cf7f6d1625f74e788484b0da0ed3e7e6.jpg",
+      "nomor_unik": "S-7805",
+      "id": "308e"
     },
     {
       "nama": "Andre Nugroho",
@@ -269,6 +276,7 @@
       "jurusan": "TSM",
       "jabatan": "",
       "bagian": "",
+      "foto": "https://i.pinimg.com/736x/83/8f/89/838f8907f298cc28984096a414a3027b.jpg",
       "nomor_unik": "S-7536",
       "id": "563e"
     },
@@ -279,109 +287,108 @@
       "jurusan": "TB",
       "jabatan": "",
       "bagian": "",
+      "foto": "https://i.pinimg.com/736x/70/ab/d1/70abd18a1e86e53fbbbd99714534f033.jpg",
       "nomor_unik": "S-3862",
       "id": "28c6"
     },
     {
-      "id": "81f0",
       "nama": "Darren Sefiros Jacobson",
       "kategori": "siswa",
       "kelas": "XI",
-      "jurusan": "AKT",
+      "jurusan": "AKL",
       "jabatan": "",
       "bagian": "",
-      "nomor_unik": "S-4441"
+      "foto": "https://i.pinimg.com/736x/2b/72/16/2b7216ec94eaed014688f94bb898c81d.jpg",
+      "nomor_unik": "S-4441",
+      "id": "81f0"
     },
     {
-      "nama": "Diluc",
+      "nama": "Raiden ei",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "Bahasa Inggris",
       "bagian": "",
+      "foto": "https://i.pinimg.com/736x/2f/f9/c2/2ff9c280713c145e4880cc3652f24e93.jpg",
       "nomor_unik": "G-1980",
       "id": "9d25"
     },
     {
-      "id": "6bd5",
       "nama": "Dafa Husaeny",
       "kategori": "siswa",
       "kelas": "XI",
       "jurusan": "TKJ",
       "jabatan": "",
       "bagian": "",
-      "nomor_unik": "S-9809"
+      "foto": "https://i.pinimg.com/736x/3b/77/0a/3b770aa5b37724afdb86f3cdb43de1c1.jpg",
+      "nomor_unik": "S-9809",
+      "id": "6bd5"
     },
     {
-      "id": "653d",
       "nama": "Yve",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Tata Usaha(TU)",
-      "nomor_unik": "K-6539"
+      "foto": "https://i.pinimg.com/736x/e8/01/e5/e801e57188d0a41014a9f84024aff7a4.jpg",
+      "nomor_unik": "K-6539",
+      "id": "653d"
     },
     {
-      "id": "e947",
       "nama": "Aamon",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Staf Perpustakaan",
-      "nomor_unik": "K-2859"
+      "foto": "https://i.pinimg.com/1200x/93/a4/f8/93a4f864f41188f80dcfcfc59d035947.jpg",
+      "nomor_unik": "K-2859",
+      "id": "e947"
     },
     {
-      "id": "fe3c",
-      "nama": "Silvana",
+      "nama": "Freya",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Bendahara",
-      "nomor_unik": "K-9832"
+      "foto": "https://i.pinimg.com/736x/3c/bd/86/3cbd86e0fab831190029fee0ea5bb882.jpg",
+      "nomor_unik": "K-9832",
+      "id": "fe3c"
     },
     {
-      "id": "9c55",
       "nama": "Arlot",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Petugas Kebersihan",
-      "nomor_unik": "K-5156"
+      "foto": "https://i.pinimg.com/736x/79/08/71/79087142e0d834a7a7d9ba38617e8304.jpg",
+      "nomor_unik": "K-5156",
+      "id": "9c55"
     },
     {
-      "id": "7539",
       "nama": "Ruby",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Petugas Kebersihan",
-      "nomor_unik": "K-5711"
+      "foto": "https://i.pinimg.com/736x/13/c6/38/13c63868e45b5f5dc61bd0a6ef8f6029.jpg",
+      "nomor_unik": "K-5711",
+      "id": "7539"
     },
     {
-      "id": "4d2c",
       "nama": "Fredinn",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
       "bagian": "Satpam",
-      "nomor_unik": "K-2750"
-    },
-    {
-      "id": "e4df",
-      "nama": "Miya",
-      "kategori": "karyawan",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "",
-      "bagian": "Kantin",
-      "foto": "https://i.pinimg.com/736x/3e/10/37/3e103750c4596ae23076907205d4133e.jpg",
-      "nomor_unik": "K-4789"
+      "foto": "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg",
+      "nomor_unik": "K-2750",
+      "id": "4d2c"
     }
   ],
   "presensi": [
@@ -408,30 +415,6 @@
       "bagian": "",
       "tanggal": "2025-12-08",
       "jam_pulang": "2025-12-08T01:25:46.961Z"
-    },
-    {
-      "id": "f727",
-      "nomor_unik": "G-5648",
-      "nama": "Jean ",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "BK",
-      "bagian": "",
-      "tanggal": "2025-12-08",
-      "jam_masuk": "2025-12-08T01:38:18.082Z"
-    },
-    {
-      "id": "46fd",
-      "nomor_unik": "G-5648",
-      "nama": "Jean ",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "BK",
-      "bagian": "",
-      "tanggal": "2025-12-08",
-      "jam_pulang": "2025-12-08T01:38:24.641Z"
     },
     {
       "id": "843a",
@@ -470,18 +453,6 @@
       "jam_pulang": "2025-12-08T03:16:49.954Z"
     },
     {
-      "id": "d8dc",
-      "nomor_unik": "G-1980",
-      "nama": "Diluc",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Bahasa Inggris",
-      "bagian": "",
-      "tanggal": "2025-12-08",
-      "jam_masuk": "2025-12-08T05:18:27.507Z"
-    },
-    {
       "id": "6ba1",
       "nomor_unik": "S-9809",
       "nama": "Dafa Husaeny",
@@ -504,18 +475,6 @@
       "bagian": "",
       "tanggal": "2025-12-08",
       "jam_pulang": "2025-12-08T05:19:58.119Z"
-    },
-    {
-      "id": "0433",
-      "nomor_unik": "G-1980",
-      "nama": "Diluc",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Bahasa Inggris",
-      "bagian": "",
-      "tanggal": "2025-12-08",
-      "jam_pulang": "2025-12-08T05:20:04.927Z"
     },
     {
       "id": "283e",
@@ -554,16 +513,100 @@
       "jam_pulang": "2025-12-08T06:19:59.927Z"
     },
     {
-      "id": "b29f",
-      "nomor_unik": "K-4789",
-      "nama": "Miya",
+      "id": "7c1e",
+      "nomor_unik": "G-8299",
+      "nama": "Zhongli",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Jawa",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T01:10:02.941Z"
+    },
+    {
+      "id": "25e6",
+      "nomor_unik": "G-1980",
+      "nama": "Raiden ei",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Inggris",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T01:25:54.647Z"
+    },
+    {
+      "id": "2e1a",
+      "nomor_unik": "S-7536",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T01:40:46.935Z"
+    },
+    {
+      "id": "9853",
+      "nomor_unik": "S-4257",
+      "nama": "Ayyas Assadullah Bilqis",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T01:41:14.536Z"
+    },
+    {
+      "id": "cc58",
+      "nomor_unik": "K-2750",
+      "nama": "Fredinn",
       "kategori": "karyawan",
       "kelas": "",
       "jurusan": "",
       "jabatan": "",
-      "bagian": "Kantin",
+      "bagian": "Satpam",
       "tanggal": "2025-12-09",
-      "jam_masuk": "2025-12-09T00:19:41.519Z"
+      "jam_masuk": "2025-12-09T01:42:47.519Z"
+    },
+    {
+      "id": "0cfe",
+      "nomor_unik": "G-2883",
+      "nama": "Childe",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Olahraga",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T03:36:22.352Z"
+    },
+    {
+      "id": "1a0d",
+      "nomor_unik": "S-3862",
+      "nama": "Moreno Hadi Prasetyo",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TB",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T03:36:50.052Z"
+    },
+    {
+      "id": "3f05",
+      "nomor_unik": "K-2750",
+      "nama": "Fredinn",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Satpam",
+      "tanggal": "2025-12-09",
+      "jam_pulang": "2025-12-09T03:40:43.652Z"
     }
   ],
   "rekap_harian": []

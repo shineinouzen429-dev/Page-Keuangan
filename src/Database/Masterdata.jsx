@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+const defaultFoto = "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg";
+
 function MasterData() {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("Semua");
@@ -10,7 +12,7 @@ function MasterData() {
 
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [search, setSeacrh] = useState("");
+  const [search, setSearch] = useState("");
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -20,6 +22,7 @@ function MasterData() {
     jabatan: "",
     bagian: "",
     nomor_unik: "",
+    foto: defaultFoto,
   });
 
   const API_URL = "http://localhost:5000/masterdata";
@@ -66,8 +69,10 @@ function MasterData() {
 
   const filteredData =
     filter === "Semua"
-      ? data
-      : data.filter((d) => d.kategori?.toLowerCase() === filter.toLowerCase());
+      ? data.filter(d => d.nama.toLowerCase().includes(search.toLowerCase()))
+      : data
+          .filter((d) => d.kategori?.toLowerCase() === filter.toLowerCase())
+          .filter(d => d.nama.toLowerCase().includes(search.toLowerCase()));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,6 +97,7 @@ function MasterData() {
         jurusan: formData.jurusan || "",
         jabatan: formData.jabatan || "",
         bagian: formData.bagian || "",
+        foto: formData.foto || defaultFoto,
       };
 
       if (editMode) {
@@ -113,6 +119,7 @@ function MasterData() {
         jabatan: "",
         bagian: "",
         nomor_unik: "",
+        foto: defaultFoto,
       });
 
       setEditMode(false);
@@ -140,6 +147,7 @@ function MasterData() {
       jabatan: item.jabatan || "",
       bagian: item.bagian || "",
       nomor_unik: item.nomor_unik || "",
+      foto: item.foto || defaultFoto,
     });
   };
 
@@ -208,6 +216,7 @@ function MasterData() {
                 jabatan: "",
                 bagian: "",
                 nomor_unik: "",
+                foto: defaultFoto,
               });
               setShowModal(true);
             }}
@@ -218,7 +227,7 @@ function MasterData() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card
             title="Total Guru"
             count={totalGuru}
@@ -245,7 +254,7 @@ function MasterData() {
           />
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow border border-gray-200">
+        <div className="bg-white p-6 rounded-2xl shadow border border-gray-200 overflow-x-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
             <div>
               <h2 className="text-xl font-semibold">Daftar Data</h2>
@@ -258,7 +267,7 @@ function MasterData() {
                 type="text"
                 placeholder="Cari nama..."
                 value={search}
-                onChange={(e) => setSeacrh(e.targer.value)}
+                onChange={(e) => setSearch(e.target.value)}
                 className="border py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
               />
 
@@ -278,96 +287,99 @@ function MasterData() {
           {loading ? (
             <p className="text-center py-10 text-gray-500">Memuat data...</p>
           ) : (
-            <div className="overflow-x-auto rounded-lg shadow-sm">
-              <table className="w-full table-auto border-collapse">
-                <thead>
-                  <tr className="bg-blue-100 text-sm text-left">
-                    <th className="p-3">No</th>
-                    <th className="p-3">Nomor Unik</th>
-                    <th className="p-3">Nama</th>
-                    <th className="p-3">Mapel / Kelas / Bagian</th>
-                    <th className="p-3">Kategori</th>
-                    <th className="p-3 text-center">Aksi</th>
-                  </tr>
-                </thead>
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-blue-100 text-sm text-left">
+                  <th className="p-3">No</th>
+                  <th className="p-3">Foto</th>
+                  <th className="p-3">Nomor Unik</th>
+                  <th className="p-3">Nama</th>
+                  <th className="p-3">Mapel / Kelas / Bagian</th>
+                  <th className="p-3">Kategori</th>
+                  <th className="p-3 text-center">Aksi</th>
+                </tr>
+              </thead>
 
-                <tbody>
-                  {filteredData.length > 0 ? (
-                    filteredData.map((item, index) => (
-                      <tr
-                        key={item.id}
-                        className={`${
-                          index % 2 === 0 ? "bg-white" : "bg-gray-100"
-                        } transition`}
-                      >
-                        <td className="p-3 text-center">{index + 1}</td>
+              <tbody>
+                {filteredData.length > 0 ? (
+                  filteredData.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                      } transition`}
+                    >
+                      <td className="p-3 text-center">{index + 1}</td>
+                      <td className="p-3">
+                        <img
+                          src={item.foto || defaultFoto}
+                          alt={item.nama}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      </td>
+                      <td className="p-3 font-semibold">
+                        {item.nomor_unik || "-"}
+                      </td>
+                      <td className="p-3">{item.nama}</td>
+                      <td className="p-3">
+                        {item.kategori === "siswa"
+                          ? `${item.kelas || "-"} ${item.jurusan || ""}`
+                          : item.kategori === "guru"
+                          ? item.jabatan || "-"
+                          : item.bagian || "-"}
+                      </td>
+                      <td className="p-3">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                            item.kategori === "guru"
+                              ? "bg-blue-100 text-blue-700"
+                              : item.kategori === "siswa"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {item.kategori
+                            ? item.kategori.charAt(0).toUpperCase() +
+                              item.kategori.slice(1)
+                            : "-"}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center space-x-2">
+                        <button
+                          onClick={() => handleEdit(item)}
+                          className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
+                        >
+                          Edit
+                        </button>
 
-                        <td className="p-3 font-semibold">
-                          {item.nomor_unik || "-"}
-                        </td>
-
-                        <td className="p-3">{item.nama}</td>
-                        <td className="p-3">
-                          {item.kategori === "siswa"
-                            ? `${item.kelas || "-"} ${item.jurusan || ""}`
-                            : item.kategori === "guru"
-                            ? item.jabatan || "-"
-                            : item.bagian || "-"}
-                        </td>
-                        <td className="p-3">
-                          <span
-                            className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                              item.kategori === "guru"
-                                ? "bg-blue-100 text-blue-700"
-                                : item.kategori === "siswa"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-yellow-100 text-yellow-700"
-                            }`}
-                          >
-                            {item.kategori
-                              ? item.kategori.charAt(0).toUpperCase() +
-                                item.kategori.slice(1)
-                              : "-"}
-                          </span>
-                        </td>
-
-                        <td className="p-3 text-center space-x-2">
-                          <button
-                            onClick={() => handleEdit(item)}
-                            className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
-                          >
-                            Edit
-                          </button>
-
-                          <button
-                            onClick={() => handleDelete(item.id)}
-                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                          >
-                            Hapus
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="6"
-                        className="text-center py-6 text-gray-500 italic"
-                      >
-                        Tidak ada data untuk kategori ini.
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Hapus
+                        </button>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="7"
+                      className="text-center py-6 text-gray-500 italic"
+                    >
+                      Tidak ada data untuk kategori ini.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6">
+          <div className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6 overflow-auto max-h-[90vh]">
             <h2 className="text-xl font-semibold mb-4">
               {editMode ? "Edit Data" : "Tambah Data Master"}
             </h2>
@@ -448,6 +460,21 @@ function MasterData() {
                 </div>
               </div>
 
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Foto Profil (URL)
+                </label>
+                <input
+                  type="text"
+                  value={formData.foto}
+                  onChange={(e) =>
+                    setFormData({ ...formData, foto: e.target.value })
+                  }
+                  placeholder="Masukkan URL foto"
+                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                />
+              </div>
+
               {formData.kategori === "Guru" && (
                 <div>
                   <label className="text-sm font-medium text-gray-700">
@@ -498,9 +525,9 @@ function MasterData() {
                       className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                     >
                       <option value="">Pilih Jurusan</option>
-                      <option value="TSM">TSM</option>
+                      <option value="AKL">AKL</option>
                       <option value="TKJ">TKJ</option>
-                      <option value="AKT">AKT</option>
+                      <option value="TSM">TSM</option>
                       <option value="TB">TB</option>
                     </select>
                   </div>
@@ -523,22 +550,19 @@ function MasterData() {
                 </div>
               )}
 
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex justify-end gap-4 mt-4">
                 <button
                   type="button"
-                  onClick={() => {
-                    setShowModal(false);
-                    setEditMode(false);
-                  }}
-                  className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 text-gray-800"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 >
-                  {editMode ? "Perbarui" : "Simpan"}
+                  {editMode ? "Simpan" : "Tambah"}
                 </button>
               </div>
             </form>
@@ -551,21 +575,21 @@ function MasterData() {
 
 function Card({ title, count, color, icon }) {
   const colors = {
-    blue: "from-blue-600 to-blue-500 text-blue-200",
-    green: "from-green-600 to-green-500 text-green-200",
-    amber: "from-yellow-600 to-amber-500 text-yellow-200",
-    purple: "from-purple-600 to-violet-500 text-purple-200",
+    blue: "bg-blue-500",
+    green: "bg-green-500",
+    amber: "bg-amber-500",
+    purple: "bg-purple-500",
+    gray: "bg-gray-500",
   };
-
   return (
     <div
-      className={`flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l ${colors[color]} text-white rounded-lg shadow-lg p-4 text-center`}
+      className={`p-5 rounded-2xl text-white flex items-center gap-5 shadow-lg ${colors[color]}`}
     >
-      <i
-        className={`${icon} ${colors[color]} absolute right-2 bottom-2 text-[70px] opacity-40`}
-      ></i>
-      <p className="text-sm font-semibold relative z-10">{title}</p>
-      <h2 className="text-2xl font-bold mt-1 relative z-10">{count}</h2>
+      {icon && <i className={`text-3xl ri ${icon}`}></i>}
+      <div>
+        <p className="font-bold text-3xl">{count}</p>
+        <p className="opacity-90">{title}</p>
+      </div>
     </div>
   );
 }

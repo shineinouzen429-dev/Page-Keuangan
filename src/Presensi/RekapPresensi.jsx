@@ -97,6 +97,37 @@ const RekapPresensi = () => {
     setRekapFiltered(filtered);
   }, [filterNama, filterKategori, rekap]);
 
+  const renderDetail = (r) => {
+  const kategori = r.kategori?.toLowerCase();
+
+  if (kategori === "siswa") {
+    return (
+      <>
+        <span className="font-bold">Kelas:</span> {r.kelas || "-"} {r.jurusan || ""}
+      </>
+    );
+  }
+
+  if (kategori === "guru") {
+    return (
+      <>
+        <span className="font-bold">Mapel:</span> {r.jabatan || "-"}
+      </>
+    );
+  }
+
+  if (kategori === "karyawan") {
+    return (
+      <>
+        <span className="font-bold">Bagian:</span> {r.bagian || "-"}
+      </>
+    );
+  }
+
+  return "-";
+};
+
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 mb-6">
@@ -159,6 +190,7 @@ const RekapPresensi = () => {
                 <th className="px-4 py-3 border-b">Nomor Unik</th>
                 <th className="px-4 py-3 border-b">Nama</th>
                 <th className="px-4 py-3 border-b">Kategori</th>
+                <th className="px-4 py-3 border-b">Detail</th>
                 <th className="px-4 py-3 border-b">Jam Masuk</th>
                 <th className="px-4 py-3 border-b">Jam Pulang</th>
               </tr>
@@ -168,7 +200,7 @@ const RekapPresensi = () => {
               {rekapFiltered.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="6"
+                    colSpan="7"
                     className="text-center py-6 text-gray-500 italic"
                   >
                     Tidak ada data
@@ -181,6 +213,7 @@ const RekapPresensi = () => {
                     <td className="px-4 py-3">{r.nomor_unik}</td>
                     <td className="px-4 py-3">{r.nama}</td>
                     <td className="px-4 py-3 capitalize">{r.kategori}</td>
+                    <td className="px-4 py-3">{renderDetail(r)}</td>
                     <td className="px-4 py-3">{r.jamMasukFormatted}</td>
                     <td className="px-4 py-3">{r.jamPulangFormatted}</td>
                   </tr>
