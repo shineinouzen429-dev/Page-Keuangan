@@ -371,6 +371,17 @@
       "jabatan": "",
       "bagian": "Satpam",
       "nomor_unik": "K-2750"
+    },
+    {
+      "id": "e4df",
+      "nama": "Miya",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Kantin",
+      "foto": "https://i.pinimg.com/736x/3e/10/37/3e103750c4596ae23076907205d4133e.jpg",
+      "nomor_unik": "K-4789"
     }
   ],
   "presensi": [
@@ -541,6 +552,18 @@
       "bagian": "Tata Usaha(TU)",
       "tanggal": "2025-12-08",
       "jam_pulang": "2025-12-08T06:19:59.927Z"
+    },
+    {
+      "id": "b29f",
+      "nomor_unik": "K-4789",
+      "nama": "Miya",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Kantin",
+      "tanggal": "2025-12-09",
+      "jam_masuk": "2025-12-09T00:19:41.519Z"
     }
   ],
   "rekap_harian": []

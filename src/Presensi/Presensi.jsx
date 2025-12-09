@@ -18,20 +18,6 @@ const Presensi = () => {
     Swal.fire({ text, icon, timer: 2000, showConfirmButton: false });
   };
 
-  const getDetailInfo = (item) => {
-    if (!item) return { label: "Detail", value: "-" };
-    const k = item.kategori?.toLowerCase();
-    if (k === "guru")
-      return { label: "Mapel", value: item.jabatan || item.mapel || "-" };
-    if (k === "siswa")
-      return {
-        label: "Kelas",
-        value: `${item.kelas || "-"} - ${item.jurusan || "-"}`,
-      };
-    if (k === "karyawan") return { label: "Bagian", value: item.bagian || "-" };
-    return { label: "Detail", value: "-" };
-  };
-
   useEffect(() => {
     if (!nomorUnik) return setDataOrang(null);
 
@@ -176,117 +162,111 @@ const Presensi = () => {
     }
   };
 
-  return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <a
-        href="/MasukPresensi"
-        className="fixed top-4 left-4 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow-md text-xl flex items-center justify-center"
-      >
-        <i className="ri-login-box-line"></i>
-      </a>
+ // ... kode lain tetap sama
 
-      <div className="flex items-center gap-4 mb-8 justify-center">
-        <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-md">
-          <i className="ri-id-card-fill text-white text-3xl"></i>
+return (
+  <div className="p-6 max-w-3xl mx-auto">
+    <a
+      href="/MasukPresensi"
+      className="fixed top-4 left-4 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow-md text-xl flex items-center justify-center"
+    >
+      <i className="ri-login-box-line"></i>
+    </a>
+
+    <div className="flex items-center gap-4 mb-8 justify-center">
+      <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-md">
+        <i className="ri-id-card-fill text-white text-3xl"></i>
+      </div>
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold text-gray-800">
+          Presensi Sekolah
+        </h2>
+        <p className="text-gray-600 text-sm -mt-1">
+          Input presensi harian siswa, guru, dan karyawan
+        </p>
+      </div>
+    </div>
+
+    {/* Tambahkan foto profil di sini */}
+    {dataOrang && (
+      <div className="flex justify-center mb-6">
+        <img
+          src={dataOrang.foto || "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg"}
+          alt={dataOrang.nama}
+          className="w-24 h-24 rounded-full object-cover border-4 border-blue-600 shadow-md"
+        />
+      </div>
+    )}
+
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-2xl shadow-lg border"
+    >
+      <h3 className="text-xl font-semibold mb-5 text-gray-700">
+        Input Presensi
+      </h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Nomor Unik</label>
+          <input
+            type="text"
+            value={nomorUnik}
+            onChange={(e) => setNomorUnik(e.target.value.trim())}
+            placeholder="Masukkan Nomor Unik"
+            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-300"
+            disabled={saving}
+          />
         </div>
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-800">
-            Presensi Sekolah
-          </h2>
-          <p className="text-gray-600 text-sm -mt-1">
-            Input presensi harian siswa, guru, dan karyawan
-          </p>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Nama</label>
+          <input
+            disabled
+            className="w-full border rounded-lg px-3 py-2 bg-gray-100"
+            value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
+          />
         </div>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-lg border"
-      >
-        <h3 className="text-xl font-semibold mb-5 text-gray-700">
-          Input Presensi
-        </h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Nomor Unik</label>
+      <div className="mt-5 mb-4">
+        <label className="block text-sm font-medium mb-2">
+          Status Presensi
+        </label>
+        <div className="flex gap-6">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="text"
-              value={nomorUnik}
-              onChange={(e) => setNomorUnik(e.target.value.trim())}
-              placeholder="Masukkan Nomor Unik"
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-300"
-              disabled={saving}
+              type="radio"
+              checked={status === "Masuk"}
+              onChange={() => setStatus("Masuk")}
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Nama</label>
-            <input
-              disabled
-              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
-              value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Kategori</label>
-            <input
-              disabled
-              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
-              value={dataOrang?.kategori || "-"}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              {getDetailInfo(dataOrang).label}
-            </label>
-            <input
-              disabled
-              className="w-full border rounded-lg px-3 py-2 bg-gray-100"
-              value={getDetailInfo(dataOrang).value}
-            />
-          </div>
-        </div>
-
-        <div className="mt-5 mb-4">
-          <label className="block text-sm font-medium mb-2">
-            Status Presensi
+            Masuk
           </label>
-          <div className="flex gap-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                checked={status === "Masuk"}
-                onChange={() => setStatus("Masuk")}
-              />
-              Masuk
-            </label>
 
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                checked={status === "Pulang"}
-                onChange={() => setStatus("Pulang")}
-              />
-              Pulang
-            </label>
-          </div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              checked={status === "Pulang"}
+              onChange={() => setStatus("Pulang")}
+            />
+            Pulang
+          </label>
         </div>
+      </div>
 
-        <button
-          type="submit"
-          disabled={saving}
-          className={`w-full md:w-auto px-5 py-2 rounded-xl text-white shadow-md transition ${
-            saving ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-          }`}
-        >
-          {saving ? "Menyimpan..." : "Simpan Presensi"}
-        </button>
-      </form>
-    </div>
-  );
+      <button
+        type="submit"
+        disabled={saving}
+        className={`w-full md:w-auto px-5 py-2 rounded-xl text-white shadow-md transition ${
+          saving ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+        }`}
+      >
+        {saving ? "Menyimpan..." : "Simpan Presensi"}
+      </button>
+    </form>
+  </div>
+);
+
 };
 
 export default Presensi;
