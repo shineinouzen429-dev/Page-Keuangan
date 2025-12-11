@@ -619,6 +619,55 @@
       "bagian": "",
       "tanggal": "2025-12-11",
       "jam_masuk": "2025-12-11T06:44:00.556Z"
+    },
+    {
+      "id": "ba4c",
+      "nomor_unik": "S-4441",
+      "nama": "Darren Sefiros Jacobson",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "AKL",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-11",
+      "keterangan_izin": "Magang"
+    },
+    {
+      "id": "76bb",
+      "nomor_unik": "S-3862",
+      "nama": "Moreno Hadi Prasetyo",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TB",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-11",
+      "keterangan_izin": "Magang"
+    },
+    {
+      "id": "2c03",
+      "nomor_unik": "S-7536",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-11",
+      "jam_masuk": "2025-12-11T07:52:29.862Z"
+    },
+    {
+      "id": "4290",
+      "nomor_unik": "S-7536",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-11",
+      "keterangan_izin": "Sakit",
+      "jam_pulang": "2025-12-11T07:52:46.941Z"
     }
   ],
   "rekap_harian": []

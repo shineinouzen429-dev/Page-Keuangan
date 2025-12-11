@@ -21,6 +21,7 @@ import MainLayout from './Component/MainLayout';
 import Presensi from './Presensi/Presensi';
 import RekapPresensi from './Presensi/RekapPresensi';
 import MasukPresensi from './Presensi/MasukPresensi';
+import PresensiIzin from './Presensi/Presensiizin';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="Presensi" element={<Presensi />} />
+        <Route path="PresensiIzin" element={<PresensiIzin />} />
     
         <Route path="/" element={<MainLayout />}>
           <Route path="Dashboard" element={<Dashboard />} />

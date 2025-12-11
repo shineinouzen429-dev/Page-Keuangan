@@ -98,6 +98,15 @@ const RekapPresensi = () => {
   }, [filterNama, filterKategori, rekap]);
 
   const renderDetail = (r) => {
+  // Jika ada izin, tampilkan dulu
+  if (r.keterangan_izin && r.keterangan_izin.trim() !== "") {
+    return (
+      <>
+        <span className="font-bold">Izin:</span> {r.keterangan_izin}
+      </>
+    );
+  }
+
   const kategori = r.kategori?.toLowerCase();
 
   if (kategori === "siswa") {
@@ -126,6 +135,7 @@ const RekapPresensi = () => {
 
   return "-";
 };
+
 
 
   return (
