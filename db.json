@@ -607,6 +607,18 @@
       "bagian": "Satpam",
       "tanggal": "2025-12-09",
       "jam_pulang": "2025-12-09T03:40:43.652Z"
+    },
+    {
+      "id": "ba09",
+      "nomor_unik": "G-5648",
+      "nama": "Jean ",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "BK",
+      "bagian": "",
+      "tanggal": "2025-12-11",
+      "jam_masuk": "2025-12-11T06:44:00.556Z"
     }
   ],
   "rekap_harian": []

@@ -161,39 +161,32 @@ const Presensi = () => {
       setSaving(false);
     }
   };
+
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+    <div
+      className="min-h-screen w-full flex items-center justify-center p-6 bg-cover bg-center bg-fixed"
+      style={{
+        backgroundImage:
+          "url('https://i.pinimg.com/736x/3f/79/05/3f79054d7cc22ce0693c06893fcdfc3c.jpg')",
+      }}
+    >
       <a
         href="/MasukPresensi"
-        className="fixed top-4 left-4 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl shadow-lg text-xl flex items-center justify-center"
+        className="fixed top-4 left-4 bg-green-600 hover:bg-green-700 text-black px-4 py-3 rounded-xl shadow-lg text-xl flex items-center justify-center border border-green-400"
       >
-        <i className="ri-login-box-line"></i>
+        <i className="ri-login-box-line text-2xl text-black"></i>
       </a>
 
-      <div className="w-full max-w-4xl">
-        <div className="flex items-center mb-10 justify-center gap-4">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
-            <i className="ri-id-card-fill text-white text-4xl"></i>
-          </div>
-          <div>
-            <h2 className="text-4xl font-extrabold text-gray-800 drop-shadow-sm">
-              Presensi Sekolah
-            </h2>
-            <p className="text-gray-600 text-sm">
-              Input presensi harian siswa, guru, dan karyawan
-            </p>
-          </div>
-        </div>
-
+      <div className="w-full max-w-5xl">
         <form
           onSubmit={handleSubmit}
-          className="bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white flex flex-col gap-8"
+          className="p-10 rounded-3xl shadow-[0_0_30px_rgba(0,255,0,0.7)] border-2 border-green-400 bg-cover bg-center bg-opacity-40 backdrop-blur-xl"
+          style={{
+            backgroundImage:
+              "url('https://i.pinimg.com/736x/ff/1a/a1/ff1aa12fab36ab39a9a40e7db166a339.jpg')",
+          }}
         >
-          <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-            Form Presensi
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
             <div className="flex justify-center">
               <img
                 src={
@@ -201,40 +194,36 @@ const Presensi = () => {
                   "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
                 }
                 alt={dataOrang?.nama}
-                className="w-56 h-56 rounded-full object-cover shadow-xl border-4 border-blue-500/60"
+                className="w-72 h-72 rounded-2xl object-cover shadow-[0_0_25px_rgba(0,255,0,0.7)] border-2 border-green-400"
               />
             </div>
-            <div className="space-y-5">
+
+            <div className="space-y-7 text-green-300 text-xl font-semibold tracking-wide">
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Nomor Unik
-                </label>
+                <label className="block font-bold mb-2">Nomor Unik</label>
                 <input
                   type="text"
                   value={nomorUnik}
                   onChange={(e) => setNomorUnik(e.target.value.trim())}
                   placeholder="Masukkan Nomor Unik"
-                  className="w-full border rounded-lg px-3 py-2 bg-white shadow focus:ring-2 focus:ring-blue-400 outline-none"
+                  className="w-full border border-green-400 rounded-xl px-5 py-4 bg-black/60 text-green-300 shadow-[0_0_15px_rgba(0,255,0,0.4)] focus:ring-2 focus:ring-green-500 outline-none text-xl"
                   disabled={saving}
                 />
               </div>
+
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Nama
-                </label>
+                <label className="block font-bold mb-2">Nama</label>
                 <input
                   disabled
-                  className="w-full border rounded-lg px-3 py-2 bg-gray-100 shadow-sm"
+                  className="w-full border border-green-400 rounded-xl px-5 py-4 bg-black/60 text-green-300 shadow-sm"
                   value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Status Presensi
-                </label>
 
-                <div className="flex gap-6 mt-1">
-                  <label className="flex items-center gap-2 cursor-pointer">
+              <div>
+                <label className="block font-bold mb-2">Status Presensi</label>
+                <div className="flex gap-10 mt-2 text-xl">
+                  <label className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="radio"
                       checked={status === "Masuk"}
@@ -243,7 +232,7 @@ const Presensi = () => {
                     Masuk
                   </label>
 
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="radio"
                       checked={status === "Pulang"}
@@ -253,17 +242,18 @@ const Presensi = () => {
                   </label>
                 </div>
               </div>
-            </div>                         
+            </div>
           </div>
-          <div className="flex justify-center mt-4">
+
+          <div className="flex justify-center pt-10">
             <button
               type="submit"
               disabled={saving}
-              className={`w-full md:w-60 px-6 py-3 rounded-xl text-white text-lg font-semibold shadow-lg transition
+              className={`w-full md:w-80 px-6 py-5 rounded-xl text-black text-2xl font-bold shadow-xl border border-green-400
               ${
                 saving
-                  ? "bg-gray-400"
-                  : "bg-blue-600 hover:bg-blue-700 active:scale-95"
+                  ? "bg-gray-500"
+                  : "bg-green-500 hover:bg-green-600 active:scale-95"
               }
             `}
             >
