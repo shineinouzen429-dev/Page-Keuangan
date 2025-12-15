@@ -13,9 +13,86 @@ const RekapPresensi = () => {
   const [rekap, setRekap] = useState([]);
   const [rekapFiltered, setRekapFiltered] = useState([]);
   const [loadingRekap, setLoadingRekap] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const [filterNama, setFilterNama] = useState("");
   const [filterKategori, setFilterKategori] = useState("Semua");
+  
+  const openEditModal = (row) => {
+    setEditData({
+      ...row,
+      jam_masuk: toTimeValue(row.jam_masuk),
+      jam_pulang: toTimeValue(row.jam_pulang),
+      keterangan_izin: row.keterangan_izin || "",
+    });
+    setShowModal(true);
+  };
+
+  const toTimeValue = (value) => {
+    if (!value) return "";
+    try {
+      const d = new Date(value);
+      return d.toISOString().slice(11, 16); // HH:mm
+    } catch {
+      return "";
+    }
+  };
+
+ const saveEdit = async () => {
+  if (!editData) return;
+
+  const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+  if (
+    (editData.jam_masuk && !timeRegex.test(editData.jam_masuk)) ||
+    (editData.jam_pulang && !timeRegex.test(editData.jam_pulang))
+  ) {
+    showMessage("Format jam harus HH:mm", "warning");
+    return;
+  }
+
+  setSaving(true);
+  try {
+    await axios.put(`${API_BASE}/presensi/${editData.id}`, {
+      jam_masuk: editData.jam_masuk || null,
+      jam_pulang: editData.jam_pulang || null,
+      keterangan_izin: editData.keterangan_izin || null,
+    });
+
+    showMessage("Data berhasil diperbarui", "success");
+    setShowModal(false);
+    fetchRekap(filterDate);
+  } catch (error) {
+    console.error(error);
+    showMessage("Gagal menyimpan perubahan", "error");
+  } finally {
+    setSaving(false);
+  }
+};
+
+
+  const deleteData = async (row) => {
+    const confirm = await Swal.fire({
+      title: "Hapus presensi?",
+      text: row.nama,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Batal",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      await axios.delete(`${API_BASE}/presensi/${row.id}`);
+      showMessage("Data berhasil dihapus", "success");
+      fetchRekap(filterDate);
+    } catch {
+      showMessage("Gagal menghapus data", "error");
+    }
+  };
 
   const showMessage = (text, type = "info") => {
     Swal.fire({ text, icon: type, timer: 2000, showConfirmButton: false });
@@ -99,9 +176,6 @@ const RekapPresensi = () => {
     setRekapFiltered(filtered);
   }, [filterNama, filterKategori, rekap]);
 
-  // =========================
-  // DETAIL + IZIN (FIX)
-  // =========================
   const renderDetail = (r) => {
     const kategori = r.kategori?.toLowerCase();
 
@@ -191,6 +265,7 @@ const RekapPresensi = () => {
                 <th className="px-4 py-3 border-b">Detail</th>
                 <th className="px-4 py-3 border-b">Jam Masuk</th>
                 <th className="px-4 py-3 border-b">Jam Pulang</th>
+                <th className="px-4 py-3 border-b">Aksi</th>
               </tr>
             </thead>
 
@@ -219,6 +294,23 @@ const RekapPresensi = () => {
 
                     <td className="px-4 py-3">{r.jamMasukFormatted}</td>
                     <td className="px-4 py-3">{r.jamPulangFormatted}</td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex gap-2 justify-center">
+                        <button
+                          onClick={() => openEditModal(r)}
+                          className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => deleteData(r)}
+                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               )}
@@ -226,6 +318,83 @@ const RekapPresensi = () => {
           </table>
         </div>
       </div>
+
+      {showModal && editData && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-bold mb-4">Edit Presensi</h3>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm">Nama</label>
+                <input
+                  type="text"
+                  value={editData.nama}
+                  disabled
+                  className="w-full border px-3 py-2 rounded bg-gray-100"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm">Jam Masuk</label>
+                <input
+                  type="text"
+                  placeholder="HH:mm"
+                  value={editData.jam_masuk}
+                  onChange={(e) =>
+                    setEditData({ ...editData, jam_masuk: e.target.value })
+                  }
+                  className="w-full border px-3 py-2 rounded"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm">Jam Pulang</label>
+                <input
+                  type="text"
+                  placeholder="HH:mm"
+                  value={editData.jam_pulang}
+                  onChange={(e) =>
+                    setEditData({ ...editData, jam_pulang: e.target.value })
+                  }
+                  className="w-full border px-3 py-2 rounded"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm">Keterangan Izin</label>
+                <textarea
+                  value={editData.keterangan_izin}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      keterangan_izin: e.target.value,
+                    })
+                  }
+                  className="w-full border px-3 py-2 rounded"
+                  rows="2"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-5">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 rounded border"
+              >
+                Batal
+              </button>
+              <button
+                onClick={saveEdit}
+                disabled={saving}
+                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+              >
+                {saving ? "Menyimpan..." : "Simpan"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
