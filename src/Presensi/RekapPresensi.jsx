@@ -60,6 +60,8 @@ const RekapPresensi = () => {
         } else {
           if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
           if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
+          if (row.keterangan_izin)
+            merged[key].keterangan_izin = row.keterangan_izin;
         }
       });
 
@@ -97,46 +99,32 @@ const RekapPresensi = () => {
     setRekapFiltered(filtered);
   }, [filterNama, filterKategori, rekap]);
 
+  // =========================
+  // DETAIL + IZIN (FIX)
+  // =========================
   const renderDetail = (r) => {
-  // Jika ada izin, tampilkan dulu
-  if (r.keterangan_izin && r.keterangan_izin.trim() !== "") {
+    const kategori = r.kategori?.toLowerCase();
+
+    const detailUtama = (() => {
+      if (kategori === "siswa")
+        return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
+
+      if (kategori === "guru") return `Mapel: ${r.jabatan || "-"}`;
+
+      if (kategori === "karyawan") return `Bagian: ${r.bagian || "-"}`;
+
+      return "-";
+    })();
+
+    const izin = r.keterangan_izin?.trim() || "";
+
     return (
-      <>
-        <span className="font-bold">Izin:</span> {r.keterangan_izin}
-      </>
+      <div className="text-sm leading-tight">
+        <div>{detailUtama}</div>
+        <div className="text-red-600">{izin ? `Izin: ${izin}` : "\u00A0"}</div>
+      </div>
     );
-  }
-
-  const kategori = r.kategori?.toLowerCase();
-
-  if (kategori === "siswa") {
-    return (
-      <>
-        <span className="font-bold">Kelas:</span> {r.kelas || "-"} {r.jurusan || ""}
-      </>
-    );
-  }
-
-  if (kategori === "guru") {
-    return (
-      <>
-        <span className="font-bold">Mapel:</span> {r.jabatan || "-"}
-      </>
-    );
-  }
-
-  if (kategori === "karyawan") {
-    return (
-      <>
-        <span className="font-bold">Bagian:</span> {r.bagian || "-"}
-      </>
-    );
-  }
-
-  return "-";
-};
-
-
+  };
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -223,7 +211,12 @@ const RekapPresensi = () => {
                     <td className="px-4 py-3">{r.nomor_unik}</td>
                     <td className="px-4 py-3">{r.nama}</td>
                     <td className="px-4 py-3 capitalize">{r.kategori}</td>
-                    <td className="px-4 py-3">{renderDetail(r)}</td>
+                    <td className="px-3 py-3">
+                      <div className="min-h-[48px] flex flex-col justify-center">
+                        {renderDetail(r)}
+                      </div>
+                    </td>
+
                     <td className="px-4 py-3">{r.jamMasukFormatted}</td>
                     <td className="px-4 py-3">{r.jamPulangFormatted}</td>
                   </tr>

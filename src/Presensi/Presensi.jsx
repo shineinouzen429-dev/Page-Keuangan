@@ -162,108 +162,118 @@ const Presensi = () => {
     }
   };
 
-  return (
-    <div
-      className="min-h-screen w-full flex items-center justify-center p-6 bg-cover bg-center bg-fixed"
-      style={{
-        backgroundImage:
-          "url('https://i.pinimg.com/736x/3f/79/05/3f79054d7cc22ce0693c06893fcdfc3c.jpg')",
-      }}
-    >
-      <a
-        href="/MasukPresensi"
-        className="fixed top-4 left-4 bg-green-600 hover:bg-green-700 text-black px-4 py-3 rounded-xl shadow-lg text-xl flex items-center justify-center border border-green-400"
-      >
-        <i className="ri-login-box-line text-2xl text-black"></i>
-      </a>
+ return (
+  <div className="min-h-screen w-full flex items-center justify-center p-6
+    bg-gradient-to-br from-black via-green-950 to-black">
 
-      <div className="w-full max-w-5xl">
-        <form
-          onSubmit={handleSubmit}
-          className="p-10 rounded-3xl shadow-[0_0_30px_rgba(0,255,0,0.7)] border-2 border-green-400 bg-cover bg-center bg-opacity-40 backdrop-blur-xl"
-          style={{
-            backgroundImage:
-              "url('https://i.pinimg.com/736x/ff/1a/a1/ff1aa12fab36ab39a9a40e7db166a339.jpg')",
-          }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-            <div className="flex justify-center">
-              <img
-                src={
-                  dataOrang?.foto ||
-                  "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
-                }
-                alt={dataOrang?.nama}
-                className="w-72 h-72 rounded-2xl object-cover shadow-[0_0_25px_rgba(0,255,0,0.7)] border-2 border-green-400"
+    <a
+      href="/MasukPresensi"
+      className="fixed top-4 left-4 bg-green-600 hover:bg-green-700
+      text-black px-4 py-3 rounded-xl shadow-lg text-xl
+      flex items-center justify-center border border-green-400"
+    >
+      <i className="ri-arrow-left-line text-2xl"></i>
+    </a>
+
+    <div className="w-full max-w-5xl">
+      <form
+        onSubmit={handleSubmit}
+        className="p-10 rounded-3xl
+        bg-black/80 border-2 border-green-400
+         shadow-[0_0_30px_rgba(255,215,0,0.45)]
+        backdrop-blur-xl"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+
+          <div className="flex justify-center">
+            <img
+              src={
+                dataOrang?.foto ||
+                "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
+              }
+              alt={dataOrang?.nama}
+              className="w-72 h-72 rounded-2xl object-cover
+              border-2 border-green-400
+              shadow-[0_0_25px_rgba(0,255,0,0.6)]"
+            />
+          </div>
+
+          <div className="space-y-7 text-green-300 text-xl font-semibold">
+
+            <div>
+              <label className="block mb-2">Nomor Unik</label>
+              <input
+                type="text"
+                value={nomorUnik}
+                onChange={(e) => setNomorUnik(e.target.value.trim())}
+                placeholder="Masukkan Nomor Unik"
+                disabled={saving}
+                className="w-full px-5 py-4 rounded-xl
+                bg-black text-green-300
+                border border-green-400
+                shadow-[0_0_15px_rgba(0,255,0,0.4)]
+                focus:ring-2 focus:ring-green-500 outline-none"
               />
             </div>
 
-            <div className="space-y-7 text-green-300 text-xl font-semibold tracking-wide">
-              <div>
-                <label className="block font-bold mb-2">Nomor Unik</label>
-                <input
-                  type="text"
-                  value={nomorUnik}
-                  onChange={(e) => setNomorUnik(e.target.value.trim())}
-                  placeholder="Masukkan Nomor Unik"
-                  className="w-full border border-green-400 rounded-xl px-5 py-4 bg-black/60 text-green-300 shadow-[0_0_15px_rgba(0,255,0,0.4)] focus:ring-2 focus:ring-green-500 outline-none text-xl"
-                  disabled={saving}
-                />
-              </div>
+            <div>
+              <label className="block mb-2">Nama</label>
+              <input
+                disabled
+                value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
+                className="w-full px-5 py-4 rounded-xl
+                bg-black text-green-300
+                border border-green-400"
+              />
+            </div>
 
-              <div>
-                <label className="block font-bold mb-2">Nama</label>
-                <input
-                  disabled
-                  className="w-full border border-green-400 rounded-xl px-5 py-4 bg-black/60 text-green-300 shadow-sm"
-                  value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
-                />
-              </div>
+            <div>
+              <label className="block mb-2">Status Presensi</label>
+              <div className="flex gap-10 mt-2">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    checked={status === "Masuk"}
+                    onChange={() => setStatus("Masuk")}
+                  />
+                  Masuk
+                </label>
 
-              <div>
-                <label className="block font-bold mb-2">Status Presensi</label>
-                <div className="flex gap-10 mt-2 text-xl">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      checked={status === "Masuk"}
-                      onChange={() => setStatus("Masuk")}
-                    />
-                    Masuk
-                  </label>
-
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      checked={status === "Pulang"}
-                      onChange={() => setStatus("Pulang")}
-                    />
-                    Pulang
-                  </label>
-                </div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    checked={status === "Pulang"}
+                    onChange={() => setStatus("Pulang")}
+                  />
+                  Pulang
+                </label>
               </div>
             </div>
-          </div>
 
-          <div className="flex justify-center pt-10">
-            <button
-              type="submit"
-              disabled={saving}
-              className={`w-full md:w-80 px-6 py-5 rounded-xl text-black text-2xl font-bold shadow-xl border border-green-400
-              ${
-                saving
-                  ? "bg-gray-500"
-                  : "bg-green-500 hover:bg-green-600 active:scale-95"
-              }
-            `}
-            >
-              {saving ? "Menyimpan..." : "Submit"}
-            </button>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div className="flex justify-center pt-10">
+          <button
+            type="submit"
+            disabled={saving}
+            className={`w-full md:w-80 px-6 py-5 rounded-xl
+            text-black text-2xl font-bold border border-green-400
+            shadow-xl transition-all
+            ${
+              saving
+                ? "bg-gray-500"
+                : "bg-green-500 hover:bg-green-600 active:scale-95"
+            }`}
+          >
+            {saving ? "Menyimpan..." : "Submit"}
+          </button>
+        </div>
+      </form>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Presensi;

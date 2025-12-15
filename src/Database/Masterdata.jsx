@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const defaultFoto = "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg";
+const defaultFoto =
+  "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg";
 
 function MasterData() {
   const [data, setData] = useState([]);
@@ -69,10 +70,10 @@ function MasterData() {
 
   const filteredData =
     filter === "Semua"
-      ? data.filter(d => d.nama.toLowerCase().includes(search.toLowerCase()))
+      ? data.filter((d) => d.nama.toLowerCase().includes(search.toLowerCase()))
       : data
           .filter((d) => d.kategori?.toLowerCase() === filter.toLowerCase())
-          .filter(d => d.nama.toLowerCase().includes(search.toLowerCase()));
+          .filter((d) => d.nama.toLowerCase().includes(search.toLowerCase()));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -447,16 +448,13 @@ function MasterData() {
                     }
                     className="w-full mt-1 p-2 border rounded-lg bg-gray-100 text-gray-700"
                   />
-                  {!editMode && (
-                    <button
-                      type="button"
-                      onClick={handleGenerateAgain}
-                      className="px-3 py-2 bg-white border rounded-lg hover:bg-gray-50"
-                      title="Generate ulang nomor unik"
-                    >
-                      <i className="ri-refresh-line text-blue-600"></i>
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleGenerateAgain}
+                    title="Generate ulang nomor unik"
+                  >
+                    <i className="ri-refresh-line text-blue-600 border border-black rounded-lg p-3"></i>
+                  </button>
                 </div>
               </div>
 

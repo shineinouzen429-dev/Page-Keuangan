@@ -8,26 +8,22 @@ const PresensiIzin = () => {
   const [nomorUnik, setNomorUnik] = useState("");
   const [dataOrang, setDataOrang] = useState(null);
   const [keterangan, setKeterangan] = useState("");
-
-  // Tambahan radio masuk/pulang
   const [jenisPresensi, setJenisPresensi] = useState("masuk");
-
   const [loadingLookup, setLoadingLookup] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const showMessage = (text, type = "info") => {
-    const icon =
-      type === "error" ? "error" : type === "success" ? "success" : "info";
-    Swal.fire({ text, icon, timer: 2000, showConfirmButton: false });
+    Swal.fire({
+      text,
+      icon: type,
+      timer: 2000,
+      showConfirmButton: false,
+    });
   };
 
   useEffect(() => {
     if (!nomorUnik) return setDataOrang(null);
-
-    const timer = setTimeout(() => {
-      lookupNomorUnik(nomorUnik);
-    }, 400);
-
+    const timer = setTimeout(() => lookupNomorUnik(nomorUnik), 400);
     return () => clearTimeout(timer);
   }, [nomorUnik]);
 
@@ -61,7 +57,8 @@ const PresensiIzin = () => {
 
     if (!nomorUnik) return showMessage("Masukkan nomor unik!", "error");
     if (!dataOrang) return showMessage("Nomor unik tidak valid!", "error");
-    if (!keterangan.trim()) return showMessage("Isi keterangan izin!", "error");
+    if (!keterangan.trim())
+      return showMessage("Isi keterangan izin!", "error");
 
     setSaving(true);
 
@@ -80,20 +77,15 @@ const PresensiIzin = () => {
         bagian: dataOrang.bagian || "",
         tanggal,
         keterangan_izin: keterangan,
+        ...(jenisPresensi === "masuk"
+          ? { jam_masuk: jamNow }
+          : { jam_pulang: jamNow }),
       };
-
-      // Tambahkan jam masuk atau pulang
-      if (jenisPresensi === "masuk") {
-        payload.jam_masuk = jamNow;
-      } else {
-        payload.jam_pulang = jamNow;
-      }
 
       await axios.post(`${API_BASE}/presensi`, payload);
 
       showMessage("Izin berhasil disimpan!", "success");
 
-      // Reset
       setNomorUnik("");
       setDataOrang(null);
       setKeterangan("");
@@ -106,121 +98,122 @@ const PresensiIzin = () => {
   };
 
   return (
-  <div
-    className="min-h-screen w-full flex items-center justify-center p-6 bg-cover bg-center bg-fixed"
-    style={{
-      backgroundImage:
-        "url('https://i.pinimg.com/736x/3f/79/05/3f79054d7cc22ce0693c06893fcdfc3c.jpg')",
-    }}
-  >
-    <a
-      href="/MasukPresensi"
-      className="fixed top-4 left-4 bg-yellow-400 hover:bg-yellow-500 text-black px-4 py-3 rounded-xl shadow-lg text-xl flex items-center justify-center border border-yellow-600"
-    >
-      <i className="ri-arrow-left-line text-2xl text-black"></i>
-    </a>
+    <div className="min-h-screen flex items-center justify-center p-6
+      bg-gradient-to-br from-black via-green-950 to-black">
 
-    <div className="w-full max-w-4xl">
-      <form
-        onSubmit={handleSubmit}
-        className="p-6 rounded-3xl shadow-[0_0_25px_rgba(255,255,0,0.7)] border-2 border-yellow-400 bg-cover bg-center bg-opacity-40 backdrop-blur-xl"
-        style={{
-          backgroundImage:
-            "url('https://i.pinimg.com/736x/74/84/aa/7484aa376c9eb3dab93b1828639521b2.jpg')",
-        }}
+      <a
+        href="/MasukPresensi"
+        className="fixed top-4 left-4 bg-green-400 hover:bg-green-500
+        text-black px-4 py-3 rounded-xl shadow-lg border border-green-600"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          <div className="flex justify-center">
-            <img
-              src={
-                dataOrang?.foto ||
-                "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
-              }
-              alt={dataOrang?.nama}
-              className="w-85 h-85 rounded-2xl object-cover shadow-[0_0_20px_rgba(255,255,0,0.7)] border-2 border-yellow-400"
-            />
-          </div>
-          <div className="space-y-5 text-yellow-300 text-lg font-semibold">
+        <i className="ri-arrow-left-line text-2xl"></i>
+      </a>
 
-            <div>
-              <label className="block font-bold mb-1">Nomor Unik</label>
-              <input
-                type="text"
-                value={nomorUnik}
-                onChange={(e) => setNomorUnik(e.target.value.trim())}
-                placeholder="Masukkan Nomor Unik"
-                className="w-full border border-yellow-400 rounded-xl px-4 py-3 bg-black/60 text-yellow-300 focus:ring-2 focus:ring-yellow-500 outline-none"
-                disabled={saving}
+      <div className="w-full max-w-4xl">
+        <form
+          onSubmit={handleSubmit}
+          className="
+            p-8 rounded-3xl
+            bg-black/60 backdrop-blur-xl
+            border border-green-400
+            shadow-[0_0_30px_rgba(255,215,0,0.45)]
+          "
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            <div className="flex justify-center">
+              <img
+                src={
+                  dataOrang?.foto ||
+                  "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
+                }
+                alt="foto"
+                className="w-72 h-72 object-cover rounded-2xl
+                border border-green-400
+                shadow-[0_0_20px_rgba(255,215,0,0.6)]"
               />
             </div>
 
-            <div>
-              <label className="block font-bold mb-1">Nama</label>
-              <input
-                disabled
-                value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
-                className="w-full border border-yellow-400 rounded-xl px-4 py-3 bg-black/60 text-yellow-300"
-              />
-            </div>
+            <div className="space-y-5 text-green-300 font-semibold">
 
-            <div>
-              <label className="block font-bold mb-1">Keterangan Izin</label>
-              <textarea
-                value={keterangan}
-                onChange={(e) => setKeterangan(e.target.value)}
-                placeholder="Contoh: Sakit, ada acara keluarga, dll."
-                className="w-full border border-yellow-400 rounded-xl px-4 py-3 bg-black/60 text-yellow-300 h-24 resize-none"
-              ></textarea>
-            </div>
-            <div>
-              <label className="block font-bold mb-1">Jenis Presensi</label>
-              <div className="flex items-center gap-6 text-yellow-300 text-lg">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="jenis"
-                    value="masuk"
-                    checked={jenisPresensi === "masuk"}
-                    onChange={() => setJenisPresensi("masuk")}
-                  />
-                  Jam Masuk
-                </label>
-
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="jenis"
-                    value="pulang"
-                    checked={jenisPresensi === "pulang"}
-                    onChange={() => setJenisPresensi("pulang")}
-                  />
-                  Jam Pulang
-                </label>
+              <div>
+                <label>Nomor Unik</label>
+                <input
+                  value={nomorUnik}
+                  onChange={(e) => setNomorUnik(e.target.value.trim())}
+                  disabled={saving}
+                  placeholder="Masukkan nomor unik"
+                  className="w-full mt-1 px-4 py-3 rounded-xl
+                  bg-black/70 border border-green-400
+                  focus:ring-2 focus:ring-green-500 outline-none"
+                />
               </div>
-            </div>
 
+              <div>
+                <label>Nama</label>
+                <input
+                  disabled
+                  value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
+                  className="w-full mt-1 px-4 py-3 rounded-xl
+                  bg-black/70 border border-green-400"
+                />
+              </div>
+
+              <div>
+                <label>Keterangan Izin</label>
+                <textarea
+                  value={keterangan}
+                  onChange={(e) => setKeterangan(e.target.value)}
+                  className="w-full mt-1 px-4 py-3 h-24 resize-none rounded-xl
+                  bg-black/70 border border-green-400"
+                />
+              </div>
+
+              <div>
+                <label>Jenis Presensi</label>
+                <div className="flex gap-6 mt-2">
+                  <label className="flex gap-2 items-center">
+                    <input
+                      type="radio"
+                      checked={jenisPresensi === "masuk"}
+                      onChange={() => setJenisPresensi("masuk")}
+                    />
+                    Jam Masuk
+                  </label>
+
+                  <label className="flex gap-2 items-center">
+                    <input
+                      type="radio"
+                      checked={jenisPresensi === "pulang"}
+                      onChange={() => setJenisPresensi("pulang")}
+                    />
+                    Jam Pulang
+                  </label>
+                </div>
+              </div>
+
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center pt-8">
-          <button
-            type="submit"
-            disabled={saving}
-            className={`w-full md:w-64 px-5 py-3 rounded-xl text-black text-xl font-bold shadow-xl border border-yellow-400
+
+          <div className="flex justify-center pt-8">
+            <button
+              type="submit"
+              disabled={saving}
+              className={`w-full md:w-64 py-3 rounded-xl text-black font-bold
+              border border-green-400 shadow-xl transition
               ${
                 saving
                   ? "bg-gray-500"
-                  : "bg-yellow-400 hover:bg-yellow-500 active:scale-95"
-              }
-            `}
-          >
-            {saving ? "Menyimpan..." : "Kirim Izin"}
-          </button>
-        </div>
-      </form>
+                  : "bg-green-400 hover:bg-green-500 active:scale-95"
+              }`}
+            >
+              {saving ? "Menyimpan..." : "Kirim Izin"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default PresensiIzin;

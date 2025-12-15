@@ -200,7 +200,7 @@
       "jabatan": "Bahasa Jawa",
       "bagian": "",
       "foto": "https://i.pinimg.com/736x/8c/09/1b/8c091bc541eafec6b852752c1f340f03.jpg",
-      "nomor_unik": "G-8299",
+      "nomor_unik": "G-8330",
       "id": "7491"
     },
     {
@@ -668,6 +668,81 @@
       "tanggal": "2025-12-11",
       "keterangan_izin": "Sakit",
       "jam_pulang": "2025-12-11T07:52:46.941Z"
+    },
+    {
+      "id": "16bf",
+      "nomor_unik": "S-9809",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-15",
+      "jam_masuk": "2025-12-15T00:59:14.333Z"
+    },
+    {
+      "id": "b96f",
+      "nomor_unik": "S-9809",
+      "nama": "Dafa Husaeny",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-15",
+      "keterangan_izin": "Sakit",
+      "jam_pulang": "2025-12-15T00:59:42.275Z"
+    },
+    {
+      "id": "9784",
+      "nomor_unik": "S-7536",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-15",
+      "jam_masuk": "2025-12-15T01:16:30.967Z"
+    },
+    {
+      "id": "9789",
+      "nomor_unik": "S-7536",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-15",
+      "keterangan_izin": "Dipanggil Orang Tua",
+      "jam_pulang": "2025-12-15T01:17:03.701Z"
+    },
+    {
+      "id": "0926",
+      "nomor_unik": "K-9832",
+      "nama": "Freya",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Bendahara",
+      "tanggal": "2025-12-15",
+      "jam_masuk": "2025-12-15T01:32:11.222Z"
+    },
+    {
+      "id": "41d4",
+      "nomor_unik": "S-4441",
+      "nama": "Darren Sefiros Jacobson",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "AKL",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-15",
+      "keterangan_izin": "Magang",
+      "jam_masuk": "2025-12-15T01:38:16.348Z"
     }
   ],
   "rekap_harian": []
