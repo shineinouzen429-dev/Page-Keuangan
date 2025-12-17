@@ -166,14 +166,7 @@ const Presensi = () => {
   <div className="min-h-screen w-full flex items-center justify-center p-6
     bg-gradient-to-br from-black via-green-950 to-black">
 
-    <a
-      href="/MasukPresensi"
-      className="fixed top-4 left-4 bg-green-600 hover:bg-green-700
-      text-black px-4 py-3 rounded-xl shadow-lg text-xl
-      flex items-center justify-center border border-green-400"
-    >
-      <i className="ri-arrow-left-line text-2xl"></i>
-    </a>
+   
 
     <div className="w-full max-w-5xl">
       <form

@@ -199,8 +199,8 @@
       "jurusan": "",
       "jabatan": "Bahasa Jawa",
       "bagian": "",
+      "nomor_unik": "00045435",
       "foto": "https://i.pinimg.com/736x/8c/09/1b/8c091bc541eafec6b852752c1f340f03.jpg",
-      "nomor_unik": "G-1541",
       "id": "7491"
     },
     {
@@ -210,8 +210,8 @@
       "jurusan": "",
       "jabatan": "Bahasa Indonesia",
       "bagian": "",
+      "nomor_unik": "00123345",
       "foto": "https://i.pinimg.com/736x/68/cd/0a/68cd0a75e42b8b0693a4de7d91de1988.jpg",
-      "nomor_unik": "G-6718",
       "id": "ae85"
     },
     {
@@ -221,8 +221,8 @@
       "jurusan": "",
       "jabatan": "Olahraga",
       "bagian": "",
+      "nomor_unik": "02340803",
       "foto": "https://i.pinimg.com/736x/ea/5a/4c/ea5a4c6f7782b2b1a58cef71d83cf4d1.jpg",
-      "nomor_unik": "G-2883",
       "id": "eec3"
     },
     {
@@ -232,8 +232,8 @@
       "jurusan": "",
       "jabatan": "IPA",
       "bagian": "",
+      "nomor_unik": "01019335",
       "foto": "https://i.pinimg.com/736x/95/a6/8c/95a68c41587835da229fdc19b4618cad.jpg",
-      "nomor_unik": "G-7602",
       "id": "c5c9"
     },
     {
@@ -243,8 +243,8 @@
       "jurusan": "",
       "jabatan": "BK",
       "bagian": "",
+      "nomor_unik": "00000213",
       "foto": "https://i.pinimg.com/736x/93/66/fa/9366fa465c4138a47b286de88eddf045.jpg",
-      "nomor_unik": "G-5648",
       "id": "847d"
     },
     {
@@ -254,8 +254,8 @@
       "jurusan": "TKJ",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "00000001",
       "foto": "https://i.pinimg.com/736x/6d/c4/13/6dc413872f5a06637d028729202d33b1.jpg",
-      "nomor_unik": "S-4257",
       "id": "7677"
     },
     {
@@ -265,8 +265,8 @@
       "jurusan": "TSM",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "03200832",
       "foto": "https://i.pinimg.com/736x/cf/7f/6d/cf7f6d1625f74e788484b0da0ed3e7e6.jpg",
-      "nomor_unik": "S-7805",
       "id": "308e"
     },
     {
@@ -276,8 +276,8 @@
       "jurusan": "TSM",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "00937242",
       "foto": "https://i.pinimg.com/736x/83/8f/89/838f8907f298cc28984096a414a3027b.jpg",
-      "nomor_unik": "S-7536",
       "id": "563e"
     },
     {
@@ -287,8 +287,8 @@
       "jurusan": "TB",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "09090923",
       "foto": "https://i.pinimg.com/736x/70/ab/d1/70abd18a1e86e53fbbbd99714534f033.jpg",
-      "nomor_unik": "S-3862",
       "id": "28c6"
     },
     {
@@ -298,8 +298,8 @@
       "jurusan": "AKL",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "00021947",
       "foto": "https://i.pinimg.com/736x/2b/72/16/2b7216ec94eaed014688f94bb898c81d.jpg",
-      "nomor_unik": "S-4441",
       "id": "81f0"
     },
     {
@@ -309,8 +309,8 @@
       "jurusan": "",
       "jabatan": "Bahasa Inggris",
       "bagian": "",
+      "nomor_unik": "00843563",
       "foto": "https://i.pinimg.com/736x/2f/f9/c2/2ff9c280713c145e4880cc3652f24e93.jpg",
-      "nomor_unik": "G-1980",
       "id": "9d25"
     },
     {
@@ -320,8 +320,8 @@
       "jurusan": "TKJ",
       "jabatan": "",
       "bagian": "",
+      "nomor_unik": "09203201",
       "foto": "https://i.pinimg.com/736x/3b/77/0a/3b770aa5b37724afdb86f3cdb43de1c1.jpg",
-      "nomor_unik": "S-9809",
       "id": "6bd5"
     },
     {
@@ -331,8 +331,8 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Tata Usaha(TU)",
+      "nomor_unik": "00038190",
       "foto": "https://i.pinimg.com/736x/e8/01/e5/e801e57188d0a41014a9f84024aff7a4.jpg",
-      "nomor_unik": "K-6539",
       "id": "653d"
     },
     {
@@ -342,8 +342,8 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Staf Perpustakaan",
+      "nomor_unik": "00908921",
       "foto": "https://i.pinimg.com/1200x/93/a4/f8/93a4f864f41188f80dcfcfc59d035947.jpg",
-      "nomor_unik": "K-2859",
       "id": "e947"
     },
     {
@@ -353,8 +353,8 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Bendahara",
+      "nomor_unik": "00932400",
       "foto": "https://i.pinimg.com/736x/3c/bd/86/3cbd86e0fab831190029fee0ea5bb882.jpg",
-      "nomor_unik": "K-9832",
       "id": "fe3c"
     },
     {
@@ -364,8 +364,8 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Petugas Kebersihan",
+      "nomor_unik": "00009607",
       "foto": "https://i.pinimg.com/736x/79/08/71/79087142e0d834a7a7d9ba38617e8304.jpg",
-      "nomor_unik": "K-5156",
       "id": "9c55"
     },
     {
@@ -375,8 +375,8 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Petugas Kebersihan",
+      "nomor_unik": "00934675",
       "foto": "https://i.pinimg.com/736x/13/c6/38/13c63868e45b5f5dc61bd0a6ef8f6029.jpg",
-      "nomor_unik": "K-5711",
       "id": "7539"
     },
     {
@@ -386,20 +386,20 @@
       "jurusan": "",
       "jabatan": "",
       "bagian": "Satpam",
+      "nomor_unik": "10032354",
       "foto": "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg",
-      "nomor_unik": "K-2750",
       "id": "4d2c"
     },
     {
-      "id": "c32d",
       "nama": "Skirk",
       "kategori": "guru",
       "kelas": "",
       "jurusan": "",
       "jabatan": "Penjas",
       "bagian": "",
+      "nomor_unik": "00092361",
       "foto": "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg",
-      "nomor_unik": "G-2818"
+      "id": "c32d"
     }
   ],
   "presensi": [
@@ -803,6 +803,46 @@
       "bagian": "",
       "tanggal": "2025-12-15",
       "jam_pulang": "2025-12-15T07:18:22.214Z"
+    },
+    {
+      "id": "8ecb",
+      "nomor_unik": "G-1541",
+      "nama": "Zhongli",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Jawa",
+      "bagian": "",
+      "tanggal": "2025-12-17",
+      "status": "Masuk",
+      "keterangan": "",
+      "jam_masuk": "2025-12-17T02:22:55.574Z"
+    },
+    {
+      "id": "959e",
+      "nomor_unik": "00123345",
+      "nama": "Lumine",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Indonesia",
+      "bagian": "",
+      "tanggal": "2025-12-17",
+      "keterangan_izin": "Panggilan dari kementerian",
+      "jam_pulang": "2025-12-17T03:15:30.121Z"
+    },
+    {
+      "id": "c2cc",
+      "nomor_unik": "03200832",
+      "nama": "Fadhil Nugraha",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-17",
+      "keterangan_izin": "Magang",
+      "jam_masuk": "2025-12-17T03:17:54.115Z"
     }
   ],
   "rekap_harian": []

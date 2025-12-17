@@ -132,16 +132,7 @@ function Sidnav() {
             Prsensi
           </p>
 
-           <Link
-            to="/MasukPresensi"
-            className={`block py-3 px-4 rounded-xl transition-all duration-300 ${
-              isActive("/MasukPresensi")
-                ? "bg-blue-700 shadow-inner"
-                : "hover:bg-blue-700 hover:translate-x-1"
-            }`}
-          >
-            <i className="ri-login-circle-fill mr-2"></i>Masuk Presensi
-          </Link>
+           
            <Link
             to="/RekapPresensi"
             className={`block py-3 px-4 rounded-xl transition-all duration-300 ${

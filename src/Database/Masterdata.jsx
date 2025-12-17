@@ -28,18 +28,7 @@ function MasterData() {
 
   const API_URL = "http://localhost:5000/masterdata";
 
-  const generateUniqueCode = (kategori) => {
-    const prefix =
-      kategori === "Siswa"
-        ? "S"
-        : kategori === "Guru"
-        ? "G"
-        : kategori === "Karyawan"
-        ? "K"
-        : "X";
-    const rand = Math.floor(1000 + Math.random() * 9000);
-    return `${prefix}-${rand}`;
-  };
+  const generateUniqueCode = () => "";
 
   const getData = async () => {
     try {
@@ -79,35 +68,47 @@ function MasterData() {
     e.preventDefault();
 
     try {
+     
       if (!formData.nama || !formData.kategori) {
-        Swal.fire("Lengkapi form", "Nama & Kategori wajib diisi", "warning");
+        Swal.fire("Lengkapi Form", "Nama dan Kategori wajib diisi", "warning");
         return;
       }
 
-      if (!editMode && !formData.nomor_unik) {
-        setFormData((prev) => ({
-          ...prev,
-          nomor_unik: generateUniqueCode(prev.kategori),
-        }));
+      if (!formData.nomor_unik || formData.nomor_unik.length !== 8) {
+        Swal.fire(
+          "Nomor Unik Tidak Valid",
+          "Nomor unik harus tepat 8 karakter",
+          "warning"
+        );
+        return;
       }
+      if (!/^\d{8}$/.test(formData.nomor_unik)) {
+  Swal.fire(
+    "Nomor Unik Tidak Valid",
+    "Nomor unik harus 8 digit angka",
+    "warning"
+  );
+  return;
+}
 
-      let newData = {
+
+      const newData = {
         nama: formData.nama,
         kategori: formData.kategori.toLowerCase(),
         kelas: formData.kelas || "",
         jurusan: formData.jurusan || "",
         jabatan: formData.jabatan || "",
         bagian: formData.bagian || "",
+        nomor_unik: formData.nomor_unik,
         foto: formData.foto || defaultFoto,
       };
 
       if (editMode) {
-        newData.nomor_unik = formData.nomor_unik || "";
         await axios.put(`${API_URL}/${editId}`, newData);
         Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
-      } else {
-        newData.nomor_unik =
-          formData.nomor_unik || generateUniqueCode(formData.kategori);
+      }
+     
+      else {
         await axios.post(API_URL, newData);
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
       }
@@ -126,9 +127,10 @@ function MasterData() {
       setEditMode(false);
       setEditId(null);
       setShowModal(false);
+
       getData();
     } catch (err) {
-      console.error("Gagal tambah data:", err);
+      console.error("Gagal menyimpan data:", err);
       Swal.fire("Gagal", "Tidak bisa menyimpan data", "error");
     }
   };
@@ -172,19 +174,6 @@ function MasterData() {
       console.error("Gagal hapus:", err);
       Swal.fire("Gagal", "Tidak bisa menghapus data", "error");
     }
-  };
-
-  const handleGenerateAgain = () => {
-    if (!formData.kategori) {
-      Swal.fire(
-        "Pilih kategori dulu",
-        "Pilih kategori untuk generate kode",
-        "info"
-      );
-      return;
-    }
-    const newCode = generateUniqueCode(formData.kategori);
-    setFormData((prev) => ({ ...prev, nomor_unik: newCode }));
   };
 
   return (
@@ -440,21 +429,16 @@ function MasterData() {
                   <input
                     type="text"
                     value={formData.nomor_unik}
-                    readOnly
-                    placeholder={
-                      editMode
-                        ? "Nomor Unik (tidak bisa diubah)"
-                        : "Akan ter-generate setelah pilih kategori"
-                    }
-                    className="w-full mt-1 p-2 border rounded-lg bg-gray-100 text-gray-700"
+                    maxLength={8}
+                    onChange={(e) => {
+  const value = e.target.value.replace(/[^0-9]/g, "");
+  setFormData({ ...formData, nomor_unik: value });
+}}
+
+                    placeholder="Harus 8 karakter"
+                    className="w-full mt-1 p-2 border rounded-lg
+  focus:ring-2 focus:ring-blue-400 outline-none"
                   />
-                  <button
-                    type="button"
-                    onClick={handleGenerateAgain}
-                    title="Generate ulang nomor unik"
-                  >
-                    <i className="ri-refresh-line text-blue-600 border border-black rounded-lg p-3"></i>
-                  </button>
                 </div>
               </div>
 
