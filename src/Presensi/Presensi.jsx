@@ -7,8 +7,11 @@ const API_BASE = "http://localhost:5000";
 const PresensiGabungan = () => {
   const [nomorUnik, setNomorUnik] = useState("");
   const [dataOrang, setDataOrang] = useState(null);
+
   const [isIzin, setIsIzin] = useState(false);
+  const [jenisIzin, setJenisIzin] = useState("");
   const [keterangan, setKeterangan] = useState("");
+
   const [loadingLookup, setLoadingLookup] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -16,7 +19,14 @@ const PresensiGabungan = () => {
     Swal.fire({ text, icon, timer: 2000, showConfirmButton: false });
   };
 
-  /* ================= LOOKUP NOMOR UNIK ================= */
+  const resetForm = () => {
+    setNomorUnik("");
+    setDataOrang(null);
+    setIsIzin(false);
+    setJenisIzin("");
+    setKeterangan("");
+  };
+
   useEffect(() => {
     if (!nomorUnik) {
       setDataOrang(null);
@@ -51,88 +61,113 @@ const PresensiGabungan = () => {
     return () => clearTimeout(timer);
   }, [nomorUnik]);
 
-  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!nomorUnik) return showMessage("Masukkan nomor unik!", "error");
     if (!dataOrang) return showMessage("Nomor unik tidak valid!", "error");
-    if (isIzin && !keterangan.trim())
-      return showMessage("Isi keterangan izin!", "error");
 
     const now = new Date();
     const tanggal = now.toISOString().slice(0, 10);
     const jam = now.toISOString();
     const jamMenit = now.getHours() * 60 + now.getMinutes();
 
-    /* ===== CEK PRESENSI HARI INI ===== */
-    let sudahMasuk = false;
-
+    let presensiHariIni = null;
     try {
       const cek = await axios.get(`${API_BASE}/presensi`, {
         params: { nomor_unik: nomorUnik, tanggal },
       });
-
-      if (cek.data.length && cek.data[0].jam_masuk) {
-        sudahMasuk = true;
-      }
+      presensiHariIni = cek.data[0] || null;
     } catch {
-      showMessage("Gagal cek presensi hari ini", "error");
+      return showMessage("Gagal cek presensi", "error");
+    }
+
+    if (isIzin) {
+      if (!jenisIzin) return showMessage("Pilih jenis izin!", "error");
+
+      const payload = {
+        nomor_unik: nomorUnik,
+        nama: dataOrang.nama,
+        kategori: dataOrang.kategori || "",
+        kelas: dataOrang.kelas || "",
+        jurusan: dataOrang.jurusan || "",
+        jabatan: dataOrang.jabatan || "",
+        bagian: dataOrang.bagian || "",
+        tanggal,
+        status_kehadiran: "IZIN",
+      };
+
+      if (jenisIzin === "TIDAK_BERANGKAT") {
+        if (presensiHariIni)
+          return showMessage("Sudah ada presensi hari ini", "error");
+
+        if (!keterangan.trim())
+          return showMessage("Keterangan wajib diisi", "error");
+
+        payload.keterangan_izin = keterangan;
+      }
+
+      if (jenisIzin === "IZIN_MASUK") {
+        if (presensiHariIni?.jam_masuk)
+          return showMessage("Sudah presensi masuk", "error");
+
+        payload.jam_masuk = jam;
+      }
+
+      if (jenisIzin === "IZIN_PULANG") {
+        if (!presensiHariIni?.jam_masuk)
+          return showMessage("Belum presensi masuk", "error");
+
+        if (!keterangan.trim())
+          return showMessage("Keterangan wajib diisi", "error");
+
+        payload.jam_pulang = jam;
+        payload.keterangan_izin = keterangan;
+      }
+
+      try {
+        setSaving(true);
+        await axios.post(`${API_BASE}/presensi`, payload);
+        showMessage("Izin berhasil disimpan", "success");
+        resetForm();
+      } catch {
+        showMessage("Gagal menyimpan izin", "error");
+      } finally {
+        setSaving(false);
+      }
       return;
     }
 
-    /* ===== TENTUKAN MODE OTOMATIS ===== */
+    if (presensiHariIni?.status_kehadiran === "IZIN")
+      return showMessage("Sudah izin hari ini", "error");
+
     let mode = "MASUK";
     let statusKehadiran = "HADIR";
 
-    /* ===== 17.01 – 04.59 : SEKOLAH BELUM DIBUKA ===== */
     if (jamMenit >= 17 * 60 + 1 || jamMenit < 5 * 60) {
-      await Swal.fire({
-        title: "Ditolak",
-        text: "Sekolah belum dibuka",
-        icon: "error",
-      });
-      return;
+      return Swal.fire("Ditolak", "Sekolah belum dibuka", "error");
     }
 
-    /* ===== 05.00 – 06.50 : MASUK TEPAT WAKTU ===== */
     if (jamMenit >= 5 * 60 && jamMenit <= 6 * 60 + 50) {
-      if (sudahMasuk) return showMessage("Sudah presensi masuk", "error");
+      if (presensiHariIni?.jam_masuk)
+        return showMessage("Sudah presensi masuk", "error");
       statusKehadiran = "TEPAT_WAKTU";
-      await Swal.fire("Tepat Waktu", "Masuk tepat waktu", "success");
-    }
-
-    /* ===== 06.51 – 10.00 : MASUK TERLAMBAT ===== */
-    else if (jamMenit <= 10 * 60) {
-      if (sudahMasuk) return showMessage("Sudah presensi masuk", "error");
+    } else if (jamMenit <= 10 * 60) {
+      if (presensiHariIni?.jam_masuk)
+        return showMessage("Sudah presensi masuk", "error");
       statusKehadiran = "TERLAMBAT";
-      await Swal.fire("Terlambat", "Anda terlambat hadir", "warning");
-    }
-
-    /* ===== 10.01 – 14.59 : DINAMIS ===== */
-    else if (jamMenit <= 14 * 60 + 59) {
-      if (!sudahMasuk) {
+    } else if (jamMenit <= 14 * 60 + 59) {
+      if (!presensiHariIni?.jam_masuk) {
         statusKehadiran = "TERLAMBAT";
-        await Swal.fire("Terlambat", "Anda terlambat hadir", "warning");
       } else {
-        await Swal.fire({
-          title: "Belum Bisa Pulang",
-          text: "Belum waktunya pulang",
-          icon: "error",
-        });
-        return;
+        return Swal.fire("Belum Bisa Pulang", "Belum waktunya pulang", "error");
       }
-    }
-
-    /* ===== 15.00 – 17.00 : PULANG ===== */
-    else {
-      if (!sudahMasuk)
+    } else {
+      if (!presensiHariIni?.jam_masuk)
         return showMessage("Belum presensi masuk", "error");
       mode = "PULANG";
-      await Swal.fire("Pulang", "Pulang tepat waktu", "success");
     }
 
-    /* ===== PAYLOAD (TIDAK DIUBAH) ===== */
     const payload = {
       nomor_unik: nomorUnik,
       nama: dataOrang.nama,
@@ -145,23 +180,14 @@ const PresensiGabungan = () => {
       status_kehadiran: statusKehadiran,
     };
 
-    if (isIzin) {
-      payload.keterangan_izin = keterangan;
-    } else if (mode === "MASUK") {
-      payload.jam_masuk = jam;
-    } else {
-      payload.jam_pulang = jam;
-    }
+    if (mode === "MASUK") payload.jam_masuk = jam;
+    else payload.jam_pulang = jam;
 
     try {
       setSaving(true);
       await axios.post(`${API_BASE}/presensi`, payload);
-      showMessage("Presensi berhasil disimpan", "success");
-
-      setNomorUnik("");
-      setDataOrang(null);
-      setIsIzin(false);
-      setKeterangan("");
+      showMessage("Presensi berhasil", "success");
+      resetForm();
     } catch {
       showMessage("Gagal menyimpan presensi", "error");
     } finally {
@@ -169,7 +195,6 @@ const PresensiGabungan = () => {
     }
   };
 
-  /* ================= UI (TIDAK DIUBAH) ================= */
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-black">
       <form
@@ -188,7 +213,7 @@ const PresensiGabungan = () => {
             />
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             <input
               placeholder="Nomor Unik"
               value={nomorUnik}
@@ -213,12 +238,48 @@ const PresensiGabungan = () => {
             </label>
 
             {isIzin && (
-              <textarea
-                placeholder="Keterangan izin"
-                value={keterangan}
-                onChange={(e) => setKeterangan(e.target.value)}
-                className="w-full p-3 rounded bg-black border border-green-400"
-              />
+              <div className="space-y-3">
+                <label className="flex gap-2">
+                  <input
+                    type="radio"
+                    value="TIDAK_BERANGKAT"
+                    checked={jenisIzin === "TIDAK_BERANGKAT"}
+                    onChange={(e) => setJenisIzin(e.target.value)}
+                  />
+                  Tidak Berangkat
+                </label>
+
+                <label className="flex gap-2">
+                  <input
+                    type="radio"
+                    value="IZIN_MASUK"
+                    checked={jenisIzin === "IZIN_MASUK"}
+                    onChange={(e) => setJenisIzin(e.target.value)}
+                  />
+                  Izin Jam Masuk
+                </label>
+
+                <label className="flex gap-2">
+                  <input
+                    type="radio"
+                    value="IZIN_PULANG"
+                    checked={jenisIzin === "IZIN_PULANG"}
+                    onChange={(e) => setJenisIzin(e.target.value)}
+                  />
+                  Izin Jam Pulang
+                </label>
+
+                {(jenisIzin === "TIDAK_BERANGKAT" ||
+                  jenisIzin === "IZIN_PULANG" ||
+                  jenisIzin === "IZIN_MASUK") && (
+                  <textarea
+                    placeholder="Keterangan izin (opsional untuk jam masuk)"
+                    value={keterangan}
+                    onChange={(e) => setKeterangan(e.target.value)}
+                    className="w-full p-3 rounded bg-black border border-green-400"
+                  />
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -226,8 +287,9 @@ const PresensiGabungan = () => {
         <button
           type="submit"
           disabled={saving}
-          className={`mt-8 w-full py-4 rounded-xl text-black font-bold
-            ${saving ? "bg-gray-500" : "bg-green-400 hover:bg-green-500"}`}
+          className={`mt-8 w-full py-4 rounded-xl text-black font-bold ${
+            saving ? "bg-gray-500" : "bg-green-400 hover:bg-green-500"
+          }`}
         >
           {saving ? "Menyimpan..." : "Submit"}
         </button>

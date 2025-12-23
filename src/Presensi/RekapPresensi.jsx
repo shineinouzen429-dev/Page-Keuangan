@@ -200,24 +200,45 @@ status: fmtStatus(r),
 
   /* =================== RENDER DETAIL =================== */
   const renderDetail = (r) => {
-    const kategori = r.kategori?.toLowerCase();
+  const kategori = r.kategori?.toLowerCase();
 
-    const detailUtama = (() => {
-      if (kategori === "siswa") return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
-      if (kategori === "guru") return `Mapel: ${r.jabatan || "-"}`;
-      if (kategori === "karyawan") return `Bagian: ${r.bagian || "-"}`;
-      return "-";
-    })();
+  const detailUtama = (() => {
+    if (kategori === "siswa")
+      return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
+    if (kategori === "guru")
+      return `Mapel: ${r.jabatan || "-"}`;
+    if (kategori === "karyawan")
+      return `Bagian: ${r.bagian || "-"}`;
+    return "-";
+  })();
 
-    const izin = r.keterangan_izin?.trim() || "";
+  let izinText = "";
 
-    return (
-      <div className="text-sm leading-tight">
-        <div>{detailUtama}</div>
-        <div className="text-red-600">{izin ? `Izin: ${izin}` : "\u00A0"}</div>
+  if (r.status_kehadiran === "IZIN") {
+    if (!r.jam_masuk && !r.jam_pulang) {
+      izinText = `Izin: ${r.keterangan_izin || "-"}`;
+    } else if (r.jam_masuk && !r.jam_pulang) {
+      izinText = "Izin: Magang";
+    } else if (r.jam_pulang) {
+      izinText = "Izin: Pulang Awal";
+    }
+  }
+
+  return (
+    <div className="text-sm leading-tight">
+      <div>{detailUtama}</div>
+      <div className="text-red-600">
+        {izinText || "\u00A0"}
+        {r.keterangan_izin && r.jam_masuk && (
+          <div className="text-xs">
+            ({r.keterangan_izin})
+          </div>
+        )}
       </div>
-    );
-  };
+    </div>
+  );
+};
+
 
   /* =================== UI =================== */
   return (
