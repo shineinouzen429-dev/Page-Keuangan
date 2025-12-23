@@ -20,12 +20,10 @@ const RekapPresensi = () => {
   const [filterNama, setFilterNama] = useState("");
   const [filterKategori, setFilterKategori] = useState("Semua");
 
-  /* =================== UTILITY =================== */
   const showMessage = (text, type = "info") => {
     Swal.fire({ text, icon: type, timer: 2000, showConfirmButton: false });
   };
 
-  // Format jam ke WIB
   const fmtTime = (isoString) => {
     if (!isoString) return "-";
     try {
@@ -41,12 +39,10 @@ const RekapPresensi = () => {
     }
   };
 
-  // Ambil jam:menit tanpa mengubah zona waktu (untuk edit)
   const toTimeValue = (isoString) => {
     if (!isoString) return "";
     try {
       const date = new Date(isoString);
-      // Ambil jam & menit WIB
       const options = { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Jakarta" };
       return new Intl.DateTimeFormat("id-ID", options).format(date);
     } catch {
@@ -54,7 +50,6 @@ const RekapPresensi = () => {
     }
   };
 
-  // Tentukan status presensi
   const fmtStatus = (r) => {
   if (r.keterangan_izin?.trim()) return "IZIN";
   if (r.jam_pulang) return "PULANG TEPAT WAKTU";
@@ -62,14 +57,12 @@ const RekapPresensi = () => {
   if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
   if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
 
-  // fallback (jaga-jaga data lama)
   if (r.jam_masuk) return "HADIR";
 
   return "-";
 };
 
 
-  /* =================== FETCH REKAP =================== */
   const fetchRekap = async (date) => {
     setLoadingRekap(true);
     try {
@@ -115,7 +108,6 @@ status: fmtStatus(r),
     fetchRekap(filterDate);
   }, []);
 
-  /* =================== FILTER =================== */
   useEffect(() => {
     let filtered = [...rekap];
 
@@ -134,7 +126,6 @@ status: fmtStatus(r),
     setRekapFiltered(filtered);
   }, [filterNama, filterKategori, rekap]);
 
-  /* =================== EDIT MODAL =================== */
   const openEditModal = (row) => {
     setEditData({
       ...row,
@@ -176,7 +167,6 @@ status: fmtStatus(r),
     }
   };
 
-  /* =================== DELETE =================== */
   const deleteData = async (row) => {
     const confirm = await Swal.fire({
       title: "Hapus presensi?",
@@ -198,7 +188,6 @@ status: fmtStatus(r),
     }
   };
 
-  /* =================== RENDER DETAIL =================== */
   const renderDetail = (r) => {
   const kategori = r.kategori?.toLowerCase();
 
@@ -240,7 +229,6 @@ status: fmtStatus(r),
 };
 
 
-  /* =================== UI =================== */
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 mb-6">
@@ -351,7 +339,6 @@ status: fmtStatus(r),
         </div>
       </div>
 
-      {/* =================== EDIT MODAL =================== */}
       {showModal && editData && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-6">

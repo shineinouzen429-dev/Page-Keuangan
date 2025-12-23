@@ -1142,6 +1142,32 @@
       "tanggal": "2025-12-23",
       "status_kehadiran": "TERLAMBAT",
       "jam_masuk": "2025-12-23T01:46:19.476Z"
+    },
+    {
+      "id": "0083",
+      "nomor_unik": "00021947",
+      "nama": "Darren Sefiros Jacobson",
+      "kategori": "siswa",
+      "kelas": "XI",
+      "jurusan": "AKL",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "TERLAMBAT",
+      "jam_masuk": "2025-12-23T02:37:01.293Z"
+    },
+    {
+      "id": "8a49",
+      "nomor_unik": "00038190",
+      "nama": "Yve",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Tata Usaha(TU)",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "TERLAMBAT",
+      "jam_masuk": "2025-12-23T02:37:30.165Z"
     }
   ],
   "rekap_harian": []
