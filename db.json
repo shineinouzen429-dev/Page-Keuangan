@@ -79,6 +79,16 @@
       "kelas": "X",
       "jurusan": "TSM",
       "created_at": "2025-12-03T02:36:44.692Z"
+    },
+    {
+      "id": "df5b",
+      "name": "Roihan A",
+      "jenis_tagihan": "SPP",
+      "jumlah": 500000,
+      "status": "Lunas",
+      "kelas": "XII",
+      "jurusan": "TKJ",
+      "created_at": "2025-12-23T03:41:04.364Z"
     }
   ],
   "kategoritagihan": [
@@ -132,6 +142,12 @@
       "kategori": "Karyawan",
       "keterangan": "Karyawan adalah pegawai non-guru yang membantu operasional sekolah.\n",
       "status": true
+    },
+    {
+      "id": "241d",
+      "kategori": "Satpam Pagi",
+      "keterangan": "Level Satpam",
+      "status": false
     }
   ],
   "kelasdata": [
@@ -194,6 +210,11 @@
       "id": "db14",
       "kelas": "X",
       "jurusan": "TSM"
+    },
+    {
+      "id": "1e7f",
+      "kelas": "XI",
+      "jurusan": "TKJ2"
     }
   ],
   "masterdata": [
@@ -204,7 +225,7 @@
       "jurusan": "",
       "jabatan": "Bahasa Jawa",
       "bagian": "",
-      "nomor_unik": "00045435",
+      "nomor_unik": "0004543511",
       "foto": "https://i.pinimg.com/736x/8c/09/1b/8c091bc541eafec6b852752c1f340f03.jpg",
       "id": "7491"
     },
@@ -215,7 +236,7 @@
       "jurusan": "",
       "jabatan": "Bahasa Indonesia",
       "bagian": "",
-      "nomor_unik": "00123345",
+      "nomor_unik": "0012334514",
       "foto": "https://i.pinimg.com/736x/68/cd/0a/68cd0a75e42b8b0693a4de7d91de1988.jpg",
       "id": "ae85"
     },
@@ -394,6 +415,17 @@
       "nomor_unik": "10032354",
       "foto": "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg",
       "id": "4d2c"
+    },
+    {
+      "nama": "Roihan A",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "nomor_unik": "25892874",
+      "foto": "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg",
+      "id": "0e2a"
     }
   ],
   "presensi": [
@@ -1178,6 +1210,19 @@
       "status_kehadiran": "IZIN",
       "jam_pulang": "2025-12-23T03:21:22.979Z",
       "keterangan_izin": "Sakit"
+    },
+    {
+      "id": "e326",
+      "nomor_unik": "25892874",
+      "nama": "Roihan A",
+      "kategori": "siswa",
+      "kelas": "XII",
+      "jurusan": "TKJ",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "TERLAMBAT",
+      "jam_masuk": "2025-12-23T03:44:12.004Z"
     }
   ],
   "rekap_harian": []

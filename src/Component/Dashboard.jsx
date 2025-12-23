@@ -325,7 +325,7 @@ const Dashboard = () => {
         title="Rekap Presensi Hari Ini"
         columns={[
           "No",
-          "Nomor Unik",
+          
           "Nama",
           "Kategori",
           "Jam Masuk",
@@ -335,7 +335,6 @@ const Dashboard = () => {
         renderRow={(p, i) => (
           <tr key={i} className="odd:bg-white even:bg-gray-50 transition">
             <td className="py-2 px-3 text-center">{i + 1}</td>
-            <td className="py-2 px-3">{p.nomor_unik}</td>
             <td className="py-2 px-3">{p.nama}</td>
             <td className="py-2 px-3 capitalize">{p.kategori}</td>
             <td className="py-2 px-3">

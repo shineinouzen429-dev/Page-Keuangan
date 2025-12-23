@@ -15,6 +15,26 @@ function MasterData() {
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
   const [showNomorUnikRow, setShowNomorUnikRow] = useState({});
+  const [kelasData, setKelasData] = useState([]);
+
+const getKelasData = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/kelasdata");
+    setKelasData(res.data || []);
+  } catch (err) {
+    console.error("Gagal mengambil data kelas:", err);
+  }
+};
+
+useEffect(() => {
+  getKelasData();
+}, []);
+
+const getUniqueJurusan = () => {
+  const jurusanList = kelasData.map((item) => item.jurusan).filter(Boolean);
+  return [...new Set(jurusanList)];
+};
+
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -74,7 +94,7 @@ function MasterData() {
         return;
       }
 
-      if (!formData.nomor_unik || formData.nomor_unik.length !== 8) {
+      if (!formData.nomor_unik || formData.nomor_unik.length !== 10) {
         Swal.fire(
           "Nomor Unik Tidak Valid",
           "Nomor unik harus tepat 8 karakter",
@@ -82,7 +102,7 @@ function MasterData() {
         );
         return;
       }
-      if (!/^\d{8}$/.test(formData.nomor_unik)) {
+      if (!/^\d{10}$/.test(formData.nomor_unik)) {
         Swal.fire(
           "Nomor Unik Tidak Valid",
           "Nomor unik harus 8 digit angka",
@@ -414,6 +434,7 @@ function MasterData() {
                     setFormData({ ...formData, nama: e.target.value })
                   }
                   className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                  placeholder="Masukkan Nama"
                 />
               </div>
 
@@ -456,12 +477,12 @@ function MasterData() {
                   <input
                     type="text"
                     value={formData.nomor_unik}
-                    maxLength={8}
+                    maxLength={10}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^0-9]/g, "");
                       setFormData({ ...formData, nomor_unik: value });
                     }}
-                    placeholder="Harus 8 karakter"
+                    placeholder="Masukkan Nomer Unik"
                     className="w-full mt-1 p-2 border rounded-lg
   focus:ring-2 focus:ring-blue-400 outline-none"
                   />
@@ -524,20 +545,22 @@ function MasterData() {
                     <label className="text-sm font-medium text-gray-700">
                       Jurusan
                     </label>
-                    <select
-                      required
-                      value={formData.jurusan}
-                      onChange={(e) =>
-                        setFormData({ ...formData, jurusan: e.target.value })
-                      }
-                      className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-                    >
-                      <option value="">Pilih Jurusan</option>
-                      <option value="AKL">AKL</option>
-                      <option value="TKJ">TKJ</option>
-                      <option value="TSM">TSM</option>
-                      <option value="TB">TB</option>
-                    </select>
+                   <select
+  required
+  value={formData.jurusan}
+  onChange={(e) =>
+    setFormData({ ...formData, jurusan: e.target.value })
+  }
+  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+>
+  <option value="">Pilih Jurusan</option>
+  {getUniqueJurusan().map((jrs) => (
+    <option key={jrs} value={jrs}>
+      {jrs}
+    </option>
+  ))}
+</select>
+
                   </div>
                 </div>
               )}

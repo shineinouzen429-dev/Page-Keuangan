@@ -16,6 +16,7 @@ const RekapPresensi = () => {
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [filterStatus, setFilterStatus] = useState("Semua");
 
   const [filterNama, setFilterNama] = useState("");
   const [filterKategori, setFilterKategori] = useState("Semua");
@@ -43,35 +44,64 @@ const RekapPresensi = () => {
     if (!isoString) return "";
     try {
       const date = new Date(isoString);
-      const options = { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Jakarta" };
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "Asia/Jakarta",
+      };
       return new Intl.DateTimeFormat("id-ID", options).format(date);
     } catch {
       return "";
     }
   };
+  useEffect(() => {
+    let filtered = [...rekap];
 
- const fmtStatus = (r) => {
-  if (r.keterangan_izin?.trim()) {
-    if (!r.jam_masuk && !r.jam_pulang) {
-      return "IZIN (TIDAK BERANGKAT)";
+    if (filterNama.trim() !== "") {
+      filtered = filtered.filter((r) =>
+        r.nama.toLowerCase().includes(filterNama.toLowerCase())
+      );
     }
 
-    if (r.jam_masuk && r.jam_pulang) {
-      return "IZIN (PULANG)";
+    if (filterKategori !== "Semua") {
+      filtered = filtered.filter(
+        (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
+      );
     }
 
-    return "IZIN";
-  }
+    if (filterStatus !== "Semua") {
+      filtered = filtered.filter((r) => {
+        if (filterStatus === "IZIN") {
+          return r.status.toUpperCase().includes("IZIN");
+        }
+        return r.status.toUpperCase() === filterStatus.toUpperCase();
+      });
+    }
 
-  if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
-  if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
+    setRekapFiltered(filtered);
+  }, [filterNama, filterKategori, filterStatus, rekap]);
 
-  if (r.jam_masuk) return "HADIR";
+  const fmtStatus = (r) => {
+    if (r.keterangan_izin?.trim()) {
+      if (!r.jam_masuk && !r.jam_pulang) {
+        return "IZIN (TIDAK BERANGKAT)";
+      }
 
-  return "-";
-};
+      if (r.jam_masuk && r.jam_pulang) {
+        return "IZIN (PULANG)";
+      }
 
+      return "IZIN";
+    }
 
+    if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
+    if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
+
+    if (r.jam_masuk) return "HADIR";
+
+    return "-";
+  };
 
   const fetchRekap = async (date) => {
     setLoadingRekap(true);
@@ -92,7 +122,8 @@ const RekapPresensi = () => {
         } else {
           if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
           if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
-          if (row.keterangan_izin) merged[key].keterangan_izin = row.keterangan_izin;
+          if (row.keterangan_izin)
+            merged[key].keterangan_izin = row.keterangan_izin;
         }
       });
 
@@ -100,7 +131,7 @@ const RekapPresensi = () => {
         ...r,
         jamMasukFormatted: fmtTime(r.jam_masuk),
         jamPulangFormatted: fmtTime(r.jam_pulang),
-status: fmtStatus(r),
+        status: fmtStatus(r),
 
         key: r.nomor_unik,
       }));
@@ -137,12 +168,20 @@ status: fmtStatus(r),
   }, [filterNama, filterKategori, rekap]);
 
   const openEditModal = (row) => {
+    const jamMasukValue = toTimeValue(row.jam_masuk);
+    const jamPulangValue = toTimeValue(row.jam_pulang);
+
     setEditData({
       ...row,
-      jam_masuk: toTimeValue(row.jam_masuk),
-      jam_pulang: toTimeValue(row.jam_pulang),
+      jam_masuk: jamMasukValue,
+      jam_pulang: jamPulangValue,
       keterangan_izin: row.keterangan_izin || "",
+
+      // FLAG
+      canEditJamMasuk: !!row.jam_masuk,
+      canEditJamPulang: !!row.jam_pulang,
     });
+
     setShowModal(true);
   };
 
@@ -162,8 +201,10 @@ status: fmtStatus(r),
     setSaving(true);
     try {
       await axios.put(`${API_BASE}/presensi/${editData.id}`, {
-        jam_masuk: editData.jam_masuk || null,
-        jam_pulang: editData.jam_pulang || null,
+        jam_masuk: editData.canEditJamMasuk ? editData.jam_masuk || null : null,
+        jam_pulang: editData.canEditJamPulang
+          ? editData.jam_pulang || null
+          : null,
         keterangan_izin: editData.keterangan_izin || null,
       });
 
@@ -199,45 +240,40 @@ status: fmtStatus(r),
   };
 
   const renderDetail = (r) => {
-  const kategori = r.kategori?.toLowerCase();
+    const kategori = r.kategori?.toLowerCase();
 
-  const detailUtama = (() => {
-    if (kategori === "siswa")
-      return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
-    if (kategori === "guru")
-      return `Mapel: ${r.jabatan || "-"}`;
-    if (kategori === "karyawan")
-      return `Bagian: ${r.bagian || "-"}`;
-    return "-";
-  })();
+    const detailUtama = (() => {
+      if (kategori === "siswa")
+        return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
+      if (kategori === "guru") return `Mapel: ${r.jabatan || "-"}`;
+      if (kategori === "karyawan") return `Bagian: ${r.bagian || "-"}`;
+      return "-";
+    })();
 
-  let izinText = "";
+    let izinText = "";
 
-  if (r.status_kehadiran === "IZIN") {
-    if (!r.jam_masuk && !r.jam_pulang) {
-      izinText = `Izin: ${r.keterangan_izin || "-"}`;
-    } else if (r.jam_masuk && !r.jam_pulang) {
-      izinText = "Izin: Magang";
-    } else if (r.jam_pulang) {
-      izinText = "Izin: Pulang Awal";
+    if (r.status_kehadiran === "IZIN") {
+      if (!r.jam_masuk && !r.jam_pulang) {
+        izinText = `Izin: ${r.keterangan_izin || "-"}`;
+      } else if (r.jam_masuk && !r.jam_pulang) {
+        izinText = "Izin: Magang";
+      } else if (r.jam_pulang) {
+        izinText = "Izin: Pulang Awal";
+      }
     }
-  }
 
-  return (
-    <div className="text-sm leading-tight">
-      <div>{detailUtama}</div>
-      <div className="text-red-600">
-        {izinText || "\u00A0"}
-        {r.keterangan_izin && r.jam_masuk && (
-          <div className="text-xs">
-            ({r.keterangan_izin})
-          </div>
-        )}
+    return (
+      <div className="text-sm leading-tight">
+        <div>{detailUtama}</div>
+        <div className="text-red-600">
+          {izinText || "\u00A0"}
+          {r.keterangan_izin && r.jam_masuk && (
+            <div className="text-xs">({r.keterangan_izin})</div>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  };
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -289,6 +325,19 @@ status: fmtStatus(r),
             <option>Guru</option>
             <option>Karyawan</option>
           </select>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border px-3 py-2 rounded-lg"
+          >
+            <option>Semua</option>
+            <option>TEPAT WAKTU</option>
+            <option>TERLAMBAT</option>
+            <option>IZIN</option>
+            <option>HADIR</option>
+            <option>IZIN (TIDAK BERANGKAT)</option>
+            <option>IZIN (PULANG)</option>
+          </select>
         </div>
 
         <div className="overflow-x-auto bg-white rounded-xl border border-gray-200">
@@ -310,7 +359,10 @@ status: fmtStatus(r),
             <tbody>
               {rekapFiltered.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="text-center py-6 text-gray-500 italic">
+                  <td
+                    colSpan="9"
+                    className="text-center py-6 text-gray-500 italic"
+                  >
                     Tidak ada data
                   </td>
                 </tr>
@@ -331,13 +383,13 @@ status: fmtStatus(r),
                           onClick={() => openEditModal(r)}
                           className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
                         >
-                          Edit
+                          <i className="ri-edit-2-line text-lg"></i>Edit
                         </button>
                         <button
                           onClick={() => deleteData(r)}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
-                          Hapus
+                          <i className="ri-delete-bin-6-line text-lg"></i>Hapus
                         </button>
                       </div>
                     </td>
@@ -371,10 +423,15 @@ status: fmtStatus(r),
                   type="text"
                   placeholder="HH:mm"
                   value={editData.jam_masuk}
+                  disabled={!editData.canEditJamMasuk}
                   onChange={(e) =>
                     setEditData({ ...editData, jam_masuk: e.target.value })
                   }
-                  className="w-full border px-3 py-2 rounded"
+                  className={`w-full border px-3 py-2 rounded ${
+                    !editData.canEditJamMasuk
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : ""
+                  }`}
                 />
               </div>
 
@@ -384,24 +441,35 @@ status: fmtStatus(r),
                   type="text"
                   placeholder="HH:mm"
                   value={editData.jam_pulang}
+                  disabled={!editData.canEditJamPulang}
                   onChange={(e) =>
                     setEditData({ ...editData, jam_pulang: e.target.value })
                   }
-                  className="w-full border px-3 py-2 rounded"
+                  className={`w-full border px-3 py-2 rounded ${
+                    !editData.canEditJamPulang
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : ""
+                  }`}
                 />
               </div>
 
-              <div>
-                <label className="text-sm">Keterangan Izin</label>
-                <textarea
-                  value={editData.keterangan_izin}
-                  onChange={(e) =>
-                    setEditData({ ...editData, keterangan_izin: e.target.value })
-                  }
-                  className="w-full border px-3 py-2 rounded"
-                  rows="2"
-                />
-              </div>
+              {editData.keterangan_izin && (
+  <div>
+    <label className="text-sm">Keterangan Izin</label>
+    <textarea
+      value={editData.keterangan_izin}
+      onChange={(e) =>
+        setEditData({
+          ...editData,
+          keterangan_izin: e.target.value,
+        })
+      }
+      className="w-full border px-3 py-2 rounded"
+      rows="2"
+    />
+  </div>
+)}
+
             </div>
 
             <div className="flex justify-end gap-2 mt-5">

@@ -186,6 +186,7 @@ function KategoriData() {
                               : "bg-gray-500 text-white"
                           }`}
                         >
+                          <i className={item.status ? "ri-check-line": "ri-close-line"}> </i>
                           {item.status ? "AKTIF" : "TIDAK AKTIF"}
                         </span>
                       </td>
