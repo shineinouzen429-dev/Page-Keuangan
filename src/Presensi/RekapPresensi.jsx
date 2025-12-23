@@ -50,9 +50,18 @@ const RekapPresensi = () => {
     }
   };
 
-  const fmtStatus = (r) => {
-  if (r.keterangan_izin?.trim()) return "IZIN";
-  if (r.jam_pulang) return "PULANG TEPAT WAKTU";
+ const fmtStatus = (r) => {
+  if (r.keterangan_izin?.trim()) {
+    if (!r.jam_masuk && !r.jam_pulang) {
+      return "IZIN (TIDAK BERANGKAT)";
+    }
+
+    if (r.jam_masuk && r.jam_pulang) {
+      return "IZIN (PULANG)";
+    }
+
+    return "IZIN";
+  }
 
   if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
   if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
@@ -61,6 +70,7 @@ const RekapPresensi = () => {
 
   return "-";
 };
+
 
 
   const fetchRekap = async (date) => {

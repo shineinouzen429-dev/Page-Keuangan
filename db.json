@@ -189,6 +189,11 @@
       "id": "e50b",
       "kelas": "XII",
       "jurusan": "TB"
+    },
+    {
+      "id": "db14",
+      "kelas": "X",
+      "jurusan": "TSM"
     }
   ],
   "masterdata": [
@@ -389,28 +394,6 @@
       "nomor_unik": "10032354",
       "foto": "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg",
       "id": "4d2c"
-    },
-    {
-      "nama": "Skirk",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Penjas",
-      "bagian": "",
-      "nomor_unik": "00092361",
-      "foto": "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg",
-      "id": "c32d"
-    },
-    {
-      "id": "4da9",
-      "nama": "Umam",
-      "kategori": "siswa",
-      "kelas": "X",
-      "jurusan": "AKL",
-      "jabatan": "",
-      "bagian": "",
-      "nomor_unik": "23463874",
-      "foto": "https://i.pinimg.com/736x/b1/26/e5/b126e56c40c6cbffb30bd5e4204a1a0e.jpg"
     }
   ],
   "presensi": [
@@ -1038,19 +1021,6 @@
       "jam_masuk": "2025-12-23T00:49:36.454Z"
     },
     {
-      "id": "a286",
-      "nomor_unik": "00123345",
-      "nama": "Lumine",
-      "kategori": "guru",
-      "kelas": "",
-      "jurusan": "",
-      "jabatan": "Bahasa Indonesia",
-      "bagian": "",
-      "tanggal": "2025-12-23",
-      "status_kehadiran": "TERLAMBAT",
-      "keterangan_izin": "Sakit"
-    },
-    {
       "id": "4412",
       "nomor_unik": "02340803",
       "nama": "Childe",
@@ -1168,6 +1138,46 @@
       "tanggal": "2025-12-23",
       "status_kehadiran": "TERLAMBAT",
       "jam_masuk": "2025-12-23T02:37:30.165Z"
+    },
+    {
+      "id": "d1b1",
+      "nomor_unik": "10032354",
+      "nama": "Fredinn",
+      "kategori": "karyawan",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "",
+      "bagian": "Satpam",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "IZIN",
+      "keterangan_izin": "Sakit"
+    },
+    {
+      "id": "4fe8",
+      "nomor_unik": "00843563",
+      "nama": "Raiden ei",
+      "kategori": "guru",
+      "kelas": "",
+      "jurusan": "",
+      "jabatan": "Bahasa Inggris",
+      "bagian": "",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "IZIN",
+      "keterangan_izin": "Sakit"
+    },
+    {
+      "id": "6eaa",
+      "nomor_unik": "00937242",
+      "nama": "Andre Nugroho",
+      "kategori": "siswa",
+      "kelas": "X",
+      "jurusan": "TSM",
+      "jabatan": "",
+      "bagian": "",
+      "tanggal": "2025-12-23",
+      "status_kehadiran": "IZIN",
+      "jam_pulang": "2025-12-23T03:21:22.979Z",
+      "keterangan_izin": "Sakit"
     }
   ],
   "rekap_harian": []

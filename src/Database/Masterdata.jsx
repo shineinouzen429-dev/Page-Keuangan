@@ -14,6 +14,7 @@ function MasterData() {
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
   const [search, setSearch] = useState("");
+  const [showNomorUnikRow, setShowNomorUnikRow] = useState({});
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -68,7 +69,6 @@ function MasterData() {
     e.preventDefault();
 
     try {
-     
       if (!formData.nama || !formData.kategori) {
         Swal.fire("Lengkapi Form", "Nama dan Kategori wajib diisi", "warning");
         return;
@@ -83,14 +83,13 @@ function MasterData() {
         return;
       }
       if (!/^\d{8}$/.test(formData.nomor_unik)) {
-  Swal.fire(
-    "Nomor Unik Tidak Valid",
-    "Nomor unik harus 8 digit angka",
-    "warning"
-  );
-  return;
-}
-
+        Swal.fire(
+          "Nomor Unik Tidak Valid",
+          "Nomor unik harus 8 digit angka",
+          "warning"
+        );
+        return;
+      }
 
       const newData = {
         nama: formData.nama,
@@ -106,9 +105,7 @@ function MasterData() {
       if (editMode) {
         await axios.put(`${API_URL}/${editId}`, newData);
         Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
-      }
-     
-      else {
+      } else {
         await axios.post(API_URL, newData);
         Swal.fire("Berhasil", "Data berhasil ditambahkan", "success");
       }
@@ -308,8 +305,38 @@ function MasterData() {
                         />
                       </td>
                       <td className="p-3 font-semibold">
-                        {item.nomor_unik || "-"}
+                        <div className="flex items-center gap-2">
+                          <span className="tracking-widest">
+                            {item.nomor_unik
+                              ? showNomorUnikRow[item.id]
+                                ? item.nomor_unik
+                                : "••••••••"
+                              : "-"}
+                          </span>
+
+                          {item.nomor_unik && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShowNomorUnikRow((prev) => ({
+                                  ...prev,
+                                  [item.id]: !prev[item.id],
+                                }))
+                              }
+                              className="text-gray-500 hover:text-gray-700"
+                            >
+                              <i
+                                className={`ri ${
+                                  showNomorUnikRow[item.id]
+                                    ? "ri-eye-off-line"
+                                    : "ri-eye-line"
+                                }`}
+                              ></i>
+                            </button>
+                          )}
+                        </div>
                       </td>
+
                       <td className="p-3">{item.nama}</td>
                       <td className="p-3">
                         {item.kategori === "siswa"
@@ -339,14 +366,14 @@ function MasterData() {
                           onClick={() => handleEdit(item)}
                           className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
                         >
-                          Edit
+                          <i className="ri-edit-line"></i>Edit
                         </button>
 
                         <button
                           onClick={() => handleDelete(item.id)}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
-                          Hapus
+                          <i className="ri-delete-bin-6-line"></i>Hapus
                         </button>
                       </td>
                     </tr>
@@ -431,10 +458,9 @@ function MasterData() {
                     value={formData.nomor_unik}
                     maxLength={8}
                     onChange={(e) => {
-  const value = e.target.value.replace(/[^0-9]/g, "");
-  setFormData({ ...formData, nomor_unik: value });
-}}
-
+                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      setFormData({ ...formData, nomor_unik: value });
+                    }}
                     placeholder="Harus 8 karakter"
                     className="w-full mt-1 p-2 border rounded-lg
   focus:ring-2 focus:ring-blue-400 outline-none"
