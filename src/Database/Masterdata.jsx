@@ -17,24 +17,23 @@ function MasterData() {
   const [showNomorUnikRow, setShowNomorUnikRow] = useState({});
   const [kelasData, setKelasData] = useState([]);
 
-const getKelasData = async () => {
-  try {
-    const res = await axios.get("http://localhost:5000/kelasdata");
-    setKelasData(res.data || []);
-  } catch (err) {
-    console.error("Gagal mengambil data kelas:", err);
-  }
-};
+  const getKelasData = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/kelasdata");
+      setKelasData(res.data || []);
+    } catch (err) {
+      console.error("Gagal mengambil data kelas:", err);
+    }
+  };
 
-useEffect(() => {
-  getKelasData();
-}, []);
+  useEffect(() => {
+    getKelasData();
+  }, []);
 
-const getUniqueJurusan = () => {
-  const jurusanList = kelasData.map((item) => item.jurusan).filter(Boolean);
-  return [...new Set(jurusanList)];
-};
-
+  const getUniqueJurusan = () => {
+    const jurusanList = kelasData.map((item) => item.jurusan).filter(Boolean);
+    return [...new Set(jurusanList)];
+  };
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -545,22 +544,21 @@ const getUniqueJurusan = () => {
                     <label className="text-sm font-medium text-gray-700">
                       Jurusan
                     </label>
-                   <select
-  required
-  value={formData.jurusan}
-  onChange={(e) =>
-    setFormData({ ...formData, jurusan: e.target.value })
-  }
-  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
->
-  <option value="">Pilih Jurusan</option>
-  {getUniqueJurusan().map((jrs) => (
-    <option key={jrs} value={jrs}>
-      {jrs}
-    </option>
-  ))}
-</select>
-
+                    <select
+                      required
+                      value={formData.jurusan}
+                      onChange={(e) =>
+                        setFormData({ ...formData, jurusan: e.target.value })
+                      }
+                      className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                    >
+                      <option value="">Pilih Jurusan</option>
+                      {getUniqueJurusan().map((jrs) => (
+                        <option key={jrs} value={jrs}>
+                          {jrs}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               )}

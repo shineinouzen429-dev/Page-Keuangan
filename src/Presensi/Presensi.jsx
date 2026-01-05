@@ -14,6 +14,15 @@ const PresensiGabungan = () => {
 
   const [loadingLookup, setLoadingLookup] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [nowTime, setNowTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNowTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const showMessage = (text, icon = "info") => {
     Swal.fire({ text, icon, timer: 2000, showConfirmButton: false });
@@ -196,89 +205,120 @@ const PresensiGabungan = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-black">
+    <div
+      className="min-h-screen flex items-center justify-center p-6
+    bg-gradient-to-br from-emerald-900 via-black to-black"
+    >
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-4xl p-8 rounded-3xl bg-black/80 border border-green-400 text-green-300"
+        className="w-full max-w-4xl p-10 rounded-3xl
+        bg-black/60 backdrop-blur-xl
+        border border-emerald-400/40
+        text-emerald-200
+        shadow-[0_0_35px_rgba(16,185,129,0.25)]"
       >
         <div className="grid md:grid-cols-2 gap-10">
           <div className="flex justify-center">
-            <img
-              src={
-                dataOrang?.foto ||
-                "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
-              }
-              alt="foto"
-              className="w-72 h-72 rounded-2xl object-cover border border-green-400"
-            />
+            <div className="flex flex-col items-center gap-4">
+              <img
+                src={
+                  dataOrang?.foto ||
+                  "https://i.pinimg.com/736x/38/41/97/384197530d32338dd6caafaf1c6a26c4.jpg"
+                }
+                alt="foto"
+                className="w-72 h-72 rounded-2xl object-cover
+        border border-emerald-400/60
+        shadow-[0_0_25px_rgba(16,185,129,0.35)]"
+              />
+
+              <div
+                className="w-64 text-center rounded-xl
+        bg-black/70 backdrop-blur-md
+        border border-emerald-400/40
+        text-emerald-300
+        px-4 py-2
+        shadow-lg"
+              >
+                <div className="text-lg font-bold tracking-wide">
+                  {nowTime.toLocaleTimeString("id-ID")}
+                </div>
+                <div className="text-sm text-emerald-400">
+                  {nowTime.toLocaleDateString("id-ID", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <input
               placeholder="Nomor Unik"
               value={nomorUnik}
               onChange={(e) => setNomorUnik(e.target.value.trim())}
               disabled={saving}
-              className="w-full p-3 rounded bg-black border border-green-400"
+              className="w-full p-4 rounded-xl
+              bg-black/70
+              border border-emerald-400/40
+              placeholder:text-emerald-700
+              focus:outline-none focus:ring-2 focus:ring-emerald-400"
             />
 
             <input
               disabled
               value={loadingLookup ? "Mencari..." : dataOrang?.nama || "-"}
-              className="w-full p-3 rounded bg-black border border-green-400"
+              className="w-full p-4 rounded-xl
+              bg-black/70
+              border border-emerald-400/20
+              text-emerald-400"
             />
 
-            <label className="flex items-center gap-3">
+            <label className="flex items-center gap-3 text-emerald-300">
               <input
                 type="checkbox"
                 checked={isIzin}
                 onChange={(e) => setIsIzin(e.target.checked)}
+                className="accent-emerald-400 w-5 h-5"
               />
               Izin
             </label>
 
             {isIzin && (
-              <div className="space-y-3">
-                <label className="flex gap-2">
-                  <input
-                    type="radio"
-                    value="TIDAK_BERANGKAT"
-                    checked={jenisIzin === "TIDAK_BERANGKAT"}
-                    onChange={(e) => setJenisIzin(e.target.value)}
-                  />
-                  Tidak Berangkat
-                </label>
+              <div
+                className="space-y-4 p-5 rounded-2xl
+              bg-black/50 border border-emerald-400/30"
+              >
+                {[
+                  { label: "Tidak Berangkat", value: "TIDAK_BERANGKAT" },
+                  { label: "Izin Jam Masuk", value: "IZIN_MASUK" },
+                  { label: "Izin Jam Pulang", value: "IZIN_PULANG" },
+                ].map((item) => (
+                  <label key={item.value} className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      value={item.value}
+                      checked={jenisIzin === item.value}
+                      onChange={(e) => setJenisIzin(e.target.value)}
+                      className="accent-emerald-400"
+                    />
+                    {item.label}
+                  </label>
+                ))}
 
-                <label className="flex gap-2">
-                  <input
-                    type="radio"
-                    value="IZIN_MASUK"
-                    checked={jenisIzin === "IZIN_MASUK"}
-                    onChange={(e) => setJenisIzin(e.target.value)}
-                  />
-                  Izin Jam Masuk
-                </label>
-
-                <label className="flex gap-2">
-                  <input
-                    type="radio"
-                    value="IZIN_PULANG"
-                    checked={jenisIzin === "IZIN_PULANG"}
-                    onChange={(e) => setJenisIzin(e.target.value)}
-                  />
-                  Izin Jam Pulang
-                </label>
-
-                {(jenisIzin === "TIDAK_BERANGKAT" ||
-                  jenisIzin === "IZIN_PULANG" ||
-                  jenisIzin === "IZIN_MASUK") && (
-                  <textarea
-                    placeholder="Keterangan izin (opsional untuk jam masuk)"
-                    value={keterangan}
-                    onChange={(e) => setKeterangan(e.target.value)}
-                    className="w-full p-3 rounded bg-black border border-green-400"
-                  />
-                )}
+                <textarea
+                  placeholder="Keterangan izin"
+                  value={keterangan}
+                  onChange={(e) => setKeterangan(e.target.value)}
+                  className="w-full p-4 rounded-xl
+                  bg-black/70
+                  border border-emerald-400/40
+                  placeholder:text-emerald-700
+                  focus:outline-none focus:ring-2 focus:ring-emerald-400
+                  resize-none"
+                />
               </div>
             )}
           </div>
@@ -287,11 +327,16 @@ const PresensiGabungan = () => {
         <button
           type="submit"
           disabled={saving}
-          className={`mt-8 w-full py-4 rounded-xl text-black font-bold ${
-            saving ? "bg-gray-500" : "bg-green-400 hover:bg-green-500"
+          className={`mt-10 w-full py-4 rounded-2xl
+          font-bold text-black text-lg
+          transition-all duration-300
+          ${
+            saving
+              ? "bg-gray-600"
+              : "bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 shadow-lg"
           }`}
         >
-          {saving ? "Menyimpan..." : "Submit"}
+          {saving ? "Menyimpan..." : "SUBMIT"}
         </button>
       </form>
     </div>
