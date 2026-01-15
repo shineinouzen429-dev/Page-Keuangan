@@ -45,9 +45,10 @@ function Tagihan() {
   const [currentId, setCurrentId] = useState(null);
   const [animateModal, setAnimateModal] = useState("");
   const [animatePay, setAnimatePay] = useState(null);
+  
 
   const [formData, setFormData] = useState({
-    name: "",
+    nama: "",
     jenis_tagihan: "",
     jumlah: "",
     status: "Belum lunas",
@@ -67,7 +68,7 @@ function Tagihan() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/tagihan");
+        const res = await axios.get("http://localhost:8080/api/tagihan");
         setTagihan(res.data);
       } catch (err) {
         console.error(err);
@@ -106,7 +107,7 @@ function Tagihan() {
 
   const openAddModal = () => {
     setFormData({
-      name: "",
+      nama: "",
       jenis_tagihan: "",
       jumlah: "",
       status: "Belum lunas",
@@ -120,7 +121,7 @@ function Tagihan() {
 
   const openEditModal = (item) => {
     setFormData({
-      name: item.name,
+      name: item.nama,
       jenis_tagihan: item.jenis_tagihan,
       jumlah: formatRupiah(String(item.jumlah).replace(/[^0-9]/g, "")),
       status: item.status,
@@ -141,7 +142,7 @@ function Tagihan() {
       setIsEditing(false);
       setSuggestions([]);
       setFormData({
-        name: "",
+        nama: "",
         jenis_tagihan: "",
         jumlah: "",
         status: "Belum lunas",
@@ -292,11 +293,12 @@ function Tagihan() {
   };
 
   const filtered = tagihan.filter(
-    (t) =>
-      t.name.toLowerCase().includes(search.toLowerCase()) &&
-      (selectedJenis === "" || t.jenis_tagihan === selectedJenis) &&
-      (selectedStatus === "" || t.status === selectedStatus)
-  );
+  (t) =>
+    (t.name || "").toLowerCase().includes(search.toLowerCase()) &&
+    (selectedJenis === "" || t.jenis_tagihan === selectedJenis) &&
+    (selectedStatus === "" || t.status === selectedStatus)
+);
+
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 

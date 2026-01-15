@@ -35,18 +35,19 @@ function MasterData() {
     return [...new Set(jurusanList)];
   };
 
-  const [formData, setFormData] = useState({
-    nama: "",
-    kategori: "",
-    kelas: "",
-    jurusan: "",
-    jabatan: "",
-    bagian: "",
-    nomor_unik: "",
-    foto: defaultFoto,
-  });
+ const [formData, setFormData] = useState({
+  nama: "",
+  kategori: "",
+  kelas: "",
+  jurusan: "",
+  jabatan: "",
+  bagian: "",
+  nomer_unik: "",   // ✅ PAKAI E
+  foto: defaultFoto // ✅ tetap ada
+});
 
-  const API_URL = "http://localhost:5000/masterdata";
+
+  const API_URL = "http://localhost:8080/api/master-data";
 
   const generateUniqueCode = () => "";
 
@@ -93,33 +94,26 @@ function MasterData() {
         return;
       }
 
-      if (!formData.nomor_unik || formData.nomor_unik.length !== 10) {
+      if (!/^\d+$/.test(formData.nomer_unik)) {
         Swal.fire(
           "Nomor Unik Tidak Valid",
-          "Nomor unik harus tepat 8 karakter",
-          "warning"
-        );
-        return;
-      }
-      if (!/^\d{10}$/.test(formData.nomor_unik)) {
-        Swal.fire(
-          "Nomor Unik Tidak Valid",
-          "Nomor unik harus 8 digit angka",
+          "Nomor unik hanya boleh angka",
           "warning"
         );
         return;
       }
 
-      const newData = {
-        nama: formData.nama,
-        kategori: formData.kategori.toLowerCase(),
-        kelas: formData.kelas || "",
-        jurusan: formData.jurusan || "",
-        jabatan: formData.jabatan || "",
-        bagian: formData.bagian || "",
-        nomor_unik: formData.nomor_unik,
-        foto: formData.foto || defaultFoto,
-      };
+const newData = {
+  nama: formData.nama,
+  kategori: formData.kategori.toLowerCase(),
+  kelas: formData.kelas || "",
+  jurusan: formData.jurusan || "",
+  jabatan: formData.jabatan || "",
+  bagian: formData.bagian || "",
+  nomer_unik: formData.nomer_unik, // ✅
+  foto: formData.foto || defaultFoto,
+};
+
 
       if (editMode) {
         await axios.put(`${API_URL}/${editId}`, newData);
@@ -136,7 +130,7 @@ function MasterData() {
         jurusan: "",
         jabatan: "",
         bagian: "",
-        nomor_unik: "",
+        nomer_unik: "",
         foto: defaultFoto,
       });
 
@@ -165,7 +159,7 @@ function MasterData() {
       jurusan: item.jurusan || "",
       jabatan: item.jabatan || "",
       bagian: item.bagian || "",
-      nomor_unik: item.nomor_unik || "",
+      nomer_unik: item.nomer_unik || "",
       foto: item.foto || defaultFoto,
     });
   };
@@ -221,7 +215,7 @@ function MasterData() {
                 jurusan: "",
                 jabatan: "",
                 bagian: "",
-                nomor_unik: "",
+                nomer_unik: "",
                 foto: defaultFoto,
               });
               setShowModal(true);
@@ -326,14 +320,14 @@ function MasterData() {
                       <td className="p-3 font-semibold">
                         <div className="flex items-center gap-2">
                           <span className="tracking-widest">
-                            {item.nomor_unik
+                            {item.nomer_unik
                               ? showNomorUnikRow[item.id]
-                                ? item.nomor_unik
+                                ? item.nomer_unik
                                 : "••••••••"
                               : "-"}
                           </span>
 
-                          {item.nomor_unik && (
+                          {item.nomer_unik && (
                             <button
                               type="button"
                               onClick={() =>
@@ -357,13 +351,14 @@ function MasterData() {
                       </td>
 
                       <td className="p-3">{item.nama}</td>
-                      <td className="p-3">
-                        {item.kategori === "siswa"
-                          ? `${item.kelas || "-"} ${item.jurusan || ""}`
-                          : item.kategori === "guru"
-                          ? item.jabatan || "-"
-                          : item.bagian || "-"}
-                      </td>
+<td className="p-3">
+  {item.kategori?.toLowerCase() === "siswa"
+    ? `${item.kelas || "-"} ${item.jurusan || ""}`
+    : item.kategori?.toLowerCase() === "guru"
+    ? item.jabatan || "-"
+    : item.bagian || "-"}
+</td>
+
                       <td className="p-3">
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -453,10 +448,10 @@ function MasterData() {
                       jurusan: "",
                       jabatan: "",
                       bagian: "",
-                      nomor_unik:
+                      nomer_unik:
                         !editMode && selected
                           ? generateUniqueCode(selected)
-                          : prev.nomor_unik,
+                          : prev.nomer_unik,
                     }));
                   }}
                   className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
@@ -475,11 +470,10 @@ function MasterData() {
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
-                    value={formData.nomor_unik}
-                    maxLength={10}
+                    value={formData.nomer_unik}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^0-9]/g, "");
-                      setFormData({ ...formData, nomor_unik: value });
+                      setFormData({ ...formData, nomer_unik: value });
                     }}
                     placeholder="Masukkan Nomer Unik"
                     className="w-full mt-1 p-2 border rounded-lg
