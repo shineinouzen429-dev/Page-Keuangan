@@ -45,7 +45,6 @@ function Tagihan() {
   const [currentId, setCurrentId] = useState(null);
   const [animateModal, setAnimateModal] = useState("");
   const [animatePay, setAnimatePay] = useState(null);
-  
 
   const [formData, setFormData] = useState({
     nama: "",
@@ -84,7 +83,7 @@ function Tagihan() {
       try {
         const res = await axios.get("http://localhost:5000/kategoritagihan");
         setJenisTagihan(
-          res.data.filter((j) => j.masih?.toLowerCase() === "aktif")
+          res.data.filter((j) => j.masih?.toLowerCase() === "aktif"),
         );
       } catch (err) {
         console.error(err);
@@ -96,7 +95,7 @@ function Tagihan() {
   useEffect(() => {
     const fetchMaster = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/masterdata");
+        const res = await axios.get("http://localhost:8080/api/master-data");
         setMasterData(res.data);
       } catch (err) {
         console.error(err);
@@ -121,7 +120,7 @@ function Tagihan() {
 
   const openEditModal = (item) => {
     setFormData({
-      name: item.nama,
+      nama: item.nama,
       jenis_tagihan: item.jenis_tagihan,
       jumlah: formatRupiah(String(item.jumlah).replace(/[^0-9]/g, "")),
       status: item.status,
@@ -165,7 +164,7 @@ function Tagihan() {
 
   const handleNameInput = (e) => {
     const val = e.target.value;
-    setFormData({ ...formData, name: val });
+    setFormData({ ...formData, nama: val });
 
     if (val.length >= 1) {
       const filtered = masterData
@@ -181,7 +180,7 @@ function Tagihan() {
   const selectSuggestion = (item) => {
     setFormData({
       ...formData,
-      name: item.nama,
+      nama: item.nama,
       kelas: item.kelas || "",
       jurusan: item.jurusan || "",
     });
@@ -199,15 +198,15 @@ function Tagihan() {
 
     try {
       if (isEditing) {
-        await axios.put(`http://localhost:5000/tagihan/${currentId}`, payload);
+        await axios.put(`http://localhost:8080/api/tagihan/${currentId}`, payload);
 
         setTagihan((prev) =>
-          prev.map((t) => (t.id === currentId ? { ...t, ...payload } : t))
+          prev.map((t) => (t.id === currentId ? { ...t, ...payload } : t)),
         );
 
         Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
       } else {
-        const res = await axios.post("http://localhost:5000/tagihan", payload);
+        const res = await axios.post("http://localhost:8080/api/tagihan", payload);
         setTagihan((prev) => [...prev, res.data]);
         Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
       }
@@ -233,13 +232,13 @@ function Tagihan() {
         setAnimatePay(id);
 
         setTimeout(async () => {
-          await axios.put(`http://localhost:5000/tagihan/${id}`, {
+          await axios.put(`http://localhost:8080/api/tagihan/${id}`, {
             ...selected,
             status: "Lunas",
           });
 
           setTagihan((prev) =>
-            prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t))
+            prev.map((t) => (t.id === id ? { ...t, status: "Lunas" } : t)),
           );
 
           setAnimatePay(null);
@@ -255,13 +254,13 @@ function Tagihan() {
     setAnimatePay(id);
 
     setTimeout(async () => {
-      await axios.put(`http://localhost:5000/tagihan/${id}`, {
+      await axios.put(`http://localhost:8080/api/tagihan/${id}`, {
         ...selected,
         status: "Belum lunas",
       });
 
       setTagihan((prev) =>
-        prev.map((t) => (t.id === id ? { ...t, status: "Belum lunas" } : t))
+        prev.map((t) => (t.id === id ? { ...t, status: "Belum lunas" } : t)),
       );
 
       setAnimatePay(null);
@@ -279,7 +278,7 @@ function Tagihan() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/tagihan/${id}`);
+          await axios.delete(`http://localhost:8080/api/tagihan/${id}`);
 
           setTagihan((prev) => prev.filter((t) => t.id !== id));
 
@@ -293,12 +292,11 @@ function Tagihan() {
   };
 
   const filtered = tagihan.filter(
-  (t) =>
-    (t.name || "").toLowerCase().includes(search.toLowerCase()) &&
-    (selectedJenis === "" || t.jenis_tagihan === selectedJenis) &&
-    (selectedStatus === "" || t.status === selectedStatus)
-);
-
+    (t) =>
+      (t.nama || "").toLowerCase().includes(search.toLowerCase()) &&
+      (selectedJenis === "" || t.jenis_tagihan === selectedJenis) &&
+      (selectedStatus === "" || t.status === selectedStatus),
+  );
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
@@ -394,7 +392,7 @@ function Tagihan() {
                   }`}
                 >
                   <td className="text-center py-3">{i + 1}</td>
-                  <td className="px-4 py-3">{t.name}</td>
+                  <td className="px-4 py-3">{t.nama}</td>
                   <td className="px-4 py-3">{t.kelas || "-"}</td>
                   <td className="px-4 py-3">{t.jurusan || "-"}</td>
                   <td className="px-4 py-3">{t.jenis_tagihan}</td>
@@ -405,7 +403,7 @@ function Tagihan() {
                   <td className="px-4 py-3 text-center">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        t.status === "Lunas"
+                        t.status?.toLowerCase() === "lunas"
                           ? "bg-green-100 text-green-600"
                           : "bg-red-100 text-red-600"
                       }`}
@@ -479,8 +477,8 @@ function Tagihan() {
                 <label className="text-sm font-semibold">Nama</label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="nama"
+                  value={formData.nama}
                   onChange={handleNameInput}
                   className="p-2 w-full border rounded-md"
                   required
