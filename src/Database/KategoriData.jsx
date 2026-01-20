@@ -13,12 +13,15 @@ function KategoriData() {
   const [formData, setFormData] = useState({ kategori: "", keterangan: "" });
 
   const [editData, setEditData] = useState({
-    id: "",
-    kategori: "",
-    keterangan: "",
-  });
+  id: "",
+  kategori: "",
+  keterangan: "",
+  status: true, // ✅ TAMBAH
+});
 
-  const API_URL = "http://localhost:5000/kategoridata";
+
+  const API_URL = "http://localhost:8080/api/level-master-data";
+
 
   const getData = async () => {
     try {
@@ -37,20 +40,49 @@ function KategoriData() {
     getData();
   }, []);
 
-  const toggleStatus = async (id, status) => {
-    try {
-      const newStatus = !status;
-      await axios.patch(`${API_URL}/${id}`, { status: newStatus });
-      setData((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, status: newStatus } : item
-        )
-      );
-    } catch (err) {
-      console.error("Gagal ubah status:", err);
-      Swal.fire("Gagal", "Tidak bisa ubah status", "error");
-    }
-  };
+  const toggleStatus = async (item) => {
+  const newStatus = !item.status;
+
+  const confirm = await Swal.fire({
+    title: "Ubah Status?",
+    text: `Status akan diubah menjadi ${
+      newStatus ? "AKTIF" : "TIDAK AKTIF"
+    }`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, ubah",
+    cancelButtonText: "Batal",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  try {
+await axios.put(`${API_URL}/${item.id}`, {
+  kategori: item.kategori,
+  keterangan: item.keterangan,
+  status: newStatus,
+});
+
+
+    setData((prev) =>
+      prev.map((d) =>
+        d.id === item.id ? { ...d, status: newStatus } : d
+      )
+    );
+
+    Swal.fire(
+      "Berhasil!",
+      `Status berhasil diubah menjadi ${
+        newStatus ? "AKTIF" : "TIDAK AKTIF"
+      }`,
+      "success"
+    );
+  } catch (error) {
+   console.error("Gagal ubah status:", error.response?.data || error);
+    Swal.fire("Error", "Gagal mengubah status", "error");
+  }
+};
+
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
@@ -90,22 +122,25 @@ function KategoriData() {
   };
 
   const openEdit = (item) => {
-    setEditData({
-      id: item.id,
-      kategori: item.kategori,
-      keterangan: item.keterangan,
-    });
-    setShowEditModal(true);
-  };
+  setEditData({
+    id: item.id,
+    kategori: item.kategori,
+    keterangan: item.keterangan,
+    status: item.status, 
+  });
+  setShowEditModal(true);
+};
+
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.patch(`${API_URL}/${editData.id}`, {
-        kategori: editData.kategori,
-        keterangan: editData.keterangan,
-      });
+      await axios.put(`${API_URL}/${editData.id}`, {
+  kategori: editData.kategori,
+  keterangan: editData.keterangan,
+  status: editData.status,
+});
 
       Swal.fire("Berhasil", "Data berhasil diperbarui", "success");
       setShowEditModal(false);
@@ -179,7 +214,7 @@ function KategoriData() {
                       </td>
                       <td className="p-3 text-center">
                         <span
-                          onClick={() => toggleStatus(item.id, item.status)}
+                          onClick={() => toggleStatus(item)}
                           className={`cursor-pointer px-3 py-1 rounded-full font-semibold text-xs ${
                             item.status
                               ? "bg-green-500 text-white"
