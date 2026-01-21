@@ -10,7 +10,7 @@ function RekapTagihan() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/tagihan");
+        const res = await axios.get("http://localhost:8080/api/tagihan");
         setTagihan(res.data);
       } catch (err) {
         console.error(err);
@@ -112,7 +112,7 @@ function RekapTagihan() {
               filteredTagihan.map((t, i) => (
                 <tr key={t.id} className="border-b">
                   <td className="text-center px-3 py-2">{i + 1}</td>
-                  <td className="text-left px-3 py-2">{t.name}</td>
+                  <td className="text-left px-3 py-2">{t.nama}</td>
                   <td className="text-right px-3 py-2">
                     {formatRupiah(t.jumlah)}
                   </td>

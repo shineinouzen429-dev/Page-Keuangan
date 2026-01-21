@@ -79,18 +79,17 @@ function Tagihan() {
   }, []);
 
   useEffect(() => {
-    const fetchJenis = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/kategoritagihan");
-        setJenisTagihan(
-          res.data.filter((j) => j.masih?.toLowerCase() === "aktif"),
-        );
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchJenis();
-  }, []);
+  const fetchJenis = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/level-tagihan");
+      setJenisTagihan(res.data.filter((j) => j.masih === true));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchJenis();
+}, []);
+
 
   useEffect(() => {
     const fetchMaster = async () => {
@@ -190,11 +189,15 @@ function Tagihan() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      ...formData,
-      jumlah: unformatRupiah(formData.jumlah),
-      created_at: new Date().toISOString(),
-    };
+   const payload = {
+  ...formData,
+  jumlah: unformatRupiah(formData.jumlah),
+};
+
+if (!isEditing) {
+  payload.created_at = new Date().toISOString();
+}
+
 
     try {
       if (isEditing) {
@@ -344,8 +347,8 @@ function Tagihan() {
           >
             <option value="">Semua Jenis Tagihan</option>
             {jenisTagihan.map((j) => (
-              <option key={j.id} value={j.type_bill}>
-                {j.type_bill}
+              <option key={j.id} value={j.jenisTagihan}>
+                {j.jenisTagihan}
               </option>
             ))}
           </select>
@@ -530,8 +533,8 @@ function Tagihan() {
               >
                 <option value="">Pilih Jenis Tagihan</option>
                 {jenisTagihan.map((j) => (
-                  <option key={j.id} value={j.type_bill}>
-                    {j.type_bill}
+                  <option key={j.id} value={j.jenisTagihan}>
+                    {j.jenisTagihan}
                   </option>
                 ))}
               </select>

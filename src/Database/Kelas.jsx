@@ -14,7 +14,7 @@ function Kelas() {
     jurusan: "",
   });
 
-  const API_URL = "http://localhost:5000/kelasdata";
+  const API_URL = "http://localhost:8080/api/kelas";
 
   const fetchData = async () => {
     try {

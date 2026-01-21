@@ -19,7 +19,7 @@ function MasterData() {
 
   const getKelasData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/kelasdata");
+      const res = await axios.get("http://localhost:8080/api/kelas");
       setKelasData(res.data || []);
     } catch (err) {
       console.error("Gagal mengambil data kelas:", err);

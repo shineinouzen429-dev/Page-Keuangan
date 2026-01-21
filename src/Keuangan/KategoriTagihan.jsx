@@ -11,9 +11,9 @@ function KategoriTagihan() {
   const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
-    type_bill: "",
+    jenisTagihan: "",
     keterangan: "",
-    masih: "",
+    masih: true,
   });
 
   useEffect(() => {
@@ -21,16 +21,26 @@ function KategoriTagihan() {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/kategoritagihan");
-      setTagihan(response.data);
-    } catch (error) {
-      console.error("Gagal ambil data tagihan:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchData = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/api/level-tagihan",
+    );
+
+    // ⬇️ TAMBAHAN PENTING
+    const normalized = response.data.map((item) => ({
+      ...item,
+      masih: item.masih === true || item.masih === "true",
+    }));
+
+    setTagihan(normalized);
+  } catch (error) {
+    console.error("Gagal ambil data tagihan:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +48,7 @@ function KategoriTagihan() {
     if (isEdit) return handleUpdate();
 
     try {
-      await axios.post("http://localhost:5000/kategoritagihan", formData);
+      await axios.post("http://localhost:8080/api/level-tagihan", formData);
       Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
 
       setModal(false);
@@ -55,7 +65,7 @@ function KategoriTagihan() {
     setEditingId(item.id);
 
     setFormData({
-      type_bill: item.type_bill,
+      jenisTagihan: item.jenisTagihan,
       keterangan: item.keterangan,
       masih: item.masih,
     });
@@ -66,8 +76,8 @@ function KategoriTagihan() {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/kategoritagihan/${editingId}`,
-        formData
+        `http://localhost:8080/api/level-tagihan/${editingId}`,
+        formData,
       );
 
       Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
@@ -84,7 +94,7 @@ function KategoriTagihan() {
   const resetForm = () => {
     setIsEdit(false);
     setEditingId(null);
-    setFormData({ type_bill: "", keterangan: "", masih: "" });
+    setFormData({ jenisTagihan: "", keterangan: "", masih: "" });
   };
 
   const handleDelete = async (id) => {
@@ -98,7 +108,7 @@ function KategoriTagihan() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/kategoritagihan/${id}`);
+          await axios.delete(`http://localhost:8080/api/level-tagihan/${id}`);
           setTagihan((prev) => prev.filter((item) => item.id !== id));
           Swal.fire("Terhapus!", "Data berhasil dihapus.", "success");
         } catch (err) {
@@ -110,42 +120,42 @@ function KategoriTagihan() {
   };
 
   const handleToggleStatus = async (item) => {
-    const currentStatus = item.masih?.toLowerCase();
-    const newStatus = currentStatus === "aktif" ? "tidak aktif" : "aktif";
+  const newStatus = !item.masih;
 
-    const result = await Swal.fire({
-      title: "Ubah Status",
-      text: `Apakah kamu ingin mengubah status menjadi ${newStatus}?`,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, ubah",
-      cancelButtonText: "Batal",
-    });
+  const result = await Swal.fire({
+    title: "Ubah Status",
+    text: `Ubah status menjadi ${newStatus ? "Aktif" : "Tidak Aktif"}?`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, ubah",
+    cancelButtonText: "Batal",
+  });
 
-    if (result.isConfirmed) {
-      try {
-        await axios.put(`http://localhost:5000/kategoritagihan/${item.id}`, {
-          ...item,
-          masih: newStatus,
-        });
+  if (!result.isConfirmed) return;
 
-        setTagihan((prev) =>
-          prev.map((data) =>
-            data.id === item.id ? { ...data, masih: newStatus } : data
-          )
-        );
-
-        Swal.fire(
-          "Berhasil!",
-          `Status diubah menjadi ${newStatus}.`,
-          "success"
-        );
-      } catch (error) {
-        console.error("Gagal ubah status:", error);
-        Swal.fire("Error!", "Gagal mengubah status.", "error");
+  try {
+    await axios.put(
+      `http://localhost:8080/api/level-tagihan/${item.id}`,
+      {
+        jenisTagihan: item.jenisTagihan,
+        keterangan: item.keterangan,
+        masih: newStatus,
       }
-    }
-  };
+    );
+
+    setTagihan((prev) =>
+      prev.map((data) =>
+        data.id === item.id ? { ...data, masih: newStatus } : data
+      )
+    );
+
+    Swal.fire("Berhasil!", "Status berhasil diubah.", "success");
+  } catch (error) {
+    console.error(error);
+    Swal.fire("Error!", "Gagal mengubah status.", "error");
+  }
+};
+
 
   if (loading)
     return (
@@ -220,7 +230,7 @@ function KategoriTagihan() {
                   </td>
 
                   <td className="text-left px-5 py-4 font-medium text-gray-800">
-                    {item.type_bill}
+                    {item.jenisTagihan}
                   </td>
 
                   <td className="text-left px-5 py-4 italic text-gray-600">
@@ -231,21 +241,14 @@ function KategoriTagihan() {
                     <span
                       onClick={() => handleToggleStatus(item)}
                       className={`cursor-pointer px-4 py-1 rounded-full text-white text-xs font-semibold transition shadow-sm inline-flex items-center gap-1 select-none
-                  ${
-                    item.masih?.toLowerCase() === "aktif"
-                      ? "bg-green-500 hover:bg-green-600"
-                      : "bg-gray-500 hover:bg-gray-600"
-                  }
-                `}
+      ${item.masih ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"}`}
                     >
                       <i
                         className={
-                          item.masih?.toLowerCase() === "aktif"
-                            ? "ri-check-line"
-                            : "ri-close-line"
+                          item.masih ? "ri-check-line" : "ri-close-line"
                         }
                       ></i>
-                      {item.masih?.toUpperCase() ?? "UNKNOWN"}
+                      {item.masih ? "AKTIF" : "TIDAK AKTIF"}
                     </span>
                   </td>
 
@@ -295,9 +298,9 @@ function KategoriTagihan() {
                 <input
                   type="text"
                   placeholder="Masukkan Jenis Tagihan"
-                  value={formData.type_bill}
+                  value={formData.jenisTagihan}
                   onChange={(e) =>
-                    setFormData({ ...formData, type_bill: e.target.value })
+                    setFormData({ ...formData, jenisTagihan: e.target.value })
                   }
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
@@ -324,16 +327,19 @@ function KategoriTagihan() {
                   Status
                 </label>
                 <select
-                  value={formData.masih}
+                  value={String(formData.masih)}
                   onChange={(e) =>
-                    setFormData({ ...formData, masih: e.target.value })
+                    setFormData({
+                      ...formData,
+                      masih: e.target.value === "true",
+                    })
                   }
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 >
                   <option value="">-- Pilih Status --</option>
-                  <option value="Aktif">Aktif</option>
-                  <option value="Tidak aktif">Tidak aktif</option>
+                  <option value="true">Aktif</option>
+                  <option value="false">Tidak Aktif</option>
                 </select>
               </div>
 
