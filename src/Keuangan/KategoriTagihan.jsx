@@ -42,23 +42,35 @@ const fetchData = async () => {
 };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (isEdit) return handleUpdate();
+  if (isEdit) return handleUpdate();
 
-    try {
-      await axios.post("http://localhost:8080/api/level-tagihan", formData);
-      Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
+  // Validasi
+  if (!formData.jenisTagihan || formData.jenisTagihan.trim() === "") {
+    return Swal.fire("Error!", "Jenis Tagihan wajib diisi.", "error");
+  }
+  if (formData.jenisTagihan.length > 50) {
+    return Swal.fire("Error!", "Jenis Tagihan maksimal 50 karakter.", "error");
+  }
+  if (typeof formData.masih !== "boolean") {
+    return Swal.fire("Error!", "Status harus dipilih.", "error");
+  }
 
-      setModal(false);
-      resetForm();
-      fetchData();
-    } catch (error) {
-      console.error("Gagal menambah data:", error);
-      Swal.fire("Error!", "Gagal menambah data.", "error");
-    }
-  };
+  try {
+    await axios.post("http://localhost:8080/api/level-tagihan", formData);
+    Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
+
+    setModal(false);
+    resetForm();
+    fetchData();
+  } catch (error) {
+    console.error("Gagal menambah data:", error.response?.data || error.message);
+    Swal.fire("Error!", error.response?.data?.message || "Gagal menambah data.", "error");
+  }
+};
+
 
   const handleEditClick = (item) => {
     setIsEdit(true);
@@ -94,7 +106,7 @@ const fetchData = async () => {
   const resetForm = () => {
     setIsEdit(false);
     setEditingId(null);
-    setFormData({ jenisTagihan: "", keterangan: "", masih: "" });
+    setFormData({ jenisTagihan: "", keterangan: "", masih: true });
   };
 
   const handleDelete = async (id) => {

@@ -7,6 +7,8 @@ const defaultFoto =
 
 function MasterData() {
   const [data, setData] = useState([]);
+  const [kategoriMaster, setKategoriMaster] = useState([]);
+
   const [filter, setFilter] = useState("Semua");
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -27,29 +29,46 @@ function MasterData() {
   };
 
   useEffect(() => {
-    getKelasData();
+    getData(); // master data (guru / siswa / karyawan)
+    getKelasData(); // data kelas & jurusan
+    getKategoriMaster(); // kategori dari level_master_data
   }, []);
 
   const getUniqueJurusan = () => {
-    const jurusanList = kelasData.map((item) => item.jurusan).filter(Boolean);
+    const jurusanList = kelasData
+      .map((item) => item.jurusan?.trim())
+      .filter(Boolean);
+
     return [...new Set(jurusanList)];
   };
 
- const [formData, setFormData] = useState({
-  nama: "",
-  kategori: "",
-  kelas: "",
-  jurusan: "",
-  jabatan: "",
-  bagian: "",
-  nomer_unik: "",   // ✅ PAKAI E
-  foto: defaultFoto // ✅ tetap ada
-});
+  const getKategoriMaster = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8080/api/level-master-data",
+      );
 
+      // hanya kategori aktif
+      const aktif = (res.data || []).filter((item) => item.status === true);
+
+      setKategoriMaster(aktif);
+    } catch (err) {
+      console.error("Gagal mengambil kategori master:", err);
+    }
+  };
+
+  const [formData, setFormData] = useState({
+    nama: "",
+    kategori: "",
+    kelas: "",
+    jurusan: "",
+    jabatan: "",
+    bagian: "",
+    nomer_unik: "", // ✅ PAKAI E
+    foto: defaultFoto, // ✅ tetap ada
+  });
 
   const API_URL = "http://localhost:8080/api/master-data";
-
-  const generateUniqueCode = () => "";
 
   const getData = async () => {
     try {
@@ -63,18 +82,14 @@ function MasterData() {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const totalGuru = data.filter(
-    (d) => d.kategori?.toLowerCase() === "guru"
+    (d) => d.kategori?.toLowerCase() === "guru",
   ).length;
   const totalSiswa = data.filter(
-    (d) => d.kategori?.toLowerCase() === "siswa"
+    (d) => d.kategori?.toLowerCase() === "siswa",
   ).length;
   const totalKaryawan = data.filter(
-    (d) => d.kategori?.toLowerCase() === "karyawan"
+    (d) => d.kategori?.toLowerCase() === "karyawan",
   ).length;
   const totalDatabase = data.length;
 
@@ -98,22 +113,21 @@ function MasterData() {
         Swal.fire(
           "Nomor Unik Tidak Valid",
           "Nomor unik hanya boleh angka",
-          "warning"
+          "warning",
         );
         return;
       }
 
-const newData = {
-  nama: formData.nama,
-  kategori: formData.kategori.toLowerCase(),
-  kelas: formData.kelas || "",
-  jurusan: formData.jurusan || "",
-  jabatan: formData.jabatan || "",
-  bagian: formData.bagian || "",
-  nomer_unik: formData.nomer_unik, // ✅
-  foto: formData.foto || defaultFoto,
-};
-
+      const newData = {
+        nama: formData.nama,
+        kategori: formData.kategori.toLowerCase(),
+        kelas: formData.kelas || "",
+        jurusan: formData.jurusan || "",
+        jabatan: formData.jabatan || "",
+        bagian: formData.bagian || "",
+        nomer_unik: formData.nomer_unik, // ✅
+        foto: formData.foto || defaultFoto,
+      };
 
       if (editMode) {
         await axios.put(`${API_URL}/${editId}`, newData);
@@ -274,12 +288,18 @@ const newData = {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="border py-2 px-3 rounded-lg text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               >
                 <option value="Semua">Semua</option>
-                <option value="Guru">Guru</option>
-                <option value="Siswa">Siswa</option>
-                <option value="Karyawan">Karyawan</option>
+                {kategoriMaster.map((k) => {
+                  const label =
+                    k.kategori.charAt(0).toUpperCase() + k.kategori.slice(1);
+
+                  return (
+                    <option key={k.id} value={label}>
+                      {label}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           </div>
@@ -351,22 +371,22 @@ const newData = {
                       </td>
 
                       <td className="p-3">{item.nama}</td>
-<td className="p-3">
-  {item.kategori?.toLowerCase() === "siswa"
-    ? `${item.kelas || "-"} ${item.jurusan || ""}`
-    : item.kategori?.toLowerCase() === "guru"
-    ? item.jabatan || "-"
-    : item.bagian || "-"}
-</td>
+                      <td className="p-3">
+                        {item.kategori?.toLowerCase() === "siswa"
+                          ? `${item.kelas || "-"} ${item.jurusan || ""}`
+                          : item.kategori?.toLowerCase() === "guru"
+                            ? item.jabatan || "-"
+                            : item.bagian || "-"}
+                      </td>
 
                       <td className="p-3">
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                            item.kategori === "guru"
+                            item.kategori?.toLowerCase() === "guru"
                               ? "bg-blue-100 text-blue-700"
-                              : item.kategori === "siswa"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-yellow-100 text-yellow-700"
+                              : item.kategori?.toLowerCase() === "siswa"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-yellow-100 text-yellow-700"
                           }`}
                         >
                           {item.kategori
@@ -436,11 +456,13 @@ const newData = {
                 <label className="text-sm font-medium text-gray-700">
                   Kategori
                 </label>
+
                 <select
                   required
                   value={formData.kategori}
                   onChange={(e) => {
                     const selected = e.target.value;
+
                     setFormData((prev) => ({
                       ...prev,
                       kategori: selected,
@@ -448,18 +470,25 @@ const newData = {
                       jurusan: "",
                       jabatan: "",
                       bagian: "",
-                      nomer_unik:
-                        !editMode && selected
-                          ? generateUniqueCode(selected)
-                          : prev.nomer_unik,
+                      nomer_unik: prev.nomer_unik, // tetap manual
                     }));
                   }}
-                  className="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+                  className="w-full mt-1 p-2 border rounded-lg
+               focus:ring-2 focus:ring-blue-400 outline-none"
                 >
                   <option value="">Pilih Kategori</option>
-                  <option value="Guru">Guru</option>
-                  <option value="Siswa">Siswa</option>
-                  <option value="Karyawan">Karyawan</option>
+
+                  {kategoriMaster.map((k) => {
+                    const label =
+                      k.kategori.trim().charAt(0).toUpperCase() +
+                      k.kategori.trim().slice(1);
+
+                    return (
+                      <option key={k.id} value={label}>
+                        {label}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 

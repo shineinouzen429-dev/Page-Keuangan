@@ -60,6 +60,7 @@ function Tagihan() {
   }, []);
 
   const formatRupiah = (angka) =>
+    
     angka ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "";
 
   const unformatRupiah = (v) => parseInt(v.replace(/[^0-9]/g, "")) || 0;
