@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "http://localhost:8080/api/presensi";
 
 const PresensiGabungan = () => {
   const [nomorUnik, setNomorUnik] = useState("");
@@ -45,7 +45,7 @@ const PresensiGabungan = () => {
     const timer = setTimeout(async () => {
       setLoadingLookup(true);
       try {
-        const res = await axios.get(`${API_BASE}/masterdata`, {
+        const res = await axios.get(`${API_BASE}/master-data`, {
           params: { nomor_unik: nomorUnik },
         });
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "http://localhost:8080/api/presensi";
 
 const RekapPresensi = () => {
   const [filterDate, setFilterDate] = useState(() => {
@@ -24,6 +24,12 @@ const RekapPresensi = () => {
   const showMessage = (text, type = "info") => {
     Swal.fire({ text, icon: type, timer: 2000, showConfirmButton: false });
   };
+
+  const buildDateTime = (date, time) => {
+  if (!time) return null;
+  return `${date}T${time}:00`;
+};
+
 
   const fmtTime = (isoString) => {
     if (!isoString) return "-";
@@ -55,32 +61,37 @@ const RekapPresensi = () => {
       return "";
     }
   };
-  useEffect(() => {
-    let filtered = [...rekap];
+useEffect(() => {
+  let filtered = [...rekap];
 
-    if (filterNama.trim() !== "") {
-      filtered = filtered.filter((r) =>
-        r.nama.toLowerCase().includes(filterNama.toLowerCase())
-      );
-    }
+  // Filter Nama
+  if (filterNama.trim() !== "") {
+    filtered = filtered.filter((r) =>
+      r.nama.toLowerCase().includes(filterNama.toLowerCase())
+    );
+  }
 
-    if (filterKategori !== "Semua") {
-      filtered = filtered.filter(
-        (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
-      );
-    }
+  // Filter Kategori
+  if (filterKategori !== "Semua") {
+    filtered = filtered.filter(
+      (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
+    );
+  }
 
-    if (filterStatus !== "Semua") {
-      filtered = filtered.filter((r) => {
-        if (filterStatus === "IZIN") {
-          return r.status.toUpperCase().includes("IZIN");
-        }
-        return r.status.toUpperCase() === filterStatus.toUpperCase();
-      });
-    }
+  // Filter Status
+  if (filterStatus !== "Semua") {
+    filtered = filtered.filter((r) => {
+      if (filterStatus === "IZIN") {
+        // Semua status yang dimulai dengan "IZIN" termasuk
+        return r.status.startsWith("IZIN");
+      }
+      return r.status === filterStatus;
+    });
+  }
 
-    setRekapFiltered(filtered);
-  }, [filterNama, filterKategori, filterStatus, rekap]);
+  setRekapFiltered(filtered);
+}, [filterNama, filterKategori, filterStatus, rekap]);
+
 
   const fmtStatus = (r) => {
     if (r.keterangan_izin?.trim()) {
@@ -106,7 +117,7 @@ const RekapPresensi = () => {
   const fetchRekap = async (date) => {
     setLoadingRekap(true);
     try {
-      const res = await axios.get(`${API_BASE}/presensi`, {
+      const res = await axios.get(API_BASE, {
         params: { tanggal: date },
       });
 
@@ -145,27 +156,10 @@ const RekapPresensi = () => {
     }
   };
 
-  useEffect(() => {
-    fetchRekap(filterDate);
-  }, []);
+useEffect(() => {
+  fetchRekap(filterDate);
+}, [filterDate]);
 
-  useEffect(() => {
-    let filtered = [...rekap];
-
-    if (filterNama.trim() !== "") {
-      filtered = filtered.filter((r) =>
-        r.nama.toLowerCase().includes(filterNama.toLowerCase())
-      );
-    }
-
-    if (filterKategori !== "Semua") {
-      filtered = filtered.filter(
-        (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
-      );
-    }
-
-    setRekapFiltered(filtered);
-  }, [filterNama, filterKategori, rekap]);
 
   const openEditModal = (row) => {
     const jamMasukValue = toTimeValue(row.jam_masuk);
@@ -200,13 +194,16 @@ const RekapPresensi = () => {
 
     setSaving(true);
     try {
-      await axios.put(`${API_BASE}/presensi/${editData.id}`, {
-        jam_masuk: editData.canEditJamMasuk ? editData.jam_masuk || null : null,
-        jam_pulang: editData.canEditJamPulang
-          ? editData.jam_pulang || null
-          : null,
-        keterangan_izin: editData.keterangan_izin || null,
-      });
+     await axios.put(`${API_BASE}/${editData.id}`, {
+  jam_masuk: editData.canEditJamMasuk
+    ? buildDateTime(filterDate, editData.jam_masuk)
+    : null,
+  jam_pulang: editData.canEditJamPulang
+    ? buildDateTime(filterDate, editData.jam_pulang)
+    : null,
+  keterangan_izin: editData.keterangan_izin || null,
+});
+
 
       showMessage("Data berhasil diperbarui", "success");
       setShowModal(false);
@@ -231,7 +228,7 @@ const RekapPresensi = () => {
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.delete(`${API_BASE}/presensi/${row.id}`);
+      await axios.delete(`${API_BASE}/${row.id}`);
       showMessage("Data berhasil dihapus", "success");
       fetchRekap(filterDate);
     } catch {
