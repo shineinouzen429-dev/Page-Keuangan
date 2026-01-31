@@ -11,7 +11,7 @@ function RekapTagihan() {
     const fetchData = async () => {
       try {
         const res = await axios.get("http://localhost:8080/api/tagihan");
-        setTagihan(res.data);
+        setTagihan(res.data || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -21,32 +21,48 @@ function RekapTagihan() {
     fetchData();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
 
+  // ================= FILTER =================
   const filteredTagihan = tagihan.filter((t) => {
-    const matchName = t.name.toLowerCase().includes(search.toLowerCase());
+    const matchName = (t.nama || "")
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
     const matchStatus =
       statusFilter === "semua" ||
-      t.status.toLowerCase() === statusFilter.toLowerCase();
+      t.status?.toLowerCase().trim() ===
+        statusFilter.toLowerCase().trim();
+
     return matchName && matchStatus;
   });
 
+  // ================= FORMAT =================
   const formatRupiah = (angka) =>
     angka
-      ? "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      ? "Rp " +
+        angka
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
       : "Rp 0";
 
+  // ================= REKAP =================
   const lunasData = filteredTagihan.filter(
-    (t) => t.status.toLowerCase() === "lunas"
+    (t) => t.status?.toLowerCase() === "lunas"
   );
+
   const totalJumlahLunas = lunasData.reduce(
-    (sum, item) => sum + Number(item.jumlah),
+    (sum, item) => sum + Number(item.jumlah || 0),
     0
   );
+
   const belumLunas = filteredTagihan.length - lunasData.length;
 
   return (
     <div className="p-6 ml-3">
+      {/* ================= CARD SUMMARY ================= */}
       <div className="flex flex-wrap gap-4 mb-8">
         <div className="flex-1 min-w-[220px] relative overflow-hidden bg-gradient-to-l from-green-600 to-green-500 text-white rounded-lg shadow-lg p-4 text-center">
           <i className="ri-check-double-line text-green-200 absolute right-2 bottom-2 text-[70px] opacity-40"></i>
@@ -77,7 +93,9 @@ function RekapTagihan() {
         </div>
       </div>
 
+      {/* ================= FILTER BAR ================= */}
       <h1 className="text-2xl font-bold mb-4">Rekap Tagihan</h1>
+
       <div className="flex flex-col sm:flex-row items-center gap-3 bg-blue-50 border border-blue-200 rounded-xl p-3 mb-6">
         <input
           type="text"
@@ -86,6 +104,7 @@ function RekapTagihan() {
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 border border-blue-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-md px-3 py-2 text-sm"
         />
+
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -96,6 +115,8 @@ function RekapTagihan() {
           <option value="belum lunas">Belum Lunas</option>
         </select>
       </div>
+
+      {/* ================= TABLE ================= */}
       <div className="overflow-x-auto bg-white shadow-md rounded-2xl">
         <table className="table-auto w-full border-gray-300">
           <thead className="bg-gradient-to-l from-blue-800 to-blue-600 text-white">
@@ -107,6 +128,7 @@ function RekapTagihan() {
               <th className="px-3 py-2 text-center">Tanggal</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredTagihan.length > 0 ? (
               filteredTagihan.map((t, i) => (
@@ -118,7 +140,7 @@ function RekapTagihan() {
                   </td>
                   <td
                     className={`text-center px-3 py-2 font-semibold ${
-                      t.status.toLowerCase() === "lunas"
+                      t.status?.toLowerCase() === "lunas"
                         ? "text-green-600"
                         : "text-red-600"
                     }`}
@@ -126,7 +148,9 @@ function RekapTagihan() {
                     {t.status}
                   </td>
                   <td className="text-center px-3 py-2">
-                    {new Date(t.created_at).toLocaleDateString("id-ID")}
+                    {t.created_at
+                      ? new Date(t.created_at).toLocaleDateString("id-ID")
+                      : "-"}
                   </td>
                 </tr>
               ))
@@ -141,6 +165,7 @@ function RekapTagihan() {
               </tr>
             )}
           </tbody>
+
           <tfoot>
             <tr className="font-bold border-t border-gray-400 bg-gray-100">
               <td colSpan="2" className="text-left px-3 py-2">
@@ -149,7 +174,9 @@ function RekapTagihan() {
               <td className="text-right px-3 py-2">
                 {formatRupiah(totalJumlahLunas)}
               </td>
-              <td className="text-center px-3 py-2">{lunasData.length}</td>
+              <td className="text-center px-3 py-2">
+                {lunasData.length}
+              </td>
               <td></td>
             </tr>
           </tfoot>

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const API_BASE = "http://localhost:8080/api/presensi";
+const API_BASE = "http://localhost:8080/api";
 
 const PresensiGabungan = () => {
-  const [nomorUnik, setNomorUnik] = useState("");
+  const [nomerUnik, setNomerUnik] = useState("");
   const [dataOrang, setDataOrang] = useState(null);
 
   const [isIzin, setIsIzin] = useState(false);
@@ -16,11 +16,9 @@ const PresensiGabungan = () => {
   const [saving, setSaving] = useState(false);
   const [nowTime, setNowTime] = useState(new Date());
 
+  // ===== JAM REALTIME =====
   useEffect(() => {
-    const timer = setInterval(() => {
-      setNowTime(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setNowTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -29,15 +27,16 @@ const PresensiGabungan = () => {
   };
 
   const resetForm = () => {
-    setNomorUnik("");
+    setNomerUnik("");
     setDataOrang(null);
     setIsIzin(false);
     setJenisIzin("");
     setKeterangan("");
   };
 
+  // ===== LOOKUP MASTERDATA =====
   useEffect(() => {
-    if (!nomorUnik) {
+    if (!nomerUnik) {
       setDataOrang(null);
       return;
     }
@@ -46,21 +45,21 @@ const PresensiGabungan = () => {
       setLoadingLookup(true);
       try {
         const res = await axios.get(`${API_BASE}/master-data`, {
-          params: { nomor_unik: nomorUnik },
+          params: { nomer_unik: nomerUnik },
         });
 
-        const data = Array.isArray(res.data)
-          ? res.data
-          : res.data?.masterdata || [];
+        // 🔑 INI PENTING (BIANG BUG SEBELUMNYA)
+        const data = Array.isArray(res.data) ? res.data : [];
 
         if (!data.length) {
           setDataOrang(null);
-          showMessage("Nomor unik tidak ditemukan", "error");
+          showMessage("Nomer unik tidak ditemukan", "error");
           return;
         }
 
         setDataOrang(data[0]);
-      } catch {
+      } catch (err) {
+        console.error("Lookup masterdata error:", err);
         showMessage("Gagal lookup data", "error");
       } finally {
         setLoadingLookup(false);
@@ -68,34 +67,40 @@ const PresensiGabungan = () => {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [nomorUnik]);
+  }, [nomerUnik]);
 
+  // ===== SUBMIT PRESENSI =====
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!nomorUnik) return showMessage("Masukkan nomor unik!", "error");
-    if (!dataOrang) return showMessage("Nomor unik tidak valid!", "error");
+    if (!nomerUnik) return showMessage("Masukkan nomer unik!", "error");
+    if (!dataOrang) return showMessage("Nomer unik tidak valid!", "error");
 
     const now = new Date();
     const tanggal = now.toISOString().slice(0, 10);
     const jam = now.toISOString();
     const jamMenit = now.getHours() * 60 + now.getMinutes();
 
+    // ===== CEK PRESENSI HARI INI =====
     let presensiHariIni = null;
     try {
       const cek = await axios.get(`${API_BASE}/presensi`, {
-        params: { nomor_unik: nomorUnik, tanggal },
+        params: { nomer_unik: nomerUnik, tanggal },
       });
-      presensiHariIni = cek.data[0] || null;
-    } catch {
+
+      const list = Array.isArray(cek.data) ? cek.data : [];
+      presensiHariIni = list.length ? list[0] : null;
+    } catch (err) {
+      console.error(err);
       return showMessage("Gagal cek presensi", "error");
     }
 
+    // ===== MODE IZIN =====
     if (isIzin) {
       if (!jenisIzin) return showMessage("Pilih jenis izin!", "error");
 
       const payload = {
-        nomor_unik: nomorUnik,
+        nomer_unik: nomerUnik,
         nama: dataOrang.nama,
         kategori: dataOrang.kategori || "",
         kelas: dataOrang.kelas || "",
@@ -109,27 +114,22 @@ const PresensiGabungan = () => {
       if (jenisIzin === "TIDAK_BERANGKAT") {
         if (presensiHariIni)
           return showMessage("Sudah ada presensi hari ini", "error");
-
         if (!keterangan.trim())
           return showMessage("Keterangan wajib diisi", "error");
-
         payload.keterangan_izin = keterangan;
       }
 
       if (jenisIzin === "IZIN_MASUK") {
         if (presensiHariIni?.jam_masuk)
           return showMessage("Sudah presensi masuk", "error");
-
         payload.jam_masuk = jam;
       }
 
       if (jenisIzin === "IZIN_PULANG") {
         if (!presensiHariIni?.jam_masuk)
           return showMessage("Belum presensi masuk", "error");
-
         if (!keterangan.trim())
           return showMessage("Keterangan wajib diisi", "error");
-
         payload.jam_pulang = jam;
         payload.keterangan_izin = keterangan;
       }
@@ -139,7 +139,8 @@ const PresensiGabungan = () => {
         await axios.post(`${API_BASE}/presensi`, payload);
         showMessage("Izin berhasil disimpan", "success");
         resetForm();
-      } catch {
+      } catch (err) {
+        console.error(err);
         showMessage("Gagal menyimpan izin", "error");
       } finally {
         setSaving(false);
@@ -147,15 +148,15 @@ const PresensiGabungan = () => {
       return;
     }
 
+    // ===== MODE HADIR =====
     if (presensiHariIni?.status_kehadiran === "IZIN")
       return showMessage("Sudah izin hari ini", "error");
 
     let mode = "MASUK";
     let statusKehadiran = "HADIR";
 
-    if (jamMenit >= 17 * 60 + 1 || jamMenit < 5 * 60) {
+    if (jamMenit >= 17 * 60 + 1 || jamMenit < 5 * 60)
       return Swal.fire("Ditolak", "Sekolah belum dibuka", "error");
-    }
 
     if (jamMenit >= 5 * 60 && jamMenit <= 6 * 60 + 50) {
       if (presensiHariIni?.jam_masuk)
@@ -178,7 +179,7 @@ const PresensiGabungan = () => {
     }
 
     const payload = {
-      nomor_unik: nomorUnik,
+      nomer_unik: nomerUnik,
       nama: dataOrang.nama,
       kategori: dataOrang.kategori || "",
       kelas: dataOrang.kelas || "",
@@ -197,7 +198,8 @@ const PresensiGabungan = () => {
       await axios.post(`${API_BASE}/presensi`, payload);
       showMessage("Presensi berhasil", "success");
       resetForm();
-    } catch {
+    } catch (err) {
+      console.error(err);
       showMessage("Gagal menyimpan presensi", "error");
     } finally {
       setSaving(false);
@@ -256,9 +258,9 @@ const PresensiGabungan = () => {
 
           <div className="space-y-5">
             <input
-              placeholder="Nomor Unik"
-              value={nomorUnik}
-              onChange={(e) => setNomorUnik(e.target.value.trim())}
+              placeholder="Nomer Unik"
+              value={nomerUnik}
+              onChange={(e) => setNomerUnik(e.target.value.trim())}
               disabled={saving}
               className="w-full p-4 rounded-xl
               bg-black/70

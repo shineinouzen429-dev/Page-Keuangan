@@ -16,20 +16,12 @@ const RekapPresensi = () => {
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [filterStatus, setFilterStatus] = useState("Semua");
-
   const [filterNama, setFilterNama] = useState("");
   const [filterKategori, setFilterKategori] = useState("Semua");
 
   const showMessage = (text, type = "info") => {
     Swal.fire({ text, icon: type, timer: 2000, showConfirmButton: false });
   };
-
-  const buildDateTime = (date, time) => {
-  if (!time) return null;
-  return `${date}T${time}:00`;
-};
-
 
   const fmtTime = (isoString) => {
     if (!isoString) return "-";
@@ -50,132 +42,109 @@ const RekapPresensi = () => {
     if (!isoString) return "";
     try {
       const date = new Date(isoString);
-      const options = {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: "Asia/Jakarta",
-      };
+      const options = { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Jakarta" };
       return new Intl.DateTimeFormat("id-ID", options).format(date);
     } catch {
       return "";
     }
   };
-useEffect(() => {
-  let filtered = [...rekap];
 
-  // Filter Nama
-  if (filterNama.trim() !== "") {
-    filtered = filtered.filter((r) =>
-      r.nama.toLowerCase().includes(filterNama.toLowerCase())
-    );
+ const fmtStatus = (r) => {
+  if (r.keterangan_izin?.trim()) {
+    if (!r.jam_masuk && !r.jam_pulang) {
+      return "IZIN (TIDAK BERANGKAT)";
+    }
+
+    if (r.jam_masuk && r.jam_pulang) {
+      return "IZIN (PULANG)";
+    }
+
+    return "IZIN";
   }
 
-  // Filter Kategori
-  if (filterKategori !== "Semua") {
-    filtered = filtered.filter(
-      (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
-    );
-  }
+  if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
+  if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
 
-  // Filter Status
-  if (filterStatus !== "Semua") {
-    filtered = filtered.filter((r) => {
-      if (filterStatus === "IZIN") {
-        // Semua status yang dimulai dengan "IZIN" termasuk
-        return r.status.startsWith("IZIN");
-      }
-      return r.status === filterStatus;
+  if (r.jam_masuk) return "HADIR";
+
+  return "-";
+};
+
+
+
+const fetchRekap = async (date) => {
+  setLoadingRekap(true);
+  try {
+    const res = await axios.get(`${API_BASE}/`, {
+      params: { tanggal: date },
     });
+
+    const list = Array.isArray(res.data)
+      ? res.data
+      : res.data?.presensi || [];
+
+    const merged = {};
+    list.forEach((row) => {
+      const key = row.nomer_unik;
+      if (!merged[key]) {
+        merged[key] = { ...row };
+      } else {
+        if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
+        if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
+        if (row.keterangan_izin)
+          merged[key].keterangan_izin = row.keterangan_izin;
+      }
+    });
+
+    const finalList = Object.values(merged).map((r) => ({
+      ...r,
+      jamMasukFormatted: fmtTime(r.jam_masuk),
+      jamPulangFormatted: fmtTime(r.jam_pulang),
+      status: fmtStatus(r),
+      key: r.nomer_unik,
+    }));
+
+    setRekap(finalList);
+    setRekapFiltered(finalList);
+  } catch (err) {
+    console.error(err);
+    showMessage("Gagal memuat rekap presensi", "error");
+  } finally {
+    setLoadingRekap(false);
   }
+};
 
-  setRekapFiltered(filtered);
-}, [filterNama, filterKategori, filterStatus, rekap]);
-
-
-  const fmtStatus = (r) => {
-    if (r.keterangan_izin?.trim()) {
-      if (!r.jam_masuk && !r.jam_pulang) {
-        return "IZIN (TIDAK BERANGKAT)";
-      }
-
-      if (r.jam_masuk && r.jam_pulang) {
-        return "IZIN (PULANG)";
-      }
-
-      return "IZIN";
-    }
-
-    if (r.status_kehadiran === "TEPAT_WAKTU") return "TEPAT WAKTU";
-    if (r.status_kehadiran === "TERLAMBAT") return "TERLAMBAT";
-
-    if (r.jam_masuk) return "HADIR";
-
-    return "-";
-  };
-
-  const fetchRekap = async (date) => {
-    setLoadingRekap(true);
-    try {
-      const res = await axios.get(API_BASE, {
-        params: { tanggal: date },
-      });
-
-      const list = Array.isArray(res.data)
-        ? res.data
-        : res.data?.presensi || [];
-
-      const merged = {};
-      list.forEach((row) => {
-        const key = row.nomor_unik;
-        if (!merged[key]) {
-          merged[key] = { ...row };
-        } else {
-          if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
-          if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
-          if (row.keterangan_izin)
-            merged[key].keterangan_izin = row.keterangan_izin;
-        }
-      });
-
-      const finalList = Object.values(merged).map((r) => ({
-        ...r,
-        jamMasukFormatted: fmtTime(r.jam_masuk),
-        jamPulangFormatted: fmtTime(r.jam_pulang),
-        status: fmtStatus(r),
-
-        key: r.nomor_unik,
-      }));
-
-      setRekap(finalList);
-      setRekapFiltered(finalList);
-    } catch {
-      showMessage("Gagal memuat rekap presensi", "error");
-    } finally {
-      setLoadingRekap(false);
-    }
-  };
 
 useEffect(() => {
   fetchRekap(filterDate);
 }, [filterDate]);
 
 
-  const openEditModal = (row) => {
-    const jamMasukValue = toTimeValue(row.jam_masuk);
-    const jamPulangValue = toTimeValue(row.jam_pulang);
+  useEffect(() => {
+    let filtered = [...rekap];
 
+    if (filterNama.trim() !== "") {
+      filtered = filtered.filter((r) =>
+        r.nama.toLowerCase().includes(filterNama.toLowerCase())
+      );
+    }
+
+    if (filterKategori !== "Semua") {
+      filtered = filtered.filter(
+        (r) => r.kategori.toLowerCase() === filterKategori.toLowerCase()
+      );
+    }
+
+    setRekapFiltered(filtered);
+  }, [filterNama, filterKategori, rekap]);
+
+  const openEditModal = (row) => {
     setEditData({
       ...row,
-      jam_masuk: jamMasukValue,
-      jam_pulang: jamPulangValue,
+      jam_masuk: toTimeValue(row.jam_masuk),
+      jam_pulang: toTimeValue(row.jam_pulang),
       keterangan_izin: row.keterangan_izin || "",
-
-      // FLAG
-      canEditJamMasuk: !!row.jam_masuk,
-      canEditJamPulang: !!row.jam_pulang,
     });
-
     setShowModal(true);
   };
 
@@ -194,16 +163,11 @@ useEffect(() => {
 
     setSaving(true);
     try {
-     await axios.put(`${API_BASE}/${editData.id}`, {
-  jam_masuk: editData.canEditJamMasuk
-    ? buildDateTime(filterDate, editData.jam_masuk)
-    : null,
-  jam_pulang: editData.canEditJamPulang
-    ? buildDateTime(filterDate, editData.jam_pulang)
-    : null,
-  keterangan_izin: editData.keterangan_izin || null,
-});
-
+      await axios.put(`${API_BASE}/${editData.id}`, {
+        jam_masuk: editData.jam_masuk || null,
+        jam_pulang: editData.jam_pulang || null,
+        keterangan_izin: editData.keterangan_izin || null,
+      });
 
       showMessage("Data berhasil diperbarui", "success");
       setShowModal(false);
@@ -237,40 +201,45 @@ useEffect(() => {
   };
 
   const renderDetail = (r) => {
-    const kategori = r.kategori?.toLowerCase();
+  const kategori = r.kategori?.toLowerCase();
 
-    const detailUtama = (() => {
-      if (kategori === "siswa")
-        return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
-      if (kategori === "guru") return `Mapel: ${r.jabatan || "-"}`;
-      if (kategori === "karyawan") return `Bagian: ${r.bagian || "-"}`;
-      return "-";
-    })();
+  const detailUtama = (() => {
+    if (kategori === "siswa")
+      return `Kelas: ${r.kelas || "-"} ${r.jurusan || ""}`;
+    if (kategori === "guru")
+      return `Mapel: ${r.jabatan || "-"}`;
+    if (kategori === "karyawan")
+      return `Bagian: ${r.bagian || "-"}`;
+    return "-";
+  })();
 
-    let izinText = "";
+  let izinText = "";
 
-    if (r.status_kehadiran === "IZIN") {
-      if (!r.jam_masuk && !r.jam_pulang) {
-        izinText = `Izin: ${r.keterangan_izin || "-"}`;
-      } else if (r.jam_masuk && !r.jam_pulang) {
-        izinText = "Izin: Magang";
-      } else if (r.jam_pulang) {
-        izinText = "Izin: Pulang Awal";
-      }
+if (r.keterangan_izin?.trim()) {
+    if (!r.jam_masuk && !r.jam_pulang) {
+      izinText = `Izin: ${r.keterangan_izin || "-"}`;
+    } else if (r.jam_masuk && !r.jam_pulang) {
+      izinText = "Izin: Magang";
+    } else if (r.jam_pulang) {
+      izinText = "Izin: Pulang Awal";
     }
+  }
 
-    return (
-      <div className="text-sm leading-tight">
-        <div>{detailUtama}</div>
-        <div className="text-red-600">
-          {izinText || "\u00A0"}
-          {r.keterangan_izin && r.jam_masuk && (
-            <div className="text-xs">({r.keterangan_izin})</div>
-          )}
-        </div>
+  return (
+    <div className="text-sm leading-tight">
+      <div>{detailUtama}</div>
+      <div className="text-red-600">
+        {izinText || "\u00A0"}
+        {r.keterangan_izin && r.jam_masuk && (
+          <div className="text-xs">
+            ({r.keterangan_izin})
+          </div>
+        )}
       </div>
-    );
-  };
+    </div>
+  );
+};
+
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -322,19 +291,6 @@ useEffect(() => {
             <option>Guru</option>
             <option>Karyawan</option>
           </select>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="border px-3 py-2 rounded-lg"
-          >
-            <option>Semua</option>
-            <option>TEPAT WAKTU</option>
-            <option>TERLAMBAT</option>
-            <option>IZIN</option>
-            <option>HADIR</option>
-            <option>IZIN (TIDAK BERANGKAT)</option>
-            <option>IZIN (PULANG)</option>
-          </select>
         </div>
 
         <div className="overflow-x-auto bg-white rounded-xl border border-gray-200">
@@ -356,10 +312,7 @@ useEffect(() => {
             <tbody>
               {rekapFiltered.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan="9"
-                    className="text-center py-6 text-gray-500 italic"
-                  >
+                  <td colSpan="9" className="text-center py-6 text-gray-500 italic">
                     Tidak ada data
                   </td>
                 </tr>
@@ -367,7 +320,7 @@ useEffect(() => {
                 rekapFiltered.map((r, idx) => (
                   <tr key={r.key} className="border-b">
                     <td className="px-4 py-3 text-center">{idx + 1}</td>
-                    <td className="px-4 py-3">{r.nomor_unik}</td>
+                    <td className="px-4 py-3">{r.nomer_unik}</td>
                     <td className="px-4 py-3">{r.nama}</td>
                     <td className="px-4 py-3 capitalize">{r.kategori}</td>
                     <td className="px-3 py-3">{renderDetail(r)}</td>
@@ -380,13 +333,13 @@ useEffect(() => {
                           onClick={() => openEditModal(r)}
                           className="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500"
                         >
-                          <i className="ri-edit-2-line text-lg"></i>Edit
+                          Edit
                         </button>
                         <button
                           onClick={() => deleteData(r)}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                         >
-                          <i className="ri-delete-bin-6-line text-lg"></i>Hapus
+                          Hapus
                         </button>
                       </div>
                     </td>
@@ -420,15 +373,10 @@ useEffect(() => {
                   type="text"
                   placeholder="HH:mm"
                   value={editData.jam_masuk}
-                  disabled={!editData.canEditJamMasuk}
                   onChange={(e) =>
                     setEditData({ ...editData, jam_masuk: e.target.value })
                   }
-                  className={`w-full border px-3 py-2 rounded ${
-                    !editData.canEditJamMasuk
-                      ? "bg-gray-100 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className="w-full border px-3 py-2 rounded"
                 />
               </div>
 
@@ -438,35 +386,24 @@ useEffect(() => {
                   type="text"
                   placeholder="HH:mm"
                   value={editData.jam_pulang}
-                  disabled={!editData.canEditJamPulang}
                   onChange={(e) =>
                     setEditData({ ...editData, jam_pulang: e.target.value })
                   }
-                  className={`w-full border px-3 py-2 rounded ${
-                    !editData.canEditJamPulang
-                      ? "bg-gray-100 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className="w-full border px-3 py-2 rounded"
                 />
               </div>
 
-              {editData.keterangan_izin && (
-  <div>
-    <label className="text-sm">Keterangan Izin</label>
-    <textarea
-      value={editData.keterangan_izin}
-      onChange={(e) =>
-        setEditData({
-          ...editData,
-          keterangan_izin: e.target.value,
-        })
-      }
-      className="w-full border px-3 py-2 rounded"
-      rows="2"
-    />
-  </div>
-)}
-
+              <div>
+                <label className="text-sm">Keterangan Izin</label>
+                <textarea
+                  value={editData.keterangan_izin}
+                  onChange={(e) =>
+                    setEditData({ ...editData, keterangan_izin: e.target.value })
+                  }
+                  className="w-full border px-3 py-2 rounded"
+                  rows="2"
+                />
+              </div>
             </div>
 
             <div className="flex justify-end gap-2 mt-5">
