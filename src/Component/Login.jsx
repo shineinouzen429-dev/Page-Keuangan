@@ -20,7 +20,6 @@ function Login() {
     }));
   };
 
-  // ✅ HANDLE SUBMIT BARU (PAKAI BACKEND)
   const handleSubmit = async (e) => {
     e.preventDefault();
 

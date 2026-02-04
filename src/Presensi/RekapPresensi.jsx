@@ -74,8 +74,9 @@ const RekapPresensi = () => {
 
 const fetchRekap = async (date) => {
   setLoadingRekap(true);
+
   try {
-    const res = await axios.get(`${API_BASE}/`, {
+    const res = await axios.get(API_BASE, {
       params: { tanggal: date },
     });
 
@@ -84,10 +85,17 @@ const fetchRekap = async (date) => {
       : res.data?.presensi || [];
 
     const merged = {};
+
     list.forEach((row) => {
       const key = row.nomer_unik;
+
       if (!merged[key]) {
-        merged[key] = { ...row };
+        merged[key] = {
+          ...row,
+          jam_masuk: row.jam_masuk || null,
+          jam_pulang: row.jam_pulang || null,
+          keterangan_izin: row.keterangan_izin || null,
+        };
       } else {
         if (row.jam_masuk) merged[key].jam_masuk = row.jam_masuk;
         if (row.jam_pulang) merged[key].jam_pulang = row.jam_pulang;
@@ -95,6 +103,7 @@ const fetchRekap = async (date) => {
           merged[key].keterangan_izin = row.keterangan_izin;
       }
     });
+
 
     const finalList = Object.values(merged).map((r) => ({
       ...r,
@@ -107,7 +116,7 @@ const fetchRekap = async (date) => {
     setRekap(finalList);
     setRekapFiltered(finalList);
   } catch (err) {
-    console.error(err);
+    console.error("fetchRekap error:", err);
     showMessage("Gagal memuat rekap presensi", "error");
   } finally {
     setLoadingRekap(false);

@@ -16,7 +16,7 @@ function KategoriData() {
   id: "",
   kategori: "",
   keterangan: "",
-  status: true, // ✅ TAMBAH
+  status: true, 
 });
 
 

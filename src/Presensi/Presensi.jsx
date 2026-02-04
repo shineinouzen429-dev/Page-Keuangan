@@ -16,7 +16,6 @@ const PresensiGabungan = () => {
   const [saving, setSaving] = useState(false);
   const [nowTime, setNowTime] = useState(new Date());
 
-  // ===== JAM REALTIME =====
   useEffect(() => {
     const timer = setInterval(() => setNowTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -34,7 +33,6 @@ const PresensiGabungan = () => {
     setKeterangan("");
   };
 
-  // ===== LOOKUP MASTERDATA =====
   useEffect(() => {
     if (!nomerUnik) {
       setDataOrang(null);
@@ -48,7 +46,6 @@ const PresensiGabungan = () => {
           params: { nomer_unik: nomerUnik },
         });
 
-        // 🔑 INI PENTING (BIANG BUG SEBELUMNYA)
         const data = Array.isArray(res.data) ? res.data : [];
 
         if (!data.length) {
@@ -69,7 +66,6 @@ const PresensiGabungan = () => {
     return () => clearTimeout(timer);
   }, [nomerUnik]);
 
-  // ===== SUBMIT PRESENSI =====
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,7 +77,6 @@ const PresensiGabungan = () => {
     const jam = now.toISOString();
     const jamMenit = now.getHours() * 60 + now.getMinutes();
 
-    // ===== CEK PRESENSI HARI INI =====
     let presensiHariIni = null;
     try {
       const cek = await axios.get(`${API_BASE}/presensi`, {
@@ -95,7 +90,6 @@ const PresensiGabungan = () => {
       return showMessage("Gagal cek presensi", "error");
     }
 
-    // ===== MODE IZIN =====
     if (isIzin) {
       if (!jenisIzin) return showMessage("Pilih jenis izin!", "error");
 
@@ -148,7 +142,6 @@ const PresensiGabungan = () => {
       return;
     }
 
-    // ===== MODE HADIR =====
     if (presensiHariIni?.status_kehadiran === "IZIN")
       return showMessage("Sudah izin hari ini", "error");
 

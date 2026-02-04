@@ -48,7 +48,6 @@ function MasterData() {
         "http://localhost:8080/api/level-master-data",
       );
 
-      // hanya kategori aktif
       const aktif = (res.data || []).filter((item) => item.status === true);
 
       setKategoriMaster(aktif);
@@ -64,8 +63,8 @@ function MasterData() {
     jurusan: "",
     jabatan: "",
     bagian: "",
-    nomer_unik: "", // ✅ PAKAI E
-    foto: defaultFoto, // ✅ tetap ada
+    nomer_unik: "", 
+    foto: defaultFoto, 
   });
 
   const API_URL = "http://localhost:8080/api/master-data";
@@ -125,7 +124,7 @@ function MasterData() {
         jurusan: formData.jurusan || "",
         jabatan: formData.jabatan || "",
         bagian: formData.bagian || "",
-        nomer_unik: formData.nomer_unik, // ✅
+        nomer_unik: formData.nomer_unik, 
         foto: formData.foto || defaultFoto,
       };
 
@@ -470,7 +469,7 @@ function MasterData() {
                       jurusan: "",
                       jabatan: "",
                       bagian: "",
-                      nomer_unik: prev.nomer_unik, // tetap manual
+                      nomer_unik: prev.nomer_unik,
                     }));
                   }}
                   className="w-full mt-1 p-2 border rounded-lg

@@ -27,7 +27,6 @@ const fetchData = async () => {
       "http://localhost:8080/api/level-tagihan",
     );
 
-    // ⬇️ TAMBAHAN PENTING
     const normalized = response.data.map((item) => ({
       ...item,
       masih: item.masih === true || item.masih === "true",
@@ -47,7 +46,6 @@ const handleSubmit = async (e) => {
 
   if (isEdit) return handleUpdate();
 
-  // Validasi
   if (!formData.jenisTagihan || formData.jenisTagihan.trim() === "") {
     return Swal.fire("Error!", "Jenis Tagihan wajib diisi.", "error");
   }
